@@ -19,11 +19,7 @@ To check it's working, visit `localhost:8000`.
 
 ## Environment variables
 
-### `API_ENV`
-
-Toggles whether the server will reload on code changes. Can be `DEV` (reloading
-enabled) or `PROD` (reloading disabled).
-
-### `API_PORT`
-
-The port the server will listen to. Defaults to `8000`.
+|Variable|Summary|Options|Default|
+|-|-|-|-|
+|`API_ENV`|Toggles whether the server will reload on code changes. If set to `dev`, will reload. If set to `prod`, will not reload.|`dev`, `prod`||
+|`API_PORT`|The port the server will listen on.||`8000`|
