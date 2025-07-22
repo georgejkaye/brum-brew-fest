@@ -1,0 +1,26 @@
+networks:
+  internal:
+    external: false
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bbf
+      POSTGRES_DB: bbf
+      POSTGRES_PASSWORD: bbf
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/scripts/:/docker-entrypoint-initdb.d/
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 1s
+      retries: 500
+      start_period: 0s
+volumes:
+  pgdata:
