@@ -1,12 +1,14 @@
 CREATE TABLE app_user (
     user_id SERIAL PRIMARY KEY,
     user_name TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL UNIQUE,
     hashed_password TEXT NOT NULL
 );
 
 CREATE TABLE venue (
     venue_id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    venue_name TEXT NOT NULL,
+    venue_address TEXT NOT NULL,
     latitude DECIMAL NOT NULL,
     longitude DECIMAL NOT NULL
 );
