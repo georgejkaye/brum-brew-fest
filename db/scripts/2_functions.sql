@@ -1,11 +1,11 @@
-DROP FUNCTION insert_user;
-DROP FUNCTION insert_venue;
-DROP FUNCTION insert_visit;
-DROP FUNCTION select_user_by_username;
-DROP FUNCTION select_venues;
-DROP FUNCTION select_venues_by_user;
-DROP FUNCTION select_visits;
-DROP FUNCTION select_user_summary;
+DROP FUNCTION IF EXISTS insert_user;
+DROP FUNCTION IF EXISTS insert_venue;
+DROP FUNCTION IF EXISTS insert_visit;
+DROP FUNCTION IF EXISTS select_user_by_username;
+DROP FUNCTION IF EXISTS select_venues;
+DROP FUNCTION IF EXISTS select_venues_by_user;
+DROP FUNCTION IF EXISTS select_visits;
+DROP FUNCTION IF EXISTS select_user_summary;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_user_name TEXT,

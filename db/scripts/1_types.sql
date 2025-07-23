@@ -1,9 +1,9 @@
-DROP TYPE user_data CASCADE;
-DROP TYPE venue_data CASCADE;
-DROP TYPE venue_visit_data CASCADE;
-DROP TYPE user_summary_data CASCADE;
-DROP TYPE user_visit_data CASCADE;
-DROP TYPE single_user_visit_data CASCADE;
+DROP TYPE IF EXISTS user_data CASCADE;
+DROP TYPE IF EXISTS venue_data CASCADE;
+DROP TYPE IF EXISTS venue_visit_data CASCADE;
+DROP TYPE IF EXISTS user_summary_data CASCADE;
+DROP TYPE IF EXISTS user_visit_data CASCADE;
+DROP TYPE IF EXISTS single_user_visit_data CASCADE;
 
 CREATE TYPE user_data AS (
     user_id INTEGER,
