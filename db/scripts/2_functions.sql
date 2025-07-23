@@ -143,6 +143,54 @@ LEFT JOIN (
 ON venue.venue_id = visit_data_table.venue_id;
 $$;
 
+CREATE OR REPLACE FUNCTION select_venue_by_venue_id (
+    p_venue_id INTEGER
+)
+RETURNS SETOF venue_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    venue.venue_id,
+    venue.venue_name,
+    venue.venue_address,
+    venue.latitude,
+    venue.longitude,
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+FROM venue
+LEFT JOIN (
+    SELECT
+        visit_table.venue_id,
+        ARRAY_AGG((
+            visit_table.visit_id,
+            visit_table.user_id,
+            visit_table.display_name,
+            visit_table.visit_date,
+            visit_table.notes,
+            visit_table.rating)::venue_visit_data
+            ORDER BY visit_table.visit_date
+        ) AS visits
+    FROM (
+        SELECT
+            venue.venue_id,
+            visit.visit_id,
+            app_user.user_id,
+            app_user.display_name,
+            visit.visit_date,
+            visit.notes,
+            visit.rating
+        FROM venue
+        INNER JOIN visit
+        ON venue.venue_id = visit.venue_id
+        INNER JOIN app_user
+        ON visit.user_id = app_user.user_id
+    ) visit_table
+    GROUP BY visit_table.venue_id
+) visit_data_table
+ON venue.venue_id = visit_data_table.venue_id
+WHERE venue.venue_id = p_venue_id;
+$$;
+
 CREATE OR REPLACE FUNCTION select_venues_by_user (
     p_user_id INTEGER
 )

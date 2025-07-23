@@ -59,6 +59,16 @@ def select_venues(conn: Connection) -> list[Venue]:
         return cur.execute("SELECT * FROM select_venues()").fetchmany()
 
 
+def select_venue_by_venue_id(
+    conn: Connection, venue_id: int
+) -> Optional[Venue]:
+    register_type(conn, "venue_visit_data", VenueVisit)
+    with conn.cursor(row_factory=class_row(Venue)) as cur:
+        return cur.execute(
+            "SELECT * FROM select_venues(%s)", [venue_id]
+        ).fetchone()
+
+
 def select_venues_by_user(conn: Connection, user_id: int) -> list[Venue]:
     register_type(conn, "venue_visit_data", VenueVisit)
     with conn.cursor(row_factory=class_row(Venue)) as cur:
