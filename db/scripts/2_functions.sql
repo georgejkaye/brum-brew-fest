@@ -1,9 +1,12 @@
+DROP FUNCTION insert_user;
+DROP FUNCTION insert_venue;
+
 CREATE OR REPLACE FUNCTION insert_user (
     p_user_name TEXT,
     p_display_name TEXT,
     p_hashed_password TEXT
 )
-RETURNS VOID
+RETURNS INTEGER
 LANGUAGE sql
 AS
 $$
@@ -16,7 +19,8 @@ VALUES (
     p_user_name,
     p_display_name,
     p_hashed_password
-);
+)
+RETURNING user_id;
 $$;
 
 CREATE OR REPLACE FUNCTION insert_venue (
@@ -25,7 +29,7 @@ CREATE OR REPLACE FUNCTION insert_venue (
     p_latitude DECIMAL,
     p_longitude DECIMAL
 )
-RETURNS VOID
+RETURNS INTEGER
 LANGUAGE sql
 AS
 $$
@@ -40,7 +44,8 @@ VALUES (
     p_address,
     p_latitude,
     p_longitude
-);
+)
+RETURNING venue_id;
 $$;
 
 CREATE OR REPLACE FUNCTION insert_visit (
@@ -50,7 +55,7 @@ CREATE OR REPLACE FUNCTION insert_visit (
     p_notes TEXT,
     p_rating INTEGER
 )
-RETURNS VOID
+RETURNS INTEGER
 LANGUAGE sql
 AS
 $$
@@ -67,5 +72,6 @@ VALUES (
     p_visit_date,
     p_notes,
     p_rating
-);
+)
+RETURNING visit_id;
 $$;
