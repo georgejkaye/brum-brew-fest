@@ -1,5 +1,10 @@
 DROP FUNCTION insert_user;
 DROP FUNCTION insert_venue;
+DROP FUNCTION insert_visit;
+DROP FUNCTION select_venues;
+DROP FUNCTION select_venues_by_user;
+DROP FUNCTION select_visits;
+DROP FUNCTION select_visits_by_user;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_user_name TEXT,
@@ -74,4 +79,136 @@ VALUES (
     p_rating
 )
 RETURNING visit_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_venues ()
+RETURNS SETOF venue_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    venue.venue_id,
+    venue.venue_name,
+    venue.venue_address,
+    venue.latitude,
+    venue.longitude,
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+FROM venue
+LEFT JOIN (
+    SELECT
+        visit_table.venue_id,
+        ARRAY_AGG((
+            visit_table.visit_id,
+            visit_table.user_id,
+            visit_table.display_name,
+            visit_table.visit_date,
+            visit_table.notes,
+            visit_table.rating)::venue_visit_data
+            ORDER BY visit_table.visit_date
+        ) AS visits
+    FROM (
+        SELECT
+            venue.venue_id,
+            visit.visit_id,
+            app_user.user_id,
+            app_user.display_name,
+            visit.visit_date,
+            visit.notes,
+            visit.rating
+        FROM venue
+        INNER JOIN visit
+        ON venue.venue_id = visit.venue_id
+        INNER JOIN app_user
+        ON visit.user_id = app_user.user_id
+    ) visit_table
+    GROUP BY visit_table.venue_id
+) visit_data_table
+ON venue.venue_id = visit_data_table.venue_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_venues_by_user (
+    p_user_id INTEGER
+)
+RETURNS SETOF venue_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    venue.venue_id,
+    venue.venue_name,
+    venue.venue_address,
+    venue.latitude,
+    venue.longitude,
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+FROM venue
+LEFT JOIN (
+    SELECT
+        visit_table.venue_id,
+        ARRAY_AGG((
+            visit_table.visit_id,
+            visit_table.user_id,
+            visit_table.display_name,
+            visit_table.visit_date,
+            visit_table.notes,
+            visit_table.rating)::venue_visit_data
+            ORDER BY visit_table.visit_date
+        ) AS visits
+    FROM (
+        SELECT
+            venue.venue_id,
+            visit.visit_id,
+            app_user.user_id,
+            app_user.display_name,
+            visit.visit_date,
+            visit.notes,
+            visit.rating
+        FROM venue
+        INNER JOIN visit
+        ON venue.venue_id = visit.venue_id
+        INNER JOIN app_user
+        ON visit.user_id = app_user.user_id
+        WHERE app_user.user_id = p_user_id
+    ) visit_table
+    GROUP BY visit_table.venue_id
+) visit_data_table
+ON venue.venue_id = visit_data_table.venue_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_visits ()
+RETURNS SETOF user_visit_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    visit.visit_id,
+    visit.user_id,
+    venue.venue_id,
+    venue.venue_name,
+    visit.visit_date,
+    visit.notes,
+    visit.rating
+FROM visit
+INNER JOIN venue
+ON visit.venue_id = venue.venue_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_visits_by_user (
+    p_user_id INTEGER
+)
+RETURNS SETOF user_visit_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    visit.visit_id,
+    visit.user_id,
+    venue.venue_id,
+    venue.venue_name,
+    visit.visit_date,
+    visit.notes,
+    visit.rating
+FROM visit
+INNER JOIN venue
+ON visit.venue_id = venue.venue_id
+WHERE visit.user_id = p_user_id
 $$;
