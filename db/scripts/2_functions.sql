@@ -5,7 +5,7 @@ DROP FUNCTION select_user_by_username;
 DROP FUNCTION select_venues;
 DROP FUNCTION select_venues_by_user;
 DROP FUNCTION select_visits;
-DROP FUNCTION select_visits_by_user;
+DROP FUNCTION select_user_summary;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_user_name TEXT,
@@ -257,23 +257,36 @@ INNER JOIN venue
 ON visit.venue_id = venue.venue_id;
 $$;
 
-CREATE OR REPLACE FUNCTION select_visits_by_user (
+CREATE OR REPLACE FUNCTION select_user_summary (
     p_user_id INTEGER
 )
-RETURNS SETOF user_visit_data
+RETURNS SETOF user_summary_data
 LANGUAGE sql
 AS
 $$
 SELECT
-    visit.visit_id,
-    visit.user_id,
-    venue.venue_id,
-    venue.venue_name,
-    visit.visit_date,
-    visit.notes,
-    visit.rating
-FROM visit
-INNER JOIN venue
-ON visit.venue_id = venue.venue_id
-WHERE visit.user_id = p_user_id
+    app_user.user_id,
+    app_user.user_name,
+    app_user.display_name,
+    visit_table.visits
+FROM app_user
+INNER JOIN (
+    SELECT
+        visit.user_id,
+        ARRAY_AGG((
+            visit.visit_id,
+            venue.venue_id,
+            venue.venue_name,
+            visit.visit_date,
+            visit.notes,
+            visit.rating)::single_user_visit_data
+            ORDER BY visit.visit_date
+        ) AS visits
+    FROM visit
+    INNER JOIN venue
+    ON visit.venue_id = venue.venue_id
+    GROUP BY visit.user_id
+) visit_table
+ON app_user.user_id = visit_table.user_id
+WHERE app_user.user_id = p_user_id;
 $$;

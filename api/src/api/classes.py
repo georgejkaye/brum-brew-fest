@@ -40,3 +40,21 @@ class UserVisit:
     visit_date: datetime
     notes: str
     rating: int
+
+
+@dataclass
+class SingleUserVisit:
+    visit_id: int
+    venue_id: int
+    venue_name: str
+    visit_date: datetime
+    notes: str
+    rating: int
+
+
+@dataclass
+class UserSummary:
+    user_id: int
+    user_name: str
+    display_name: str
+    visits: SingleUserVisit

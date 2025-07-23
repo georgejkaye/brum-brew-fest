@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
-from api.classes import User, UserVisit, Venue, VenueVisit
+from api.classes import User, UserSummary, UserVisit, Venue, VenueVisit
 from psycopg import Connection
 from psycopg.rows import class_row
 from psycopg.types.composite import CompositeInfo, register_composite
@@ -82,11 +82,13 @@ def select_visits(conn: Connection) -> list[UserVisit]:
         return cur.execute("SELECT * FROM select_visits()").fetchmany()
 
 
-def select_visits_by_user(conn: Connection, user_id: int) -> list[UserVisit]:
-    with conn.cursor(row_factory=class_row(UserVisit)) as cur:
+def select_user_summary(
+    conn: Connection, user_id: int
+) -> Optional[UserSummary]:
+    with conn.cursor(row_factory=class_row(UserSummary)) as cur:
         return cur.execute(
             "SELECT * FROM select_visits_by_user(%s)", [user_id]
-        ).fetchmany()
+        ).fetchone()
 
 
 def register_type[T](conn: Connection, name: str, factory: type) -> None:
