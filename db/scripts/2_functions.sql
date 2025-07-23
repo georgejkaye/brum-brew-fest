@@ -1,6 +1,7 @@
 DROP FUNCTION insert_user;
 DROP FUNCTION insert_venue;
 DROP FUNCTION insert_visit;
+DROP FUNCTION select_user_by_username;
 DROP FUNCTION select_venues;
 DROP FUNCTION select_venues_by_user;
 DROP FUNCTION select_visits;
@@ -79,6 +80,22 @@ VALUES (
     p_rating
 )
 RETURNING visit_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_user_by_username (
+    p_user_name TEXT
+)
+RETURNS user_data
+LANGUAGE sql
+AS
+$$
+SELECT (
+    app_user.user_id,
+    app_user.user_name,
+    app_user.display_name,
+    app_user.hashed_password)::user_data
+FROM app_user
+WHERE app_user.user_name = p_user_name;
 $$;
 
 CREATE OR REPLACE FUNCTION select_venues ()

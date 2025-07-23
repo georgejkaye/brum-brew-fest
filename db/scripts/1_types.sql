@@ -1,11 +1,19 @@
+DROP TYPE user_data CASCADE;
 DROP TYPE venue_data CASCADE;
 DROP TYPE venue_visit_data CASCADE;
 DROP TYPE user_visit_data CASCADE;
 
+CREATE TYPE user_data AS (
+    user_id INTEGER,
+    user_name TEXT,
+    display_name TEXT,
+    hashed_password TEXT
+);
+
 CREATE TYPE venue_visit_data AS (
     visit_id INTEGER,
     user_id INTEGER,
-    display_name TEXT,
+    user_display_name TEXT,
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
     rating INTEGER
