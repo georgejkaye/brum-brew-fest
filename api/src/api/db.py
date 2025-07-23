@@ -63,7 +63,7 @@ def select_user_by_username(conn: Connection, user_name: str) -> Optional[User]:
 def select_venues(conn: Connection) -> list[Venue]:
     register_type(conn, "venue_visit_data", VenueVisit)
     with conn.cursor(row_factory=class_row(Venue)) as cur:
-        return cur.execute("SELECT * FROM select_venues()").fetchmany()
+        return cur.execute("SELECT * FROM select_venues()").fetchall()
 
 
 def select_venue_by_venue_id(
@@ -72,7 +72,7 @@ def select_venue_by_venue_id(
     register_type(conn, "venue_visit_data", VenueVisit)
     with conn.cursor(row_factory=class_row(Venue)) as cur:
         return cur.execute(
-            "SELECT * FROM select_venues(%s)", [venue_id]
+            "SELECT * FROM select_venue_by_venue_id(%s)", [venue_id]
         ).fetchone()
 
 
@@ -81,12 +81,12 @@ def select_venues_by_user(conn: Connection, user_id: int) -> list[Venue]:
     with conn.cursor(row_factory=class_row(Venue)) as cur:
         return cur.execute(
             "SELECT * FROM select_venues_by_user(%s)", [user_id]
-        ).fetchmany()
+        ).fetchall()
 
 
 def select_visits(conn: Connection) -> list[UserVisit]:
     with conn.cursor(row_factory=class_row(UserVisit)) as cur:
-        return cur.execute("SELECT * FROM select_visits()").fetchmany()
+        return cur.execute("SELECT * FROM select_visits()").fetchall()
 
 
 def select_user_summary(
