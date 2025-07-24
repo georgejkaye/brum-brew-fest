@@ -130,13 +130,31 @@ def select_user_summary(
         ).fetchone()
 
 
-def update_user_hashed_password(
-    conn: Connection, user_id: int, new_hashed_password: str
-) -> None:
-    conn.execute(
-        "SELECT * FROM update_user_password(%s, %s)",
-        [user_id, new_hashed_password],
-    )
+def update_user(
+    conn: Connection,
+    user_id: int,
+    email: Optional[str],
+    display_name: Optional[str],
+    hashed_password: Optional[str],
+    is_active: Optional[bool],
+    is_superuser: Optional[bool],
+    is_verified: Optional[bool],
+) -> Optional[User]:
+    with conn.cursor(row_factory=class_row(User)) as cur:
+        result = cur.execute(
+            "SELECT * FROM update_user(%s, %s, %s, %s, %s, %s, %s)",
+            [
+                user_id,
+                email,
+                display_name,
+                hashed_password,
+                is_active,
+                is_superuser,
+                is_verified,
+            ],
+        ).fetchone()
+        conn.commit()
+        return result
 
 
 def update_user_display_name(

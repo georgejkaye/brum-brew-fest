@@ -351,17 +351,36 @@ ON app_user.user_id = visit_table.user_id
 WHERE app_user.user_id = p_user_id;
 $$;
 
-CREATE OR REPLACE FUNCTION update_user_password (
+CREATE OR REPLACE FUNCTION update_user (
     p_user_id INTEGER,
-    p_new_hashed_password TEXT
+    p_email TEXT,
+    p_display_name TEXT,
+    p_new_hashed_password TEXT,
+    p_is_active BOOLEAN,
+    p_is_superuser BOOLEAN,
+    p_is_verified BOOLEAN
 )
-RETURNS VOID
+RETURNS SETOF user_data
 LANGUAGE sql
 AS
 $$
 UPDATE app_user
-SET hashed_password = p_new_hashed_password
-WHERE user_id = p_user_id;
+SET
+    email = COALESCE(p_email, email),
+    display_name = COALESCE(p_display_name, display_name),
+    hashed_password = COALESCE(p_new_hashed_password, hashed_password),
+    is_active = COALESCE(p_is_active, is_active),
+    is_superuser = COALESCE(p_is_superuser, is_superuser),
+    is_verified = COALESCE(p_is_verified, is_verified)
+WHERE user_id = p_user_id
+RETURNING
+    user_id,
+    email,
+    display_name,
+    hashed_password,
+    is_active,
+    is_superuser,
+    is_verified;
 $$;
 
 CREATE OR REPLACE FUNCTION update_user_display_name (

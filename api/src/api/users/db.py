@@ -12,6 +12,7 @@ from api.db import (
     insert_user,
     select_user_by_email,
     select_user_by_user_id,
+    update_user,
 )
 from api.utils import get_env_variable, get_secret
 
@@ -82,8 +83,20 @@ class UserDatabase(BaseUserDatabase[FastApiUser, int]):
     async def update(
         self, user: FastApiUser, update_dict: dict[str, Any]
     ) -> FastApiUser:
-        print(update_dict)
-        raise NotImplementedError()
+        with connect() as conn:
+            updated_user = update_user(
+                conn,
+                user.id,
+                update_dict.get("email"),
+                update_dict.get("display_name"),
+                update_dict.get("hashed_password"),
+                update_dict.get("is_active"),
+                update_dict.get("is_superuser"),
+                update_dict.get("is_verified"),
+            )
+            if updated_user is None:
+                raise RuntimeError("Could not update user")
+            return user_to_fast_api_user(updated_user)
 
     async def delete(self, user: FastApiUser) -> None:
         with connect() as conn:
