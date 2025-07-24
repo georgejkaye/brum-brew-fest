@@ -1,10 +1,13 @@
+from datetime import datetime
+
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi_users import FastAPIUsers
 from psycopg import Connection
 
 from api.classes import UserSummary, UserVisit, Venue
 from api.db import (
+    insert_visit,
     select_user_summary,
     select_venue_by_venue_id,
     select_venues,
@@ -32,6 +35,7 @@ async def hello() -> str:
 
 
 fastapi_users = FastAPIUsers[FastApiUser, int](get_user_manager, [auth_backend])
+current_user = fastapi_users.current_user()
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -70,6 +74,17 @@ async def get_venue_by_id(venue_id: int) -> Venue:
 @app.get("/visits", summary="Get all the visits")
 async def get_visits() -> list[UserVisit]:
     return select_visits(conn)
+
+
+@app.post("/visit", summary="Log a visit")
+async def post_visit(
+    venue_id: int,
+    visit_date: datetime,
+    notes: str,
+    rating: int,
+    user: FastApiUser = Depends(current_user),
+) -> None:
+    insert_visit(conn, user.id, venue_id, visit_date, notes, rating)
 
 
 def start() -> None:
