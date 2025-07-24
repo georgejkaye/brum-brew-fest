@@ -1,8 +1,11 @@
 CREATE TABLE app_user (
     user_id SERIAL PRIMARY KEY,
-    user_name TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
     display_name TEXT NOT NULL UNIQUE,
-    hashed_password TEXT NOT NULL
+    hashed_password TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL,
+    is_superuser BOOLEAN NOT NULL,
+    is_verified BOOLEAN NOT NULL
 );
 
 CREATE TABLE venue (

@@ -7,9 +7,12 @@ DROP TYPE IF EXISTS single_user_visit_data CASCADE;
 
 CREATE TYPE user_data AS (
     user_id INTEGER,
-    user_name TEXT,
+    email TEXT,
     display_name TEXT,
-    hashed_password TEXT
+    hashed_password TEXT,
+    is_active BOOLEAN,
+    is_superuser BOOLEAN,
+    is_verified BOOLEAN
 );
 
 CREATE TYPE venue_visit_data AS (
@@ -51,7 +54,6 @@ CREATE TYPE single_user_visit_data AS (
 
 CREATE TYPE user_summary_data AS (
     user_id INTEGER,
-    user_name TEXT,
     display_name TEXT,
     visits single_user_visit_data[]
 );

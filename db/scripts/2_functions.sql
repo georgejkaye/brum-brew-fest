@@ -1,34 +1,49 @@
 DROP FUNCTION IF EXISTS insert_user;
 DROP FUNCTION IF EXISTS insert_venue;
 DROP FUNCTION IF EXISTS insert_visit;
-DROP FUNCTION IF EXISTS select_user_by_username;
+DROP FUNCTION IF EXISTS select_user_by_user_id;
+DROP FUNCTION IF EXISTS select_user_by_email;
 DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
 DROP FUNCTION IF EXISTS update_user_password;
 DROP FUNCTION IF EXISTS update_user_display_name;
+DROP FUNCTION IF EXISTS delete_user;
 
 CREATE OR REPLACE FUNCTION insert_user (
-    p_user_name TEXT,
+    p_email TEXT,
     p_display_name TEXT,
     p_hashed_password TEXT
 )
-RETURNS INTEGER
+RETURNS user_data
 LANGUAGE sql
 AS
 $$
 INSERT INTO app_user (
-    user_name,
+    email,
     display_name,
-    hashed_password
+    hashed_password,
+    is_active,
+    is_superuser,
+    is_verified
 )
 VALUES (
-    p_user_name,
+    p_email,
     p_display_name,
-    p_hashed_password
+    p_hashed_password,
+    TRUE,
+    FALSE,
+    FALSE
 )
-RETURNING user_id;
+RETURNING (
+    user_id,
+    email,
+    display_name,
+    hashed_password,
+    is_active,
+    is_superuser,
+    is_verified)
 $$;
 
 CREATE OR REPLACE FUNCTION insert_venue (
@@ -84,20 +99,42 @@ VALUES (
 RETURNING visit_id;
 $$;
 
-CREATE OR REPLACE FUNCTION select_user_by_username (
-    p_user_name TEXT
+CREATE OR REPLACE FUNCTION select_user_by_user_id (
+    p_user_id INTEGER
 )
-RETURNS user_data
+RETURNS SETOF user_data
 LANGUAGE sql
 AS
 $$
-SELECT (
+SELECT
     app_user.user_id,
-    app_user.user_name,
+    app_user.email,
     app_user.display_name,
-    app_user.hashed_password)::user_data
+    app_user.hashed_password,
+    app_user.is_active,
+    app_user.is_superuser,
+    app_user.is_verified
 FROM app_user
-WHERE app_user.user_name = p_user_name;
+WHERE app_user.user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_user_by_email (
+    p_email TEXT
+)
+RETURNS SETOF user_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    app_user.user_id,
+    app_user.email,
+    app_user.display_name,
+    app_user.hashed_password,
+    app_user.is_active,
+    app_user.is_superuser,
+    app_user.is_verified
+FROM app_user
+WHERE app_user.email = p_email;
 $$;
 
 CREATE OR REPLACE FUNCTION select_venues ()
@@ -268,7 +305,6 @@ AS
 $$
 SELECT
     app_user.user_id,
-    app_user.user_name,
     app_user.display_name,
     visit_table.visits
 FROM app_user
@@ -316,5 +352,16 @@ AS
 $$
 UPDATE app_user
 SET display_name = p_new_display_name
+WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION delete_user (
+    p_user_id INTEGER
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+DELETE FROM app_user
 WHERE user_id = p_user_id;
 $$;
