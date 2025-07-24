@@ -6,6 +6,8 @@ DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
+DROP FUNCTION IF EXISTS update_user_password;
+DROP FUNCTION IF EXISTS update_user_display_name;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_user_name TEXT,
@@ -289,4 +291,30 @@ INNER JOIN (
 ) visit_table
 ON app_user.user_id = visit_table.user_id
 WHERE app_user.user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION update_user_password (
+    p_user_id INTEGER,
+    p_new_hashed_password TEXT
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+UPDATE app_user
+SET hashed_password = p_new_hashed_password
+WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION update_user_display_name (
+    p_user_id INTEGER,
+    p_new_display_name TEXT
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+UPDATE app_user
+SET display_name = p_new_display_name
+WHERE user_id = p_user_id;
 $$;

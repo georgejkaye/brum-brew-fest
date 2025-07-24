@@ -99,6 +99,24 @@ def select_user_summary(
         ).fetchone()
 
 
+def update_user_hashed_password(
+    conn: Connection, user_id: int, new_hashed_password: str
+) -> None:
+    conn.execute(
+        "SELECT * FROM update_user_password(%s, %s)",
+        [user_id, new_hashed_password],
+    )
+
+
+def update_user_display_name(
+    conn: Connection, user_id: int, new_display_name: str
+) -> None:
+    conn.execute(
+        "SELECT * FROM update_user_display_name(%s, %s)",
+        [user_id, new_display_name],
+    )
+
+
 def register_type[T](conn: Connection, name: str, factory: type) -> None:
     info = CompositeInfo.fetch(conn, name)
     if info is not None:
