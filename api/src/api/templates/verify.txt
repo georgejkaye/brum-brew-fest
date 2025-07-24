@@ -2,4 +2,4 @@ Welcome to the Brum Brew Fest Tracker!
 
 To record visits you will need to verify your account by clicking the link below:
 
-https://{{ client_url }}/verify/{{ token }}
+{{ client_url }}/verify/{{ token }}
