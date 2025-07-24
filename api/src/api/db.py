@@ -1,6 +1,12 @@
+from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
+from typing import Any, Optional
+
+from psycopg import Connection
+from psycopg.rows import TupleRow, class_row
+from psycopg.types.composite import CompositeInfo, register_composite
+
 from api.classes import (
     SingleUserVisit,
     User,
@@ -9,19 +15,23 @@ from api.classes import (
     Venue,
     VenueVisit,
 )
-from psycopg import Connection
-from psycopg.rows import class_row
-from psycopg.types.composite import CompositeInfo, register_composite
+from api.utils import get_env_variable, get_secret
 
 
 def insert_user(
-    conn: Connection, user_name: str, display_name: str, hashed_password: str
-) -> Optional[int]:
-    with conn.cursor(row_factory=class_row(int)) as cur:
-        return cur.execute(
+    conn: Connection,
+    email: str,
+    display_name: str,
+    hashed_password: str,
+) -> Optional[User]:
+    with conn.cursor(row_factory=class_row(User)) as cur:
+        print("inserting")
+        result = cur.execute(
             "SELECT * FROM insert_user(%s, %s, %s)",
-            [user_name, display_name, hashed_password],
+            [email, display_name, hashed_password],
         ).fetchone()
+        conn.commit()
+        return result
 
 
 def insert_venue(
@@ -53,10 +63,17 @@ def insert_visit(
         ).fetchone()
 
 
-def select_user_by_username(conn: Connection, user_name: str) -> Optional[User]:
+def select_user_by_user_id(conn: Connection, user_id: int) -> Optional[User]:
     with conn.cursor(row_factory=class_row(User)) as cur:
         return cur.execute(
-            "SELECT * FROM select_user_by_username(%s)", [user_name]
+            "SELECT * FROM select_user_by_user_id(%s)", [user_id]
+        ).fetchone()
+
+
+def select_user_by_email(conn: Connection, email: str) -> Optional[User]:
+    with conn.cursor(row_factory=class_row(User)) as cur:
+        return cur.execute(
+            "SELECT * FROM select_user_by_email(%s)", [email]
         ).fetchone()
 
 
@@ -117,9 +134,59 @@ def update_user_display_name(
     )
 
 
+def delete_user(conn: Connection, user_id: int) -> None:
+    conn.execute(
+        "SELECT * FROM delete_user(%s)",
+        [user_id],
+    )
+
+
 def register_type[T](conn: Connection, name: str, factory: type) -> None:
     info = CompositeInfo.fetch(conn, name)
     if info is not None:
         register_composite(info, conn, factory)
     else:
         raise RuntimeError(f"Could not find composite type {name}")
+
+
+@dataclass
+class DbConnectionData:
+    db_name: Optional[str]
+    db_user: Optional[str]
+    db_password: Optional[str]
+    db_host: Optional[str]
+
+
+class DbConnection:
+    def __init__(
+        self,
+        db_host: Optional[str],
+        db_name: Optional[str],
+        db_user: Optional[str],
+        db_password: Optional[str],
+    ):
+        self.db_name = db_name or get_env_variable("DB_NAME")
+        self.db_user = db_user or get_env_variable("DB_USER")
+        self.db_password = db_password or get_secret("DB_PASSWORD")
+        self.db_host = db_host or get_env_variable("DB_HOST")
+
+    def __enter__(self) -> Connection[TupleRow]:
+        self.conn = Connection.connect(
+            dbname=self.db_name,
+            user=self.db_user,
+            password=self.db_password,
+            host=self.db_host,
+        )
+        return self.conn
+
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
+        self.conn.close()
+
+
+def connect_to_db(
+    db_host: Optional[str],
+    db_name: Optional[str],
+    db_user: Optional[str],
+    db_password: Optional[str],
+) -> DbConnection:
+    return DbConnection(db_host, db_name, db_user, db_password)

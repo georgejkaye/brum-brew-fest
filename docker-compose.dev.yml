@@ -40,6 +40,7 @@ services:
       DB_USER: bbf
       DB_PASSWORD: /run/secrets/db_secret
       DB_NAME: bbf
+      USER_SECRET: /run/secrets/user_secret
     volumes:
       - ./api/src:/app/src
     networks:

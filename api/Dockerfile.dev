@@ -15,5 +15,6 @@ RUN poetry install
 
 RUN mkdir /run/secrets
 RUN echo "bbf" > /run/secrets/db_secret
+RUN echo "eqoithqweighdeoihgeph" > /run/secrets/user_secret
 
 ENTRYPOINT ["poetry", "run", "python", "src/api/main.py"]

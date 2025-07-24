@@ -6,9 +6,12 @@ from decimal import Decimal
 @dataclass
 class User:
     user_id: int
-    user_name: str
+    email: str
     display_name: str
     hashed_password: str
+    is_active: bool
+    is_superuser: bool
+    is_verified: bool
 
 
 @dataclass

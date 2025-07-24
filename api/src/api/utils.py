@@ -17,3 +17,10 @@ def get_secret(key: str) -> Optional[str]:
     if file is not None and os.path.exists(file):
         return get_secret_file_contents(file)
     return None
+
+
+def get_secret_force(key: str) -> str:
+    secret = get_secret(key)
+    if secret is None:
+        raise RuntimeError(f"Secret {key} not found")
+    return secret

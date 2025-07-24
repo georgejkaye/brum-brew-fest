@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi_users import FastAPIUsers
 from psycopg import Connection
 
 from api.classes import UserSummary, UserVisit, Venue
@@ -9,6 +10,10 @@ from api.db import (
     select_venues,
     select_visits,
 )
+from api.users.auth import auth_backend
+from api.users.db import FastApiUser
+from api.users.manager import get_user_manager
+from api.users.schemas import UserCreate, UserRead
 from api.utils import get_env_variable, get_secret
 
 app = FastAPI(title="Brum Brew Fest Tracker")
@@ -24,6 +29,21 @@ conn = Connection.connect(
 @app.get("/", summary="Say hello!")
 async def hello() -> str:
     return "Hello!"
+
+
+fastapi_users = FastAPIUsers[FastApiUser, int](get_user_manager, [auth_backend])
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
 
 
 @app.get("/users/{user_id}", summary="Get a user and their visits")
