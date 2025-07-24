@@ -29,13 +29,57 @@ conn = Connection.connect(
 )
 
 
-@app.get("/", summary="Say hello!")
+@app.get("/", summary="Say hello!", tags=["home"])
 async def hello() -> str:
     return "Hello!"
 
 
 fastapi_users = FastAPIUsers[FastApiUser, int](get_user_manager, [auth_backend])
 current_user = fastapi_users.current_user()
+
+
+@app.get(
+    "/users/{user_id}", summary="Get a user and their visits", tags=["users"]
+)
+async def get_user_by_user_id(user_id: int) -> UserSummary:
+    summary = select_user_summary(conn, user_id)
+    if summary is None:
+        raise HTTPException(status_code=404)
+    return summary
+
+
+@app.get(
+    "/venues", summary="Get a list of venues and their visits", tags=["venues"]
+)
+async def get_venues() -> list[Venue]:
+    return select_venues(conn)
+
+
+@app.get(
+    "/venues/{venue_id}", summary="Get a venue and its visits", tags=["venues"]
+)
+async def get_venue_by_id(venue_id: int) -> Venue:
+    venue = select_venue_by_venue_id(conn, venue_id)
+    if venue is None:
+        raise HTTPException(status_code=404)
+    return venue
+
+
+@app.get("/visits", summary="Get all the visits", tags=["visits"])
+async def get_visits() -> list[UserVisit]:
+    return select_visits(conn)
+
+
+@app.post("/visit", summary="Log a visit", tags=["visits"])
+async def post_visit(
+    venue_id: int,
+    visit_date: datetime,
+    notes: str,
+    rating: int,
+    user: FastApiUser = Depends(current_user),
+) -> None:
+    insert_visit(conn, user.id, venue_id, visit_date, notes, rating)
+
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend, requires_verification=True),
@@ -60,43 +104,6 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
-
-
-@app.get("/users/{user_id}", summary="Get a user and their visits")
-async def get_user_by_user_id(user_id: int) -> UserSummary:
-    summary = select_user_summary(conn, user_id)
-    if summary is None:
-        raise HTTPException(status_code=404)
-    return summary
-
-
-@app.get("/venues", summary="Get a list of venues and their visits")
-async def get_venues() -> list[Venue]:
-    return select_venues(conn)
-
-
-@app.get("/venues/{venue_id}", summary="Get a venue and its visits")
-async def get_venue_by_id(venue_id: int) -> Venue:
-    venue = select_venue_by_venue_id(conn, venue_id)
-    if venue is None:
-        raise HTTPException(status_code=404)
-    return venue
-
-
-@app.get("/visits", summary="Get all the visits")
-async def get_visits() -> list[UserVisit]:
-    return select_visits(conn)
-
-
-@app.post("/visit", summary="Log a visit")
-async def post_visit(
-    venue_id: int,
-    visit_date: datetime,
-    notes: str,
-    rating: int,
-    user: FastApiUser = Depends(current_user),
-) -> None:
-    insert_visit(conn, user.id, venue_id, visit_date, notes, rating)
 
 
 def start() -> None:
