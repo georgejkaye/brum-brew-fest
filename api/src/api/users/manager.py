@@ -4,6 +4,7 @@ from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from fastapi_users.db import BaseUserDatabase
 
+from api.emails import send_forgot_password_email, send_verify_email
 from api.users.db import FastApiUser, get_user_db
 from api.utils import get_secret
 
@@ -25,6 +26,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[FastApiUser, int]):
         self, user: FastApiUser, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
+        send_forgot_password_email(user, token)
 
     async def on_after_request_verify(
         self, user: FastApiUser, token: str, request: Optional[Request] = None
@@ -32,6 +34,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[FastApiUser, int]):
         print(
             f"Verification requested for user {user.id}. Verification token: {token}"
         )
+        send_verify_email(user, token)
 
 
 async def get_user_manager(

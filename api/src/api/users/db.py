@@ -82,6 +82,7 @@ class UserDatabase(BaseUserDatabase[FastApiUser, int]):
     async def update(
         self, user: FastApiUser, update_dict: dict[str, Any]
     ) -> FastApiUser:
+        print(update_dict)
         raise NotImplementedError()
 
     async def delete(self, user: FastApiUser) -> None:
