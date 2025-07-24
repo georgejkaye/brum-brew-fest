@@ -36,17 +36,17 @@ services:
     environment:
       API_ENV: dev
       API_PORT: ${API_PORT}
-      API_URL: ${API_URL}
+      CLIENT_URL: ${CLIENT_URL}
       DB_HOST: db
+      DB_NAME: bbf
       DB_USER: bbf
       DB_PASSWORD: /run/secrets/db_secret
-      DB_NAME: bbf
-      USER_SECRET: /run/secrets/user_secret
       FROM_EMAIL: ${FROM_EMAIL}
       SMTP_SERVER: ${SMTP_SERVER}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USER: ${SMTP_USER}
       SMTP_PASSWORD: /run/secrets/smtp_secret
+      USER_SECRET: /run/secrets/user_secret
     volumes:
       - ./api/src:/app/src
     secrets:
