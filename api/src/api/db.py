@@ -13,6 +13,7 @@ from api.classes import (
     UserSummary,
     UserVisit,
     Venue,
+    VenueInput,
     VenueVisit,
 )
 from api.utils import get_env_variable, get_secret
@@ -25,7 +26,6 @@ def insert_user(
     hashed_password: str,
 ) -> Optional[User]:
     with conn.cursor(row_factory=class_row(User)) as cur:
-        print("inserting")
         result = cur.execute(
             "SELECT * FROM insert_user(%s, %s, %s)",
             [email, display_name, hashed_password],
@@ -42,10 +42,24 @@ def insert_venue(
     longitude: Decimal,
 ) -> Optional[int]:
     with conn.cursor(row_factory=class_row(int)) as cur:
-        return cur.execute(
+        result = cur.execute(
             "SELECT * FROM insert_venue(%s, %s, %s)",
             [venue_name, address, latitude, longitude],
         ).fetchone()
+        conn.commit()
+        return result
+
+
+def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
+    venue_tuples = [
+        (venue.venue_name, venue.venue_address, venue.latitude, venue.longitude)
+        for venue in venues
+    ]
+    conn.execute(
+        "SELECT * FROM insert_venues(%s)",
+        [venue_tuples],
+    )
+    conn.commit()
 
 
 def insert_visit(

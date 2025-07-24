@@ -1,4 +1,5 @@
 DROP TYPE IF EXISTS user_data CASCADE;
+DROP TYPE IF EXISTS venue_input_data CASCADE;
 DROP TYPE IF EXISTS venue_data CASCADE;
 DROP TYPE IF EXISTS venue_visit_data CASCADE;
 DROP TYPE IF EXISTS user_summary_data CASCADE;
@@ -22,6 +23,13 @@ CREATE TYPE venue_visit_data AS (
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
     rating INTEGER
+);
+
+CREATE TYPE venue_input_data AS (
+    venue_name TEXT,
+    venue_address TEXT,
+    latitude DECIMAL,
+    longitude DECIMAL
 );
 
 CREATE TYPE venue_data AS (

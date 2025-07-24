@@ -1,5 +1,6 @@
 DROP FUNCTION IF EXISTS insert_user;
 DROP FUNCTION IF EXISTS insert_venue;
+DROP FUNCTION IF EXISTS insert_venues;
 DROP FUNCTION IF EXISTS insert_visit;
 DROP FUNCTION IF EXISTS select_user_by_user_id;
 DROP FUNCTION IF EXISTS select_user_by_email;
@@ -69,6 +70,27 @@ VALUES (
     p_longitude
 )
 RETURNING venue_id;
+$$;
+
+CREATE OR REPLACE FUNCTION insert_venues (
+    p_venues venue_input_data[]
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+INSERT INTO venue (
+    venue_name,
+    venue_address,
+    latitude,
+    longitude
+)
+SELECT
+    v_venue.venue_name,
+    v_venue.venue_address,
+    v_venue.latitude,
+    v_venue.longitude
+FROM UNNEST(p_venues) AS v_venue;
 $$;
 
 CREATE OR REPLACE FUNCTION insert_visit (

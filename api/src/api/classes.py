@@ -25,6 +25,14 @@ class VenueVisit:
 
 
 @dataclass
+class VenueInput:
+    venue_name: str
+    venue_address: str
+    latitude: Decimal
+    longitude: Decimal
+
+
+@dataclass
 class Venue:
     venue_id: int
     venue_name: str
