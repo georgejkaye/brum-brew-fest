@@ -68,8 +68,6 @@ class UserDatabase(BaseUserDatabase[FastApiUser, int]):
             )
 
     async def create(self, create_dict: dict[str, Any]) -> FastApiUser:
-        print("Hello!")
-        print(create_dict)
         with connect() as conn:
             user = insert_user(
                 conn,
