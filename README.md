@@ -25,3 +25,21 @@ When running with Docker, place these in a `.env` file.
 |Variable|Summary|Options|Default|
 |-|-|-|-|
 |`API_PORT`|Port the API runs on||`8000`|
+|`CLIENT_URL`||||
+|`DB_HOST`||||
+|`DB_NAME`||||
+|`DB_USER`||||
+|`DB_PASSWORD`||||
+|`FROM_EMAIL`||||
+|`SMTP_SERVER`||||
+|`SMTP_PORT`||||
+|`SMTP_USER`||||
+|`SMTP_PASSWORD`||||
+
+## Secrets
+
+|Secret file|Summary|
+|-|-|
+|`db.secret`||
+|`smtp.secret`||
+|`user.secret`||
