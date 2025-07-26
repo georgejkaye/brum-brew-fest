@@ -8,6 +8,7 @@ import {
     FeatureCollection,
     Feature,
 } from "geojson"
+import { Venue } from "./interfaces"
 
 const getVenueFeatureCollection = (
     venues: Venue[]
@@ -69,7 +70,7 @@ const unclusteredPointLayer: LayerProps = {
     filter: ["!", ["has", "point_count"]],
     paint: {
         "circle-color": "#11b4da",
-        "circle-radius": 10,
+        "circle-radius": 20,
     },
 }
 
