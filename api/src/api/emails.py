@@ -20,8 +20,10 @@ smtp_user = get_env_variable_force("SMTP_USER")
 smtp_password = get_secret_force("SMTP_PASSWORD")
 
 if get_env_variable_force("API_ENV") == "prod":
+    client_protocol = get_env_variable_force("CLIENT_PROTOCOL")
     client_host = get_env_variable_force("CLIENT_HOST")
 else:
+    client_protocol = get_env_variable_with_default("CLIENT_PROTOCOL", "http")
     client_host = get_env_variable_with_default("CLIENT_HOST", "localhost")
 
 
@@ -62,7 +64,8 @@ def send_email(message: MIMEMultipart):
 
 def send_verify_email(user: FastApiUser, token: str) -> None:
     body = write_email_template(
-        "verify.txt", {"client_host": client_host, "token": token}
+        "verify.txt",
+        {"verify_url": f"{client_protocol}://{client_host}/verify/{token}"},
     )
     message = write_email("[bbf] Verify your account", user.email, body)
     send_email(message)
