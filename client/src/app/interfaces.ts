@@ -1,4 +1,9 @@
-interface VenueVisit {
+export enum CurrentView {
+    Map,
+    List,
+}
+
+export interface VenueVisit {
     visitId: number
     userId: number
     userDisplayName: number
@@ -7,7 +12,7 @@ interface VenueVisit {
     rating: number
 }
 
-interface Venue {
+export interface Venue {
     venueId: number
     name: string
     address: string
@@ -16,7 +21,7 @@ interface Venue {
     visits: VenueVisit[]
 }
 
-interface SingleUserVisit {
+export interface SingleUserVisit {
     visitId: number
     venueId: number
     venueName: string
@@ -25,14 +30,14 @@ interface SingleUserVisit {
     rating: number
 }
 
-interface User {
+export interface User {
     userId: number
     email: string
     displayName: string
     visits: SingleUserVisit[]
 }
 
-interface Visit {
+export interface Visit {
     visitId: number
     userId: number
     userDisplayName: string

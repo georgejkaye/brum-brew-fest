@@ -1,4 +1,5 @@
 import axios from "axios"
+import { Venue, User, Visit } from "./interfaces"
 
 const responseToVenueVisit = (response: any) => ({
     visitId: response["visit_id"],
