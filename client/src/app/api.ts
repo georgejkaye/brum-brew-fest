@@ -8,6 +8,21 @@ const responseToUser = (response: any) => ({
     isVerified: response["is_verified"],
 })
 
+export const getUserDetails = async (token: string) => {
+    let endpoint = "/api/auth/me"
+    try {
+        let headers = {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+        let response = await axios.get(endpoint, { headers })
+        let data = response.data
+    } catch (e) {
+        console.error(e)
+        return undefined
+    }
+}
+
 export const login = async (email: string, password: string) => {
     let endpoint = "/api/auth/jwt/login"
     try {
