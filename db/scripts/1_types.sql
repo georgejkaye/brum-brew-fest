@@ -44,6 +44,7 @@ CREATE TYPE venue_data AS (
 CREATE TYPE user_visit_data AS (
     visit_id INTEGER,
     user_id INTEGER,
+    user_display_name TEXT,
     venue_id INTEGER,
     venue_name TEXT,
     visit_date TIMESTAMP WITH TIME ZONE,

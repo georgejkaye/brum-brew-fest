@@ -18,7 +18,7 @@ class User:
 class VenueVisit:
     visit_id: int
     user_id: int
-    user_display_name: int
+    user_display_name: str
     visit_date: datetime
     notes: str
     rating: int
@@ -46,6 +46,7 @@ class Venue:
 class UserVisit:
     visit_id: int
     user_id: int
+    user_display_name: str
     venue_id: int
     venue_name: str
     visit_date: datetime
@@ -66,6 +67,6 @@ class SingleUserVisit:
 @dataclass
 class UserSummary:
     user_id: int
-    user_name: str
+    email: str
     display_name: str
     visits: SingleUserVisit

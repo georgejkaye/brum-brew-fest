@@ -308,6 +308,7 @@ $$
 SELECT
     visit.visit_id,
     visit.user_id,
+    app_user.display_name,
     venue.venue_id,
     venue.venue_name,
     visit.visit_date,
@@ -315,7 +316,9 @@ SELECT
     visit.rating
 FROM visit
 INNER JOIN venue
-ON visit.venue_id = venue.venue_id;
+ON visit.venue_id = venue.venue_id
+INNER JOIN app_user
+ON visit.user_id = app_user.user_id;
 $$;
 
 CREATE OR REPLACE FUNCTION select_user_summary (
