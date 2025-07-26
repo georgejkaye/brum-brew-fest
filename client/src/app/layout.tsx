@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import TopBar from "./TopBar"
-import { DataProvider } from "./context/data"
+import { useEffect, useState } from "react"
+import { User } from "./interfaces"
+import { getUserDetails } from "./api"
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -13,12 +15,25 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const [user, setUser] = useState<User | undefined>(undefined)
+    useEffect(() => {
+        const fetchUser = async (token: string) => {
+            let user = await getUserDetails(token)
+            if (user) {
+                console.log(user)
+                setUser(user)
+            }
+        }
+        let token = localStorage.getItem("token")
+        if (token) {
+            fetchUser(token)
+        }
+    }, [])
+
     return (
         <html lang="en">
             <body>
-                <DataProvider>
-                    <TopBar />
-                </DataProvider>
+                <TopBar user={user} />
                 {children}
             </body>
         </html>
