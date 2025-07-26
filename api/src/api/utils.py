@@ -14,6 +14,11 @@ def get_env_variable_force(key: str) -> str:
     return variable
 
 
+def get_env_variable_with_default(key: str, default: str) -> str:
+    variable = get_env_variable(key)
+    return variable if variable is not None else default
+
+
 def get_secret_file_contents(file: str) -> str:
     with open(file, "r") as f:
         return f.readline().rstrip()

@@ -17,7 +17,11 @@ from api.users.auth import auth_backend
 from api.users.db import FastApiUser
 from api.users.manager import get_user_manager
 from api.users.schemas import UserCreate, UserRead
-from api.utils import get_env_variable, get_secret
+from api.utils import (
+    get_env_variable,
+    get_env_variable_with_default,
+    get_secret,
+)
 
 app = FastAPI(title="Brum Brew Fest Tracker")
 
@@ -113,10 +117,8 @@ def start() -> None:
         reload = True
     else:
         raise RuntimeError("API_ENV not set")
-    port_var = get_env_variable("API_PORT")
-    if port_var is None:
-        port = 8000
-    elif not port_var.isnumeric():
+    port_var = get_env_variable_with_default("API_PORT", "8000")
+    if not port_var.isnumeric():
         raise RuntimeError(f"API_PORT must be number but it is {port_var}")
     else:
         port = int(port_var)

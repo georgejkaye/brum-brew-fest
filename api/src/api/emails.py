@@ -7,14 +7,22 @@ from typing import Any
 from jinja2 import Environment, PackageLoader, Template, select_autoescape
 
 from api.users.db import FastApiUser
-from api.utils import get_env_variable_force, get_secret_force
+from api.utils import (
+    get_env_variable_force,
+    get_env_variable_with_default,
+    get_secret_force,
+)
 
 from_email = get_env_variable_force("FROM_EMAIL")
 smtp_server = get_env_variable_force("SMTP_SERVER")
 smtp_port = int(get_env_variable_force("SMTP_PORT"))
 smtp_user = get_env_variable_force("SMTP_USER")
 smtp_password = get_secret_force("SMTP_PASSWORD")
-client_host = get_env_variable_force("CLIENT_HOST")
+
+if get_env_variable_force("API_ENV") == "prod":
+    client_host = get_env_variable_force("CLIENT_HOST")
+else:
+    client_host = get_env_variable_with_default("CLIENT_HOST", "localhost")
 
 
 def render_template(template: Template, args: dict[str, Any]) -> str:
