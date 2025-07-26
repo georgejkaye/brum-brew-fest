@@ -201,7 +201,8 @@ LEFT JOIN (
     ) visit_table
     GROUP BY visit_table.venue_id
 ) visit_data_table
-ON venue.venue_id = visit_data_table.venue_id;
+ON venue.venue_id = visit_data_table.venue_id
+ORDER BY venue.venue_name ASC;
 $$;
 
 CREATE OR REPLACE FUNCTION select_venue_by_venue_id (
