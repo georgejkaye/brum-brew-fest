@@ -1,16 +1,30 @@
 "use client"
-import { createContext, PropsWithChildren } from "react"
+import {
+    createContext,
+    Dispatch,
+    PropsWithChildren,
+    SetStateAction,
+    useState,
+} from "react"
+import { CurrentView } from "../interfaces"
 
-interface DataContextInterface {}
+interface DataContextInterface {
+    currentView: CurrentView
+    setCurrentView: Dispatch<SetStateAction<CurrentView>>
+}
 
-const defaultDataContext: DataContextInterface = {}
+const defaultDataContext: DataContextInterface = {
+    currentView: CurrentView.Map,
+    setCurrentView: () => undefined,
+}
 
 export const DataContext =
     createContext<DataContextInterface>(defaultDataContext)
 
 export const DataProvider = ({ children }: PropsWithChildren) => {
+    const [currentView, setCurrentView] = useState(CurrentView.Map)
     return (
-        <DataContext.Provider value={defaultDataContext}>
+        <DataContext.Provider value={{ currentView, setCurrentView }}>
             {children}
         </DataContext.Provider>
     )
