@@ -5,7 +5,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi_users import FastAPIUsers
 from psycopg import Connection
 
-from api.classes import UserSummary, UserVisit, Venue
+from api.classes import UserPublicDetails, UserSummary, UserVisit, Venue
 from api.db import (
     insert_visit,
     select_user_summary,
@@ -108,6 +108,17 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+
+@app.get(
+    "/auth/me", summary="Get details about the current user", tags=["auth"]
+)
+async def get_user_details(
+    user: FastApiUser = Depends(current_user),
+) -> UserPublicDetails:
+    return UserPublicDetails(
+        user.id, user.email, user.display_name, user.is_verified
+    )
 
 
 def start() -> None:

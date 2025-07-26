@@ -15,6 +15,14 @@ class User:
 
 
 @dataclass
+class UserPublicDetails:
+    user_id: int
+    email: str
+    display_name: str
+    is_verified: bool
+
+
+@dataclass
 class VenueVisit:
     visit_id: int
     user_id: int
