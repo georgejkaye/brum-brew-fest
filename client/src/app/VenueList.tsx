@@ -9,14 +9,18 @@ const VenueCard = ({ venue }: VenueCardProps) => {
     let venueAverageRating =
         venue.visits.reduce((a, b) => a + b.rating, 0) / visitCount
     return (
-        <div>
-            <div>{venue.name}</div>
-            <div>{venue.address}</div>
-            <div>{visitCount} visits</div>
-            <div>
-                {isNaN(venueAverageRating)
-                    ? "Unrated"
-                    : `${venueAverageRating} out of 5`}
+        <div className="p-4 flex md:flex-row items-end gap-4 bg-green-100 rounded-lg shadow">
+            <div className="flex flex-col flex-1">
+                <div className="text-2xl font-bold">{venue.name}</div>
+                <div>{venue.address}</div>
+            </div>
+            <div className="flex flex-col">
+                <div>{visitCount} visits</div>
+                <div>
+                    {isNaN(venueAverageRating)
+                        ? "Unrated"
+                        : `${venueAverageRating} out of 5`}
+                </div>
             </div>
         </div>
     )
@@ -27,5 +31,11 @@ interface VenueListProps {
 }
 
 export const VenueList = ({ venues }: VenueListProps) => {
-    return venues.map((venue) => <VenueCard venue={venue} />)
+    return (
+        <div className="flex flex-col gap-4 md:w-1/4 mx-auto p-4">
+            {venues.map((venue) => (
+                <VenueCard venue={venue} />
+            ))}
+        </div>
+    )
 }
