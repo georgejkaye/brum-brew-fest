@@ -3,6 +3,13 @@ export enum CurrentView {
     List,
 }
 
+export interface User {
+    userId: number
+    displayName: string
+    email: string
+    is_verified: boolean
+}
+
 export interface VenueVisit {
     visitId: number
     userId: number
@@ -30,7 +37,7 @@ export interface SingleUserVisit {
     rating: number
 }
 
-export interface User {
+export interface UserSummary {
     userId: number
     email: string
     displayName: string

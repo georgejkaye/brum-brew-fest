@@ -53,19 +53,21 @@ const responseToUserVisit = (response: any) => ({
     rating: response["rating"],
 })
 
-const responseToUser = (response: any) => ({
+const responseToUserSummary = (response: any) => ({
     userId: response["user_id"],
     email: response["email"],
     displayName: response["display_name"],
     visits: response["visits"].map(responseToUserVisit),
 })
 
-export const getUser = async (userId: number): Promise<User | undefined> => {
+export const getUser = async (
+    userId: number
+): Promise<UserSummary | undefined> => {
     let endpoint = `/api/user/${userId}`
     try {
         let response = await axios.get(endpoint)
         let data = response.data
-        let user = responseToUser(data)
+        let user = responseToUserSummary(data)
         return user
     } catch (e) {
         console.error(e)
