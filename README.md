@@ -25,6 +25,8 @@ When running with Docker, place these in a `.env` file.
 |Variable|Summary|Options|Default|
 |-|-|-|-|
 |`API_PORT`|Port the API runs on||`8000`|
+|`API_PROTOCOL`|Protocol of the api||`https` (prod) / `http` (dev)|
+|`API_HOST`|Hostname of the api||`localhost:8000` (dev)|
 |`CLIENT_PORT`|Port the client runs on||`3000`|
 |`CLIENT_PROTOCOL`|Protocol of the client||`https` (prod) / `http` (dev)|
 |`CLIENT_HOST`|Hostname of the client||`localhost:3000` (dev)|
