@@ -14,7 +14,7 @@ smtp_server = get_env_variable_force("SMTP_SERVER")
 smtp_port = int(get_env_variable_force("SMTP_PORT"))
 smtp_user = get_env_variable_force("SMTP_USER")
 smtp_password = get_secret_force("SMTP_PASSWORD")
-client_url = get_env_variable_force("CLIENT_URL")
+client_host = get_env_variable_force("CLIENT_HOST")
 
 
 def render_template(template: Template, args: dict[str, Any]) -> str:
@@ -54,7 +54,7 @@ def send_email(message: MIMEMultipart):
 
 def send_verify_email(user: FastApiUser, token: str) -> None:
     body = write_email_template(
-        "verify.txt", {"client_url": client_url, "token": token}
+        "verify.txt", {"client_host": client_host, "token": token}
     )
     message = write_email("[bbf] Verify your account", user.email, body)
     send_email(message)
@@ -62,7 +62,7 @@ def send_verify_email(user: FastApiUser, token: str) -> None:
 
 def send_forgot_password_email(user: FastApiUser, token: str) -> None:
     body = write_email_template(
-        "forgot-password.txt", {"client_url": client_url, "token": token}
+        "forgot-password.txt", {"client_host": client_host, "token": token}
     )
     message = write_email("[bbf] Password reset request", user.email, body)
     send_email(message)
