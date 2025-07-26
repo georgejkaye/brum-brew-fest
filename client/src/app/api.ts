@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { Venue, User, Visit, UserSummary } from "./interfaces"
 
 const responseToUser = (response: any) => ({
@@ -9,12 +9,15 @@ const responseToUser = (response: any) => ({
 })
 
 export const login = async (email: string, password: string) => {
-    let endpoint = "/auth/jwt/login"
+    let endpoint = "/api/auth/jwt/login"
     try {
         let body = {
             grant_type: "password",
             username: email,
             password: password,
+            scope: "",
+            client_id: "",
+            client_secret: "",
         }
         let headers = {
             accept: "application/json",
@@ -22,10 +25,16 @@ export const login = async (email: string, password: string) => {
         }
         let response = await axios.post(endpoint, body, { headers })
         let data = response.data
-        return data["access_token"]
+        return { token: data["access_token"] }
     } catch (e) {
         console.error(e)
-        return undefined
+        let error = e as AxiosError
+        if (error.response?.data != undefined) {
+            let errorData = error.response.data as any
+            return { error: errorData.detail }
+        } else {
+            return { error: "Unknown error " }
+        }
     }
 }
 
@@ -44,10 +53,16 @@ export const registerUser = async (
         let response = await axios.post(endpoint, body)
         let data = response.data
         let user = responseToUser(data)
-        return user
+        return { user }
     } catch (e) {
         console.error(e)
-        return undefined
+        let error = e as AxiosError
+        if (error.response?.data != undefined) {
+            let errorData = error.response.data as any
+            return { error: errorData.detail }
+        } else {
+            return { error: "Unknown error " }
+        }
     }
 }
 
@@ -56,10 +71,7 @@ export const requestVerifyToken = async (email: string) => {
     try {
         let body = { email }
         await axios.post(endpoint, body)
-    } catch (e) {
-        console.error(e)
-        return undefined
-    }
+    } catch (e) {}
 }
 
 export const verifyUser = async (token: string) => {
@@ -69,10 +81,16 @@ export const verifyUser = async (token: string) => {
         let response = await axios.post(endpoint, body)
         let data = response.data
         let user = responseToUser(data)
-        return user
+        return { user }
     } catch (e) {
         console.error(e)
-        return undefined
+        let error = e as AxiosError
+        if (error.response?.data != undefined) {
+            let errorData = error.response.data as any
+            return { error: errorData.detail }
+        } else {
+            return { error: "Unknown error " }
+        }
     }
 }
 
