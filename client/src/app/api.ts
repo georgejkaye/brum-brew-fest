@@ -19,7 +19,6 @@ export const getUserDetails = async (token: string) => {
         let data = response.data
         return responseToUser(data)
     } catch (e) {
-        console.error(e)
         return undefined
     }
 }
