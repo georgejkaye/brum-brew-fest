@@ -239,7 +239,7 @@ export const postVisit = async (
     drink: string
 ) => {
     let endpoint = `/api/visit`
-    let body = {
+    let params = {
         venue_id: venueId,
         visit_date: visitDate,
         notes,
@@ -250,10 +250,9 @@ export const postVisit = async (
         Authorization: `Bearer ${token}`,
     }
     try {
-        await axios.post(endpoint, body, { headers })
+        await axios.post(endpoint, undefined, { headers, params })
         return { success: true }
     } catch (e) {
-        console.error(e)
         let error = e as AxiosError
         if (error.response?.data != undefined) {
             let errorData = error.response.data as any
