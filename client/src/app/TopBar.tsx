@@ -8,7 +8,7 @@ const TopBar = () => {
     return (
         <div className="flex flex-row p-4 bg-[#38db98]">
             <div className="flex-1 text-2xl text-black font-bold">
-                Brum Brew Fest Tracker
+                <Link href="/">Brum Brew Fest Tracker</Link>
             </div>
             {!isLoadingUser && (
                 <div className="flex flex-row gap-4">
