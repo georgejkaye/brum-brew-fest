@@ -1,11 +1,13 @@
+from datetime import datetime
 from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from fastapi_users.db import BaseUserDatabase
 
+from api.db import update_user_last_verify_request
 from api.emails import send_forgot_password_email, send_verify_email
-from api.users.db import FastApiUser, get_user_db
+from api.users.db import FastApiUser, connect, get_user_db
 from api.utils import get_secret
 
 secret = get_secret("USER_SECRET")
@@ -34,7 +36,22 @@ class UserManager(IntegerIDMixin, BaseUserManager[FastApiUser, int]):
         print(
             f"Verification requested for user {user.id}. Verification token: {token}"
         )
+        # request_time = datetime.now()
+        # if user.last_verify_request is not None:
+        #     timedelta_since_last_request = (
+        #         request_time - user.last_verify_request
+        #     )
+        #     should_send_email = timedelta_since_last_request.seconds / 60 >= 15
+        # else:
+        #     should_send_email = True
+
+        # if should_send_email:
+        #     print("sendinG EMAIL")
         send_verify_email(user, token)
+        #     with connect() as conn:
+        #         update_user_last_verify_request(conn, user.id, request_time)
+        # else:
+        #     print("15 minutes not passed since last verify request")
 
 
 async def get_user_manager(

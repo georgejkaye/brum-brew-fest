@@ -166,6 +166,15 @@ def update_user_display_name(
     )
 
 
+def update_user_last_verify_request(
+    conn: Connection, user_id: int, new_last_verify_request: str
+) -> None:
+    conn.execute(
+        "SELECT * FROM update_user_last_verify_request(%s, %s)",
+        [user_id, new_last_verify_request],
+    )
+
+
 def delete_user(conn: Connection, user_id: int) -> None:
     conn.execute(
         "SELECT * FROM delete_user(%s)",

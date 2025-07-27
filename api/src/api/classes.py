@@ -12,6 +12,7 @@ class User:
     is_active: bool
     is_superuser: bool
     is_verified: bool
+    last_verify_request: datetime
 
 
 @dataclass

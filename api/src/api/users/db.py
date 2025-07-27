@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Optional
 
 from fastapi_users.db import BaseUserDatabase
@@ -35,6 +36,7 @@ class FastApiUser(UserProtocol[int]):
     is_active: bool
     is_superuser: bool
     is_verified: bool
+    last_verify_request: datetime
 
 
 def user_to_fast_api_user(user: User) -> FastApiUser:
@@ -46,6 +48,7 @@ def user_to_fast_api_user(user: User) -> FastApiUser:
         user.is_active,
         user.is_superuser,
         user.is_verified,
+        user.last_verify_request,
     )
 
 
@@ -93,6 +96,7 @@ class UserDatabase(BaseUserDatabase[FastApiUser, int]):
                 update_dict.get("is_active"),
                 update_dict.get("is_superuser"),
                 update_dict.get("is_verified"),
+                update_dict.get("last_verify_request"),
             )
             if updated_user is None:
                 raise RuntimeError("Could not update user")

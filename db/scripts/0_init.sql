@@ -5,7 +5,8 @@ CREATE TABLE app_user (
     hashed_password TEXT NOT NULL,
     is_active BOOLEAN NOT NULL,
     is_superuser BOOLEAN NOT NULL,
-    is_verified BOOLEAN NOT NULL
+    is_verified BOOLEAN NOT NULL,
+    last_verify_request TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE venue (

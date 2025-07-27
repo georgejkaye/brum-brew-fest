@@ -44,7 +44,8 @@ RETURNING (
     hashed_password,
     is_active,
     is_superuser,
-    is_verified)
+    is_verified,
+    last_verify_request)
 $$;
 
 CREATE OR REPLACE FUNCTION insert_venue (
@@ -135,7 +136,8 @@ SELECT
     app_user.hashed_password,
     app_user.is_active,
     app_user.is_superuser,
-    app_user.is_verified
+    app_user.is_verified,
+    app_user.last_verify_request
 FROM app_user
 WHERE app_user.user_id = p_user_id;
 $$;
@@ -154,7 +156,8 @@ SELECT
     app_user.hashed_password,
     app_user.is_active,
     app_user.is_superuser,
-    app_user.is_verified
+    app_user.is_verified,
+    app_user.last_verify_request
 FROM app_user
 WHERE app_user.email = p_email;
 $$;
@@ -362,7 +365,8 @@ CREATE OR REPLACE FUNCTION update_user (
     p_new_hashed_password TEXT,
     p_is_active BOOLEAN,
     p_is_superuser BOOLEAN,
-    p_is_verified BOOLEAN
+    p_is_verified BOOLEAN,
+    p_last_verify_request TIMESTAMP WITH TIME ZONE
 )
 RETURNS SETOF user_data
 LANGUAGE sql
@@ -375,7 +379,8 @@ SET
     hashed_password = COALESCE(p_new_hashed_password, hashed_password),
     is_active = COALESCE(p_is_active, is_active),
     is_superuser = COALESCE(p_is_superuser, is_superuser),
-    is_verified = COALESCE(p_is_verified, is_verified)
+    is_verified = COALESCE(p_is_verified, is_verified),
+    last_verify_request = COALESCE(p_last_verify_request, last_verify_request)
 WHERE user_id = p_user_id
 RETURNING
     user_id,
@@ -384,7 +389,8 @@ RETURNING
     hashed_password,
     is_active,
     is_superuser,
-    is_verified;
+    is_verified,
+    last_verify_request
 $$;
 
 CREATE OR REPLACE FUNCTION update_user_display_name (
@@ -397,6 +403,19 @@ AS
 $$
 UPDATE app_user
 SET display_name = p_new_display_name
+WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION update_user_last_verify_request (
+    p_user_id INTEGER,
+    p_new_last_verify_request TIMESTAMP WITH TIME ZONE
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+UPDATE app_user
+SET last_verify_request = p_new_last_verify_request
 WHERE user_id = p_user_id;
 $$;
 

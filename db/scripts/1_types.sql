@@ -13,7 +13,8 @@ CREATE TYPE user_data AS (
     hashed_password TEXT,
     is_active BOOLEAN,
     is_superuser BOOLEAN,
-    is_verified BOOLEAN
+    is_verified BOOLEAN,
+    last_verify_request TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TYPE venue_visit_data AS (
