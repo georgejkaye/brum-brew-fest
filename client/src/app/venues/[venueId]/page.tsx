@@ -1,10 +1,13 @@
 "use client"
 
+import { LoginButton } from "@/app/components/login"
+import { UserContext } from "@/app/context/user"
 import { VenueContext } from "@/app/context/venue"
 import { Venue, VenueVisit } from "@/app/interfaces"
 import { Rating } from "@smastrom/react-rating"
 import { Layer, LayerProps, Map, Source } from "@vis.gl/react-maplibre"
 import { Feature } from "geojson"
+import { useRouter } from "next/navigation"
 import { useContext } from "react"
 
 interface VenueDetailsProps {
@@ -90,12 +93,23 @@ const VenueVisitCard = ({ visit }: VenueVisitProps) => {
 }
 
 export const Page = () => {
+    const router = useRouter()
     const { venue } = useContext(VenueContext)
+    const { user } = useContext(UserContext)
+    const onClickRecordVisit = () => {
+        router.push(`/venues/${venue?.venueId}/visit`)
+    }
     return (
         <div className="flex flex-col w-1/2 lg:w-1/3 p-4 mx-auto">
             {venue && (
                 <div className="flex flex-col gap-4">
                     <VenueDetails venue={venue} />
+                    {user && (
+                        <LoginButton
+                            label="Record visit"
+                            onClick={onClickRecordVisit}
+                        />
+                    )}
                     {venue.visits.map((visit) => (
                         <VenueVisitCard key={visit.visitId} visit={visit} />
                     ))}
