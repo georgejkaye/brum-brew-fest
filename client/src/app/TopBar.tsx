@@ -1,8 +1,6 @@
 "use client"
 import Link from "next/link"
-import { User } from "./interfaces"
-import { useState, useEffect, useContext } from "react"
-import { getUserDetails } from "./api"
+import { useContext } from "react"
 import { UserContext } from "./context/user"
 
 const TopBar = () => {
@@ -16,7 +14,11 @@ const TopBar = () => {
                 <div className="flex flex-row gap-4">
                     <Link href="/">Map</Link>
                     <Link href="/venues">Venues</Link>
-                    {user ? user.displayName : <Link href="/login">Login</Link>}
+                    {user ? (
+                        <Link href="/user/account">{user.displayName}</Link>
+                    ) : (
+                        <Link href="/login">Login</Link>
+                    )}
                 </div>
             )}
         </div>

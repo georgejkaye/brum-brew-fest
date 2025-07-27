@@ -221,7 +221,7 @@ export const Page = () => {
         }
     }, [isLoginSuccessful])
     return (
-        <div className="flex flex-col md:w-1/4 mx-auto p-4 items-center">
+        <div className="flex flex-col md:w-1/3 lg:w-1/4 mx-auto p-4 items-center">
             {isLoginSuccessful ? (
                 <>
                     <div className="w-full p-4 bg-green-300 rounded">
