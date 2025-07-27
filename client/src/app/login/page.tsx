@@ -2,6 +2,7 @@
 import {
     ChangeEvent,
     Dispatch,
+    KeyboardEvent,
     MouseEvent,
     SetStateAction,
     useContext,
@@ -23,12 +24,14 @@ interface LoginTextInputProps {
     value: string
     setValue: Dispatch<SetStateAction<string>>
     isPassword?: boolean
+    onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
 }
 
 const LoginTextInput = ({
     value,
     setValue,
     isPassword,
+    onKeyDown,
 }: LoginTextInputProps) => {
     const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +43,7 @@ const LoginTextInput = ({
             className={inputStyle}
             value={value}
             onChange={onChange}
+            onKeyDown={onKeyDown}
         />
     )
 }
@@ -75,7 +79,7 @@ const LoginBox = ({
     const [emailString, setEmailString] = useState("")
     const [passwordString, setPasswordString] = useState("")
     const [errorString, setErrorString] = useState("")
-    const onClickLogin = async (e: MouseEvent<any>) => {
+    const performLogin = async () => {
         setLoading(true)
         let loginResult = await login(emailString, passwordString)
         if (loginResult.token === undefined) {
@@ -89,6 +93,14 @@ const LoginBox = ({
             setLoginSuccessful(true)
         }
         setLoading(false)
+    }
+    const onClickLogin = async (e: MouseEvent<any>) => {
+        performLogin()
+    }
+    const onKeyDownPassword = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            performLogin()
+        }
     }
     return (
         <div className="w-full flex flex-col gap-4">
@@ -112,6 +124,7 @@ const LoginBox = ({
                         value={passwordString}
                         setValue={setPasswordString}
                         isPassword
+                        onKeyDown={onKeyDownPassword}
                     />
                 </div>
             </div>
