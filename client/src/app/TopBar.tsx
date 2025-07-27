@@ -10,7 +10,6 @@ const TopBar = () => {
         const fetchUser = async (token: string) => {
             let user = await getUserDetails(token)
             if (user) {
-                console.log(user)
                 setUser(user)
             }
         }

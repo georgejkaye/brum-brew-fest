@@ -7,7 +7,7 @@ import {
     useEffect,
     useState,
 } from "react"
-import { login, registerUser, requestVerifyToken } from "../api"
+import { getUser, login, registerUser, requestVerifyToken } from "../api"
 import { useRouter } from "next/navigation"
 import { Loader } from "../Loader"
 
@@ -70,7 +70,6 @@ const LoginBox = ({
         setLoading(true)
         let loginResult = await login(emailString, passwordString)
         if (loginResult.token === undefined) {
-            console.log(loginResult.error)
             setErrorString(`Could not log in: ${loginResult.error}`)
             setPasswordString("")
         } else {
