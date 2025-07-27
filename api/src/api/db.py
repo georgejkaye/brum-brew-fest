@@ -8,6 +8,8 @@ from psycopg.rows import TupleRow, class_row
 from psycopg.types.composite import CompositeInfo, register_composite
 
 from api.classes import (
+    InsertVenueResult,
+    InsertVisitResult,
     SingleUserVisit,
     User,
     UserSummary,
@@ -41,13 +43,13 @@ def insert_venue(
     latitude: Decimal,
     longitude: Decimal,
 ) -> Optional[int]:
-    with conn.cursor(row_factory=class_row(int)) as cur:
+    with conn.cursor(row_factory=class_row(InsertVenueResult)) as cur:
         result = cur.execute(
             "SELECT * FROM insert_venue(%s, %s, %s)",
             [venue_name, address, latitude, longitude],
         ).fetchone()
         conn.commit()
-        return result
+        return result.insert_venue if result is not None else None
 
 
 def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
@@ -71,11 +73,12 @@ def insert_visit(
     rating: int,
     drink: str,
 ) -> Optional[int]:
-    with conn.cursor(row_factory=class_row(int)) as cur:
-        return cur.execute(
+    with conn.cursor(row_factory=class_row(InsertVisitResult)) as cur:
+        result = cur.execute(
             "SELECT * FROM insert_visit(%s, %s, %s, %s, %s, %s)",
             [user_id, venue_id, visit_date, notes, rating, drink],
         ).fetchone()
+        return result.insert_visit if result is not None else None
 
 
 def select_user_by_user_id(conn: Connection, user_id: int) -> Optional[User]:

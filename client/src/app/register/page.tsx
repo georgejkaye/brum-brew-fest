@@ -47,7 +47,7 @@ const Page = () => {
         }
     }
     return (
-        <div className="flex flex-col gap-4 md:w-1/3 lg:w-1/4 mx-auto p-4">
+        <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/3 mx-auto p-4">
             {isLoading ? (
                 <Loader />
             ) : (
@@ -110,7 +110,7 @@ const Page = () => {
                             onClick={onClickRegister}
                         />
                     </form>
-                    <div className="flex flex-row gap-2">
+                    <div className="flex flex-col lg:flex-row gap-2">
                         <span>Already have an account?</span>
                         <Link
                             href="/login"

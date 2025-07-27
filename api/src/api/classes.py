@@ -82,3 +82,13 @@ class UserSummary:
     email: str
     display_name: str
     visits: SingleUserVisit
+
+
+@dataclass
+class InsertVisitResult:
+    insert_visit: int
+
+
+@dataclass
+class InsertVenueResult:
+    insert_venue: int

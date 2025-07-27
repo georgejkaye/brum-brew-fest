@@ -32,7 +32,7 @@ interface VenueListProps {
 
 export const VenueList = ({ venues }: VenueListProps) => {
     return (
-        <div className="flex flex-col gap-4 md:w-1/4 mx-auto p-4">
+        <div className="flex flex-col gap-4 lg:w-1/3 mx-auto p-4">
             {venues.map((venue) => (
                 <VenueCard key={venue.venueId} venue={venue} />
             ))}

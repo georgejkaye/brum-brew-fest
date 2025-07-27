@@ -122,7 +122,7 @@ VALUES (
     p_rating,
     p_drink
 )
-RETURNING visit_id;
+RETURNING visit_id AS new_visit_id;
 $$;
 
 CREATE OR REPLACE FUNCTION select_user_by_user_id (
