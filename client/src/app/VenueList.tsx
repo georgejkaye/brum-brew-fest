@@ -34,7 +34,7 @@ export const VenueList = ({ venues }: VenueListProps) => {
     return (
         <div className="flex flex-col gap-4 md:w-1/4 mx-auto p-4">
             {venues.map((venue) => (
-                <VenueCard venue={venue} />
+                <VenueCard key={venue.venueId} venue={venue} />
             ))}
         </div>
     )
