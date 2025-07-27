@@ -139,10 +139,11 @@ def update_user(
     is_active: Optional[bool],
     is_superuser: Optional[bool],
     is_verified: Optional[bool],
+    last_verify_request: Optional[datetime],
 ) -> Optional[User]:
     with conn.cursor(row_factory=class_row(User)) as cur:
         result = cur.execute(
-            "SELECT * FROM update_user(%s, %s, %s, %s, %s, %s, %s)",
+            "SELECT * FROM update_user(%s, %s, %s, %s, %s, %s, %s, %s)",
             [
                 user_id,
                 email,
@@ -151,6 +152,7 @@ def update_user(
                 is_active,
                 is_superuser,
                 is_verified,
+                last_verify_request,
             ],
         ).fetchone()
         conn.commit()
