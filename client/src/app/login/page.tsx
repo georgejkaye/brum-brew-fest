@@ -21,16 +21,18 @@ import { Loader } from "../Loader"
 import { UserContext } from "../context/user"
 
 interface LoginTextInputProps {
+    name?: string
     value: string
     setValue: Dispatch<SetStateAction<string>>
-    isPassword?: boolean
+    type: string
     onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
 }
 
 const LoginTextInput = ({
+    name,
     value,
     setValue,
-    isPassword,
+    type,
     onKeyDown,
 }: LoginTextInputProps) => {
     const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
@@ -39,7 +41,8 @@ const LoginTextInput = ({
     }
     return (
         <input
-            type={isPassword ? "password" : "text"}
+            name={name ? name : ""}
+            type={type}
             className={inputStyle}
             value={value}
             onChange={onChange}
@@ -56,6 +59,7 @@ interface LoginButtonProps {
 const LoginButton = ({ label, onClick }: LoginButtonProps) => {
     return (
         <button
+            type="submit"
             className="font-bold p-2 rounded bg-green-300 cursor-pointer hover:bg-green-200"
             onClick={onClick}
         >
@@ -80,6 +84,7 @@ const LoginBox = ({
     const [passwordString, setPasswordString] = useState("")
     const [errorString, setErrorString] = useState("")
     const performLogin = async () => {
+        dispatchEvent(new Event("submit"))
         setLoading(true)
         let loginResult = await login(emailString, passwordString)
         if (loginResult.token === undefined) {
@@ -112,6 +117,8 @@ const LoginBox = ({
                 <div>Email</div>
                 <div>
                     <LoginTextInput
+                        name="user"
+                        type="email"
                         value={emailString}
                         setValue={setEmailString}
                     />
@@ -121,9 +128,10 @@ const LoginBox = ({
                 <div>Password</div>
                 <div>
                     <LoginTextInput
+                        name="password"
+                        type="password"
                         value={passwordString}
                         setValue={setPasswordString}
-                        isPassword
                         onKeyDown={onKeyDownPassword}
                     />
                 </div>
@@ -146,6 +154,7 @@ const RegisterBox = ({ isLoading, setLoading }: RegisterBoxProps) => {
     const [errorString, setErrorString] = useState("")
     const [successString, setSuccessString] = useState("")
     const performRegister = async () => {
+        dispatchEvent(new Event("submit"))
         setLoading(true)
         if (passwordString !== confirmPasswordString) {
             setErrorString("Passwords do not match")
@@ -189,46 +198,50 @@ const RegisterBox = ({ isLoading, setLoading }: RegisterBoxProps) => {
                     {successString}
                 </div>
             )}
-            <div>
-                <div>Email</div>
+            <form action="#">
                 <div>
-                    <LoginTextInput
-                        value={emailString}
-                        setValue={setEmailString}
-                    />
+                    <div>Email</div>
+                    <div>
+                        <LoginTextInput
+                            type="email"
+                            value={emailString}
+                            setValue={setEmailString}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div>Password</div>
                 <div>
-                    <LoginTextInput
-                        value={passwordString}
-                        setValue={setPasswordString}
-                        isPassword
-                    />
+                    <div>Password</div>
+                    <div>
+                        <LoginTextInput
+                            type="password"
+                            value={passwordString}
+                            setValue={setPasswordString}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div>Confirm password</div>
                 <div>
-                    <LoginTextInput
-                        value={confirmPasswordString}
-                        setValue={setConfirmPasswordString}
-                        isPassword
-                    />
+                    <div>Confirm password</div>
+                    <div>
+                        <LoginTextInput
+                            type="password"
+                            value={confirmPasswordString}
+                            setValue={setConfirmPasswordString}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div>Display name</div>
                 <div>
-                    <LoginTextInput
-                        value={displayNameString}
-                        setValue={setDisplayNameString}
-                        onKeyDown={onKeyDownDisplayName}
-                    />
+                    <div>Display name</div>
+                    <div>
+                        <LoginTextInput
+                            type="text"
+                            value={displayNameString}
+                            setValue={setDisplayNameString}
+                            onKeyDown={onKeyDownDisplayName}
+                        />
+                    </div>
                 </div>
-            </div>
-            <LoginButton label="Register" onClick={onClickRegister} />
+                <LoginButton label="Register" onClick={onClickRegister} />
+            </form>
         </div>
     )
 }
