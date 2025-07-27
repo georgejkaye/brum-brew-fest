@@ -14,7 +14,6 @@ import { VenueContext } from "@/app/context/venue"
 import { postVisit } from "@/app/api"
 import { Rating } from "@smastrom/react-rating"
 
-import "@smastrom/react-rating/style.css"
 import {
     LoginButton,
     LoginTextAreaInput,

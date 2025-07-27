@@ -136,9 +136,10 @@ const responseToVenueVisit = (response: any) => ({
     visitId: response["visit_id"],
     userId: response["user_id"],
     userDisplayName: response["user_display_name"],
-    visitDate: Date.parse(response["visit_date"]),
+    visitDate: new Date(Date.parse(response["visit_date"])),
     notes: response["notes"],
     rating: response["rating"],
+    drink: response["drink"],
 })
 
 const responseToVenue = (response: any) => ({
@@ -179,7 +180,7 @@ const responseToUserVisit = (response: any) => ({
     visitId: response["visit_id"],
     venueId: response["venue_id"],
     venueName: response["venue_name"],
-    visitDate: Date.parse(response["visit_date"]),
+    visitDate: new Date(Date.parse(response["visit_date"])),
     notes: response["notes"],
     rating: response["rating"],
 })
@@ -212,9 +213,10 @@ const responseToVisit = (response: any) => ({
     userDisplayName: response["user_display_name"],
     venueId: response["venue_id"],
     venueName: response["venue_name"],
-    visitDate: Date.parse(response["visit_date"]),
+    visitDate: new Date(Date.parse(response["visit_date"])),
     notes: response["notes"],
     rating: response["rating"],
+    drink: response["drink"],
 })
 
 export const getVisits = async (): Promise<Visit[]> => {

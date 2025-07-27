@@ -3,6 +3,8 @@ import "./globals.css"
 import TopBar from "./TopBar"
 import { UserProvider } from "./context/user"
 import { VenuesProvider } from "./context/venues"
+import "maplibre-gl/dist/maplibre-gl.css"
+import "@smastrom/react-rating/style.css"
 
 export const metadata: Metadata = {
     title: "Brum Brew Fest Tracker",

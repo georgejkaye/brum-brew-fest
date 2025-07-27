@@ -1,6 +1,5 @@
 "use client"
 import { Layer, LayerProps, Map, Source } from "@vis.gl/react-maplibre"
-import "maplibre-gl/dist/maplibre-gl.css"
 import {
     GeoJSON,
     Geometry,
