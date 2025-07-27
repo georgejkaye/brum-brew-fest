@@ -80,9 +80,10 @@ async def post_visit(
     visit_date: datetime,
     notes: str,
     rating: int,
+    drink: str,
     user: FastApiUser = Depends(current_user),
 ) -> None:
-    insert_visit(conn, user.id, venue_id, visit_date, notes, rating)
+    insert_visit(conn, user.id, venue_id, visit_date, notes, rating, drink)
 
 
 app.include_router(
