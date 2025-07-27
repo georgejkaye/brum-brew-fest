@@ -23,7 +23,8 @@ CREATE TYPE venue_visit_data AS (
     user_display_name TEXT,
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
-    rating INTEGER
+    rating INTEGER,
+    drink TEXT
 );
 
 CREATE TYPE venue_input_data AS (
@@ -50,7 +51,8 @@ CREATE TYPE user_visit_data AS (
     venue_name TEXT,
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
-    rating INTEGER
+    rating INTEGER,
+    drink TEXT
 );
 
 CREATE TYPE single_user_visit_data AS (
@@ -59,7 +61,8 @@ CREATE TYPE single_user_visit_data AS (
     venue_name TEXT,
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
-    rating INTEGER
+    rating INTEGER,
+    drink TEXT
 );
 
 CREATE TYPE user_summary_data AS (

@@ -99,7 +99,8 @@ CREATE OR REPLACE FUNCTION insert_visit (
     p_venue_id INTEGER,
     p_visit_date TIMESTAMP WITH TIME ZONE,
     p_notes TEXT,
-    p_rating INTEGER
+    p_rating INTEGER,
+    p_drink TEXT
 )
 RETURNS INTEGER
 LANGUAGE sql
@@ -110,14 +111,16 @@ INSERT INTO visit (
     venue_id,
     visit_date,
     notes,
-    rating
+    rating,
+    drink
 )
 VALUES (
     p_user_id,
     p_venue_id,
     p_visit_date,
     p_notes,
-    p_rating
+    p_rating,
+    p_drink
 )
 RETURNING visit_id;
 $$;
@@ -184,7 +187,8 @@ LEFT JOIN (
             visit_table.display_name,
             visit_table.visit_date,
             visit_table.notes,
-            visit_table.rating)::venue_visit_data
+            visit_table.rating,
+            visit_table.drink)::venue_visit_data
             ORDER BY visit_table.visit_date
         ) AS visits
     FROM (
@@ -195,7 +199,8 @@ LEFT JOIN (
             app_user.display_name,
             visit.visit_date,
             visit.notes,
-            visit.rating
+            visit.rating,
+            visit.drink
         FROM venue
         INNER JOIN visit
         ON venue.venue_id = visit.venue_id
@@ -232,7 +237,8 @@ LEFT JOIN (
             visit_table.display_name,
             visit_table.visit_date,
             visit_table.notes,
-            visit_table.rating)::venue_visit_data
+            visit_table.rating,
+            visit_table.drink)::venue_visit_data
             ORDER BY visit_table.visit_date
         ) AS visits
     FROM (
@@ -243,7 +249,8 @@ LEFT JOIN (
             app_user.display_name,
             visit.visit_date,
             visit.notes,
-            visit.rating
+            visit.rating,
+            visit.drink
         FROM venue
         INNER JOIN visit
         ON venue.venue_id = visit.venue_id
@@ -280,7 +287,8 @@ LEFT JOIN (
             visit_table.display_name,
             visit_table.visit_date,
             visit_table.notes,
-            visit_table.rating)::venue_visit_data
+            visit_table.rating,
+            visit_table.drink)::venue_visit_data
             ORDER BY visit_table.visit_date
         ) AS visits
     FROM (
@@ -291,7 +299,8 @@ LEFT JOIN (
             app_user.display_name,
             visit.visit_date,
             visit.notes,
-            visit.rating
+            visit.rating,
+            visit.drink
         FROM venue
         INNER JOIN visit
         ON venue.venue_id = visit.venue_id
@@ -317,7 +326,8 @@ SELECT
     venue.venue_name,
     visit.visit_date,
     visit.notes,
-    visit.rating
+    visit.rating,
+    visit.drink
 FROM visit
 INNER JOIN venue
 ON visit.venue_id = venue.venue_id
@@ -346,7 +356,8 @@ INNER JOIN (
             venue.venue_name,
             visit.visit_date,
             visit.notes,
-            visit.rating)::single_user_visit_data
+            visit.rating,
+            visit.drink)::single_user_visit_data
             ORDER BY visit.visit_date
         ) AS visits
     FROM visit

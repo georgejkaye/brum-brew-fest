@@ -24,6 +24,7 @@ CREATE TABLE visit (
     visit_date TIMESTAMP WITH TIME ZONE,
     notes TEXT,
     rating INTEGER,
+    drink TEXT,
     FOREIGN KEY (user_id) REFERENCES app_user(user_id),
     FOREIGN KEY (venue_id) REFERENCES venue(venue_id)
 );

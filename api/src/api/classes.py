@@ -31,6 +31,7 @@ class VenueVisit:
     visit_date: datetime
     notes: str
     rating: int
+    drink: str
 
 
 @dataclass
@@ -61,6 +62,7 @@ class UserVisit:
     visit_date: datetime
     notes: str
     rating: int
+    drink: str
 
 
 @dataclass
@@ -71,6 +73,7 @@ class SingleUserVisit:
     visit_date: datetime
     notes: str
     rating: int
+    drink: str
 
 
 @dataclass
