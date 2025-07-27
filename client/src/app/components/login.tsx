@@ -37,6 +37,34 @@ export const LoginTextInput = ({
     )
 }
 
+interface LoginTextAreaInputProps {
+    name?: string
+    value: string
+    setValue: Dispatch<SetStateAction<string>>
+    onKeyDown?: (e: KeyboardEvent<HTMLTextAreaElement>) => void
+}
+
+export const LoginTextAreaInput = ({
+    name,
+    value,
+    setValue,
+    onKeyDown,
+}: LoginTextAreaInputProps) => {
+    const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value)
+    }
+    return (
+        <textarea
+            name={name ? name : ""}
+            className={inputStyle}
+            value={value}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+        />
+    )
+}
+
 interface LoginButtonProps {
     label: string
     onClick: (e: MouseEvent<any>) => void
