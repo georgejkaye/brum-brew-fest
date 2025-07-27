@@ -73,7 +73,7 @@ def insert_visit(
 ) -> Optional[int]:
     with conn.cursor(row_factory=class_row(int)) as cur:
         return cur.execute(
-            "SELECT * FROM insert_visit(%s, %s, %s, %s, %s)",
+            "SELECT * FROM insert_visit(%s, %s, %s, %s, %s, %s)",
             [user_id, venue_id, visit_date, notes, rating, drink],
         ).fetchone()
 
