@@ -94,7 +94,7 @@ const LoginBox = ({
         }
         setLoading(false)
     }
-    const onClickLogin = async (e: MouseEvent<any>) => {
+    const onClickLogin = (e: MouseEvent<any>) => {
         performLogin()
     }
     const onKeyDownPassword = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -145,7 +145,7 @@ const RegisterBox = ({ isLoading, setLoading }: RegisterBoxProps) => {
     const [confirmPasswordString, setConfirmPasswordString] = useState("")
     const [errorString, setErrorString] = useState("")
     const [successString, setSuccessString] = useState("")
-    const onClickRegister = async (e: MouseEvent<any>) => {
+    const performRegister = async () => {
         setLoading(true)
         if (passwordString !== confirmPasswordString) {
             setErrorString("Passwords do not match")
@@ -169,6 +169,14 @@ const RegisterBox = ({ isLoading, setLoading }: RegisterBoxProps) => {
             }
         }
         setLoading(false)
+    }
+    const onClickRegister = (e: MouseEvent<any>) => {
+        performRegister()
+    }
+    const onKeyDownDisplayName = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            performRegister()
+        }
     }
     return (
         <div className="flex flex-col gap-4">
@@ -216,6 +224,7 @@ const RegisterBox = ({ isLoading, setLoading }: RegisterBoxProps) => {
                     <LoginTextInput
                         value={displayNameString}
                         setValue={setDisplayNameString}
+                        onKeyDown={onKeyDownDisplayName}
                     />
                 </div>
             </div>
