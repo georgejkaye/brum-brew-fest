@@ -229,3 +229,37 @@ export const getVisits = async (): Promise<Visit[]> => {
         return []
     }
 }
+
+export const postVisit = async (
+    token: string,
+    venueId: number,
+    visitDate: Date,
+    notes: string,
+    rating: number,
+    drink: string
+) => {
+    let endpoint = `/api/visit`
+    let body = {
+        venue_id: venueId,
+        visit_date: visitDate,
+        notes,
+        rating,
+        drink,
+    }
+    let headers = {
+        Authorization: `Bearer ${token}`,
+    }
+    try {
+        await axios.post(endpoint, body, { headers })
+        return { success: true }
+    } catch (e) {
+        console.error(e)
+        let error = e as AxiosError
+        if (error.response?.data != undefined) {
+            let errorData = error.response.data as any
+            return { success: false, error: errorData.detail }
+        } else {
+            return { success: false, error: "Unknown error " }
+        }
+    }
+}
