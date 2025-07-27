@@ -17,6 +17,7 @@ export const getUserDetails = async (token: string) => {
         }
         let response = await axios.get(endpoint, { headers })
         let data = response.data
+        return responseToUser(data)
     } catch (e) {
         console.error(e)
         return undefined

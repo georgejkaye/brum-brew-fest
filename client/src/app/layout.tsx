@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import TopBar from "./TopBar"
+import { UserProvider } from "./context/user"
 
 export const metadata: Metadata = {
     title: "Brum Brew Fest Tracker",
@@ -15,8 +16,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <TopBar />
-                {children}
+                <UserProvider>
+                    <TopBar />
+                    {children}
+                </UserProvider>
             </body>
         </html>
     )

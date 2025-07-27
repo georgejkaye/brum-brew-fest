@@ -7,7 +7,7 @@ export interface User {
     userId: number
     displayName: string
     email: string
-    is_verified: boolean
+    isVerified: boolean
 }
 
 export interface VenueVisit {

@@ -4,12 +4,20 @@ import {
     Dispatch,
     MouseEvent,
     SetStateAction,
+    useContext,
     useEffect,
     useState,
 } from "react"
-import { getUser, login, registerUser, requestVerifyToken } from "../api"
+import {
+    getUser,
+    getUserDetails,
+    login,
+    registerUser,
+    requestVerifyToken,
+} from "../api"
 import { useRouter } from "next/navigation"
 import { Loader } from "../Loader"
+import { UserContext } from "../context/user"
 
 interface LoginTextInputProps {
     value: string
@@ -63,6 +71,7 @@ const LoginBox = ({
     setLoading,
     setLoginSuccessful,
 }: LoginBoxProps) => {
+    const { setUser } = useContext(UserContext)
     const [emailString, setEmailString] = useState("")
     const [passwordString, setPasswordString] = useState("")
     const [errorString, setErrorString] = useState("")
@@ -74,6 +83,8 @@ const LoginBox = ({
             setPasswordString("")
         } else {
             localStorage.setItem("token", loginResult.token)
+            let user = await getUserDetails(loginResult.token)
+            setUser(user)
             setErrorString("")
             setLoginSuccessful(true)
         }

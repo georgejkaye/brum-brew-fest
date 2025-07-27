@@ -1,24 +1,12 @@
 "use client"
 import Link from "next/link"
 import { User } from "./interfaces"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { getUserDetails } from "./api"
+import { UserContext } from "./context/user"
 
 const TopBar = () => {
-    const [user, setUser] = useState<User | undefined>(undefined)
-    useEffect(() => {
-        const fetchUser = async (token: string) => {
-            let user = await getUserDetails(token)
-            if (user) {
-                setUser(user)
-            }
-        }
-        let token = localStorage.getItem("token")
-        if (token) {
-            fetchUser(token)
-        }
-    }, [])
-
+    const { user } = useContext(UserContext)
     return (
         <div className="flex flex-row p-4 bg-[#38db98]">
             <div className="flex-1 text-2xl text-black font-bold">
