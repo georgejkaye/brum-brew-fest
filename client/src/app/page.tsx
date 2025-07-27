@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { VenueMap } from "./VenueMap"
 import { getVenues, getVisits } from "./api"
 import { Venue, Visit } from "./interfaces"
-import { VenueList } from "./VenueList"
 
 export default function Home() {
     const [venues, setVenues] = useState<Venue[]>([])
@@ -21,7 +20,7 @@ export default function Home() {
 
     return (
         <div>
-            <VenueList venues={venues} />
+            <VenueMap venues={venues} />
         </div>
     )
 }

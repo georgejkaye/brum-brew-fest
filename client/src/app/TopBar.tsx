@@ -13,7 +13,7 @@ const TopBar = () => {
             {!isLoadingUser && (
                 <div className="flex flex-row gap-4">
                     <Link href="/">Map</Link>
-                    <Link href="/venues">Venues</Link>
+                    <Link href="/venues/list">Venues</Link>
                     {user ? (
                         <Link href="/user/account">{user.displayName}</Link>
                     ) : (

@@ -1,4 +1,7 @@
-import { Venue } from "./interfaces"
+"use client"
+import { useContext } from "react"
+import { Venue } from "../../interfaces"
+import { VenuesContext } from "@/app/context/venues"
 
 interface VenueCardProps {
     venue: Venue
@@ -30,7 +33,8 @@ interface VenueListProps {
     venues: Venue[]
 }
 
-export const VenueList = ({ venues }: VenueListProps) => {
+export const Page = () => {
+    const { venues } = useContext(VenuesContext)
     return (
         <div className="flex flex-col gap-4 lg:w-1/3 mx-auto p-4">
             {venues.map((venue) => (
@@ -39,3 +43,5 @@ export const VenueList = ({ venues }: VenueListProps) => {
         </div>
     )
 }
+
+export default Page
