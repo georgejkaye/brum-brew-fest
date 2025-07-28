@@ -28,7 +28,7 @@ interface RecordVisitFormProps {
     ) => Promise<boolean>
 }
 
-export const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
+const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
     const [notesText, setNotesText] = useState("")
     const [ratingValue, setRatingValue] = useState(0)
     const [drinkText, setDrinkText] = useState("")
