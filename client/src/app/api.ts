@@ -2,10 +2,13 @@ import axios, { AxiosError } from "axios"
 import { Venue, User, Visit, UserSummary } from "./interfaces"
 
 const responseToUser = (response: any) => ({
-    userId: response["id"],
+    userId: response["user_id"],
     displayName: response["display_name"],
     email: response["email"],
     isVerified: response["is_verified"],
+    visits: !response["visits"]
+        ? []
+        : response["visits"].map(responseToUserVisit),
 })
 
 export const getUserDetails = async (token: string) => {
@@ -17,7 +20,8 @@ export const getUserDetails = async (token: string) => {
         }
         let response = await axios.get(endpoint, { headers })
         let data = response.data
-        return responseToUser(data)
+        let user = responseToUser(data)
+        return user
     } catch (e) {
         return undefined
     }

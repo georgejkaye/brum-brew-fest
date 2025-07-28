@@ -1,5 +1,13 @@
 "use client"
-import { Layer, LayerProps, Map, Source } from "@vis.gl/react-maplibre"
+import {
+    Layer,
+    LayerProps,
+    Map,
+    Marker,
+    MarkerEvent,
+    MarkerInstance,
+    Source,
+} from "@vis.gl/react-maplibre"
 import {
     GeoJSON,
     Geometry,
@@ -8,6 +16,9 @@ import {
     Feature,
 } from "geojson"
 import { Venue } from "./interfaces"
+import { MouseEvent, useContext, useMemo, useState } from "react"
+import { UserContext } from "./context/user"
+import Pin from "./Pin"
 
 const getVenueFeatureCollection = (
     venues: Venue[]
@@ -73,8 +84,52 @@ const unclusteredPointLayer: LayerProps = {
     },
 }
 
+interface VenueMarkerProps {
+    venue: Venue
+    setCurrentVenue: (venue: Venue) => void
+}
+
+const VenueMarker = ({ venue, setCurrentVenue }: VenueMarkerProps) => {
+    const { user } = useContext(UserContext)
+    const onClickMarker = (e: MarkerEvent<any>) => {
+        setCurrentVenue(venue)
+    }
+    console.log(user)
+    const userHasVisitedVenue = !user
+        ? false
+        : user.visits.filter((visit) => visit.venueId === venue.venueId)
+              .length > 0
+    const pinColour = !user || !userHasVisitedVenue ? "#ff0000" : "#00ff00"
+    return (
+        <Marker
+            key={venue.venueId}
+            longitude={venue.longitude}
+            latitude={venue.latitude}
+            anchor="bottom"
+            onClick={onClickMarker}
+        >
+            <Pin colour={pinColour} />
+        </Marker>
+    )
+}
+
 export const VenueMap = ({ venues }: VenueMapProps) => {
     let venueFeatureCollection = getVenueFeatureCollection(venues)
+    const [currentVenue, setCurrentVenue] = useState<Venue | undefined>(
+        undefined
+    )
+    let venuePins = useMemo(
+        () =>
+            venues.map((venue) => (
+                <VenueMarker
+                    key={venue.venueId}
+                    venue={venue}
+                    setCurrentVenue={setCurrentVenue}
+                />
+            )),
+        [venues]
+    )
+
     return (
         <Map
             initialViewState={{
@@ -93,9 +148,7 @@ export const VenueMap = ({ venues }: VenueMapProps) => {
                 clusterMaxZoom={1}
                 clusterRadius={100}
             >
-                <Layer {...clusterLayer} />
-                <Layer {...clusterCountLayer} />
-                <Layer {...unclusteredPointLayer} />
+                {venuePins}
             </Source>
         </Map>
     )

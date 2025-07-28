@@ -3,11 +3,21 @@ export enum CurrentView {
     List,
 }
 
+export interface SingleUserVisit {
+    visitId: number
+    venueId: number
+    venueName: string
+    visitDate: Date
+    notes: string
+    rating: number
+}
+
 export interface User {
     userId: number
     displayName: string
     email: string
     isVerified: boolean
+    visits: SingleUserVisit[]
 }
 
 export interface VenueVisit {
@@ -27,15 +37,6 @@ export interface Venue {
     latitude: number
     longitude: number
     visits: VenueVisit[]
-}
-
-export interface SingleUserVisit {
-    visitId: number
-    venueId: number
-    venueName: string
-    visitDate: Date
-    notes: string
-    rating: number
 }
 
 export interface UserSummary {

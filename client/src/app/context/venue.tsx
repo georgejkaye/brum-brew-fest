@@ -19,7 +19,6 @@ export const VenueProvider = ({
     const [isLoadingVenue, setLoadingVenue] = useState(true)
     useEffect(() => {
         setLoadingVenue(true)
-        console.log("hello")
         const fetchVenue = async () => {
             if (isNaN(venueId)) {
                 router.push("/")

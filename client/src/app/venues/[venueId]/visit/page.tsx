@@ -76,7 +76,7 @@ export const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
 }
 
 export const Page = () => {
-    const { token, user, isLoadingUser } = useContext(UserContext)
+    const { token, user, refreshUser, isLoadingUser } = useContext(UserContext)
     const { venue, isLoadingVenue } = useContext(VenueContext)
     const router = useRouter()
     const [errorText, setErrorText] = useState("")
@@ -115,8 +115,8 @@ export const Page = () => {
                 rating,
                 drink
             )
-            console.log(visitResult)
             if (visitResult.success) {
+                refreshUser()
                 router.push("/")
                 return true
             }
