@@ -3,6 +3,7 @@ import {
     Layer,
     LayerProps,
     Map,
+    MapRef,
     Marker,
     MarkerEvent,
     MarkerInstance,
@@ -16,7 +17,15 @@ import {
     Feature,
 } from "geojson"
 import { Venue } from "./interfaces"
-import { MouseEvent, useContext, useMemo, useState } from "react"
+import {
+    MouseEvent,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react"
 import { UserContext } from "./context/user"
 import Pin from "./Pin"
 
@@ -46,14 +55,18 @@ interface VenueMapProps {
 interface VenueMarkerProps {
     venue: Venue
     setCurrentVenue: (venue: Venue) => void
+    isCurrentVenue: boolean
 }
 
-const VenueMarker = ({ venue, setCurrentVenue }: VenueMarkerProps) => {
+const VenueMarker = ({
+    venue,
+    setCurrentVenue,
+    isCurrentVenue,
+}: VenueMarkerProps) => {
     const { user } = useContext(UserContext)
     const onClickMarker = (e: MarkerEvent<any>) => {
         setCurrentVenue(venue)
     }
-    console.log(user)
     const userHasVisitedVenue = !user
         ? false
         : user.visits.filter((visit) => visit.venueId === venue.venueId)
@@ -67,7 +80,7 @@ const VenueMarker = ({ venue, setCurrentVenue }: VenueMarkerProps) => {
             anchor="bottom"
             onClick={onClickMarker}
         >
-            <Pin colour={pinColour} />
+            <Pin colour={pinColour} size={isCurrentVenue ? 40 : 30} />
         </Marker>
     )
 }
@@ -84,13 +97,30 @@ export const VenueMap = ({ venues }: VenueMapProps) => {
                     key={venue.venueId}
                     venue={venue}
                     setCurrentVenue={setCurrentVenue}
+                    isCurrentVenue={
+                        !currentVenue
+                            ? false
+                            : venue.venueId === currentVenue?.venueId
+                    }
                 />
             )),
-        [venues]
+        [venues, currentVenue]
     )
+    const mapRef = useRef<MapRef>(null)
+
+    useEffect(() => {
+        if (currentVenue) {
+            mapRef.current?.flyTo({
+                center: [currentVenue.longitude, currentVenue.latitude],
+                duration: 2000,
+                animate: true,
+            })
+        }
+    }, [currentVenue])
 
     return (
         <Map
+            ref={mapRef}
             initialViewState={{
                 latitude: 52.4864,
                 longitude: -1.9422,
