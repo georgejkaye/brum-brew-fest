@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError } from "axios"
-import { Venue, User, Visit, UserSummary } from "./interfaces"
+import { Venue, Visit, UserSummary } from "./interfaces"
 
 const responseToUser = (response: any) => ({
     userId: response["user_id"],
@@ -22,7 +23,7 @@ export const getUserDetails = async (token: string) => {
         const data = response.data
         const user = responseToUser(data)
         return user
-    } catch (e) {
+    } catch {
         return undefined
     }
 }
@@ -49,7 +50,7 @@ export const login = async (email: string, password: string) => {
         console.error(e)
         const error = e as AxiosError
         if (error.response?.data != undefined) {
-            const errorData = error.response.data as any
+            const errorData = error.response.data as { detail: string }
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -77,7 +78,7 @@ export const registerUser = async (
         console.error(e)
         const error = e as AxiosError
         if (error.response?.data != undefined) {
-            const errorData = error.response.data as any
+            const errorData = error.response.data as { detail: string }
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -90,7 +91,7 @@ export const requestVerifyToken = async (email: string) => {
     try {
         const body = { email }
         await axios.post(endpoint, body)
-    } catch (e) {}
+    } catch {}
 }
 
 export const verifyUser = async (token: string) => {
@@ -105,7 +106,7 @@ export const verifyUser = async (token: string) => {
         console.error(e)
         const error = e as AxiosError
         if (error.response?.data != undefined) {
-            const errorData = error.response.data as any
+            const errorData = error.response.data as { detail: string }
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -262,7 +263,7 @@ export const postVisit = async (
     } catch (e) {
         const error = e as AxiosError
         if (error.response?.data != undefined) {
-            const errorData = error.response.data as any
+            const errorData = error.response.data as { detail: string }
             return { success: false, error: errorData.detail }
         } else {
             return { success: false, error: "Unknown error " }

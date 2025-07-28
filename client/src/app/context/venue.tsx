@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useState, PropsWithChildren, useEffect } from "react"
-import { User, Venue } from "../interfaces"
+import { Venue } from "../interfaces"
 import { getVenue } from "../api"
 import { useRouter } from "next/navigation"
 

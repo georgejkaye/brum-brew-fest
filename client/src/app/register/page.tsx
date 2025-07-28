@@ -1,5 +1,5 @@
 "use client"
-import { KeyboardEvent, MouseEvent, useState } from "react"
+import { KeyboardEvent, useState } from "react"
 import { LoginButton, LoginTextInput } from "../components/login"
 import { registerUser, requestVerifyToken } from "../api"
 import { Loader } from "../Loader"
@@ -44,7 +44,7 @@ const Page = () => {
         }
         setLoading(false)
     }
-    const onClickRegister = (e: MouseEvent<any>) => {
+    const onClickRegister = () => {
         performRegister()
     }
     const onKeyDownDisplayName = (e: KeyboardEvent<HTMLInputElement>) => {

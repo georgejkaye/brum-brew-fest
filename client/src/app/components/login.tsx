@@ -67,7 +67,7 @@ export const LoginTextAreaInput = ({
 
 interface LoginButtonProps {
     label: string
-    onClick: (e: MouseEvent<any>) => void
+    onClick: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
 export const LoginButton = ({ label, onClick }: LoginButtonProps) => {

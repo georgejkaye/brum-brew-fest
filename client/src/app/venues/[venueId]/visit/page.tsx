@@ -5,7 +5,6 @@ import {
     useEffect,
     useState,
     KeyboardEvent,
-    MouseEvent,
     FormEvent,
 } from "react"
 import { UserContext } from "@/app/context/user"
@@ -41,7 +40,7 @@ export const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
             performSubmitVisit()
         }
     }
-    const onClickSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    const onClickSubmit = () => {
         performSubmitVisit()
     }
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

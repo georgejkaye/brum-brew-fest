@@ -11,7 +11,6 @@ import { GeoJSON, Geometry, GeoJsonProperties, Feature } from "geojson"
 import { User, Venue } from "./interfaces"
 import {
     Dispatch,
-    MouseEvent,
     SetStateAction,
     useContext,
     useEffect,
@@ -57,7 +56,7 @@ const VenueMarker = ({
     setCurrentVenue,
 }: VenueMarkerProps) => {
     const { user } = useContext(UserContext)
-    const onClickMarker = (e: MarkerEvent<any>) => {
+    const onClickMarker = (e: MarkerEvent<globalThis.MouseEvent>) => {
         e.originalEvent.stopPropagation()
         if (currentVenue && currentVenue.venueId === venue.venueId) {
             setCurrentVenue(undefined)
@@ -107,10 +106,10 @@ const CurrentVenueBox = ({
         venueVisitCount === 0
             ? 0
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
-    const onClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
+    const onClickDetails = () => {
         router.push(`/venues/${venue.venueId}`)
     }
-    const onClickRecord = (e: MouseEvent<HTMLButtonElement>) => {
+    const onClickRecord = () => {
         router.push(`/venues/${venue.venueId}/visit`)
     }
     const firstVisitToVenue = !user

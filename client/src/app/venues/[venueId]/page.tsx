@@ -7,7 +7,6 @@ import { Venue, VenueVisit } from "@/app/interfaces"
 import Pin from "@/app/Pin"
 import { Rating } from "@smastrom/react-rating"
 import {
-    LayerProps,
     Map,
     MapRef,
     Marker,
@@ -32,17 +31,8 @@ const VenueMap = ({ venue }: VenueDetailsProps) => {
             coordinates: [venue.longitude, venue.latitude],
         },
     }
-    const layer: LayerProps = {
-        id: "layer",
-        type: "circle",
-        source: "venue",
-        paint: {
-            "circle-color": "#11b4da",
-            "circle-radius": 20,
-        },
-    }
     const mapRef = useRef<MapRef>(null)
-    const onClickMarker = (e: MarkerEvent<any>) => {
+    const onClickMarker = (e: MarkerEvent<globalThis.MouseEvent>) => {
         e.originalEvent.stopPropagation()
         mapRef.current?.flyTo({
             center: [venue.longitude, venue.latitude],

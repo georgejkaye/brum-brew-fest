@@ -1,5 +1,5 @@
 "use client"
-import { KeyboardEvent, MouseEvent, useContext, useState } from "react"
+import { KeyboardEvent, useContext, useState } from "react"
 import { getUserDetails, login } from "../api"
 import { Loader } from "../Loader"
 import { UserContext } from "../context/user"
@@ -15,7 +15,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
     const [emailString, setEmailString] = useState("")
     const [passwordString, setPasswordString] = useState("")
     const submitForm = async () => {
-        const loginResult = await performLogin(emailString, passwordString)
+        await performLogin(emailString, passwordString)
         setPasswordString("")
     }
     const onClickLogin = () => {
