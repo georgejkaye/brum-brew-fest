@@ -171,6 +171,7 @@ def update_user_display_name(
         "SELECT * FROM update_user_display_name(%s, %s)",
         [user_id, new_display_name],
     )
+    conn.commit()
 
 
 def update_user_last_verify_request(
@@ -180,6 +181,7 @@ def update_user_last_verify_request(
         "SELECT * FROM update_user_last_verify_request(%s, %s)",
         [user_id, new_last_verify_request],
     )
+    conn.commit()
 
 
 def delete_user(conn: Connection, user_id: int) -> None:
@@ -187,6 +189,7 @@ def delete_user(conn: Connection, user_id: int) -> None:
         "SELECT * FROM delete_user(%s)",
         [user_id],
     )
+    conn.commit()
 
 
 def register_type[T](conn: Connection, name: str, factory: type) -> None:
