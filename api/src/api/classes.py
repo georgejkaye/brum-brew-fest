@@ -16,11 +16,23 @@ class User:
 
 
 @dataclass
+class SingleUserVisit:
+    visit_id: int
+    venue_id: int
+    venue_name: str
+    visit_date: datetime
+    notes: str
+    rating: int
+    drink: str
+
+
+@dataclass
 class UserPublicDetails:
     user_id: int
     email: str
     display_name: str
     is_verified: bool
+    visits: list[SingleUserVisit]
 
 
 @dataclass
@@ -66,22 +78,11 @@ class UserVisit:
 
 
 @dataclass
-class SingleUserVisit:
-    visit_id: int
-    venue_id: int
-    venue_name: str
-    visit_date: datetime
-    notes: str
-    rating: int
-    drink: str
-
-
-@dataclass
 class UserSummary:
     user_id: int
     email: str
     display_name: str
-    visits: SingleUserVisit
+    visits: list[SingleUserVisit]
 
 
 @dataclass

@@ -117,8 +117,13 @@ app.include_router(
 async def get_user_details(
     user: FastApiUser = Depends(current_user),
 ) -> UserPublicDetails:
+    user_details = select_user_summary(conn, user.id)
     return UserPublicDetails(
-        user.id, user.email, user.display_name, user.is_verified
+        user.id,
+        user.email,
+        user.display_name,
+        user.is_verified,
+        user_details.visits if user_details is not None else [],
     )
 
 

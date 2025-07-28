@@ -78,6 +78,7 @@ def insert_visit(
             "SELECT * FROM insert_visit(%s, %s, %s, %s, %s, %s)",
             [user_id, venue_id, visit_date, notes, rating, drink],
         ).fetchone()
+        conn.commit()
         return result.insert_visit if result is not None else None
 
 
