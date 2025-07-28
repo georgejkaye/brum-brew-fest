@@ -10,5 +10,23 @@
         "address": "88-92 John Bright St, Birmingham B1 1BN",
         "latitude": 52.477033,
         "longitude": -1.901150
+    },
+    {
+        "name": "The Wolf",
+        "address": "2-10 Constitution Hill, Birmingham B19 3LY",
+        "latitude": 52.4864962,
+        "longitude": -1.9017338
+    },
+    {
+        "name": "Attic Brew Co.",
+        "address": "29B Mary Vale Rd, Stirchley, Birmingham B30 2DA",
+        "latitude": "52.4262647",
+        "longitude": "-1.9254014"
+    },
+    {
+        "name": "The Barrel Store",
+        "address": "Arch 32 Water St, Birmingham B3 1HL",
+        "latitude": "52.4859021",
+        "longitude": "-1.9024120"
     }
 ]
