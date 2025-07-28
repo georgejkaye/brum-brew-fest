@@ -6,10 +6,7 @@ import { UserContext } from "./context/user"
 const TopBar = () => {
     const { user, isLoadingUser } = useContext(UserContext)
     return (
-        <div
-            className="flex flex-row p-4 bg-[#38db98]"
-            style={{ height: "7vh" }}
-        >
+        <div className="flex flex-row p-4 bg-[#38db98] w-full">
             <div className="flex-1 text-2xl text-black font-bold">
                 <Link href="/">Brum Brew Fest Tracker</Link>
             </div>
