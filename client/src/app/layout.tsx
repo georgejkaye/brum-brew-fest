@@ -21,8 +21,10 @@ export default function RootLayout({
             <body>
                 <UserProvider>
                     <VenuesProvider>
-                        <TopBar />
-                        {children}
+                        <div className="flex flex-col">
+                            <TopBar />
+                            {children}
+                        </div>
                     </VenuesProvider>
                 </UserProvider>
             </body>
