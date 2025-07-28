@@ -28,12 +28,18 @@ const Page = () => {
             if (registerResult.user === undefined) {
                 setSuccessString("")
                 setErrorString(`Registration failed: ${registerResult.error}`)
+                setPasswordString("")
+                setConfirmPasswordString("")
             } else {
                 requestVerifyToken(registerResult.user.email)
                 setSuccessString(
                     `Verification email sent to ${registerResult.user.email}!`
                 )
                 setErrorString("")
+                setEmailString("")
+                setPasswordString("")
+                setConfirmPasswordString("")
+                setDisplayNameString("")
             }
         }
         setLoading(false)
