@@ -1,7 +1,7 @@
 import { UserSummaryProvider } from "@/app/context/userSummary"
 import { PropsWithChildren, use } from "react"
 
-export const Layout = ({
+const Layout = ({
     children,
     params,
 }: PropsWithChildren<{ params: Promise<{ userId: string }> }>) => {

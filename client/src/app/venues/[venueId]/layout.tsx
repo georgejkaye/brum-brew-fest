@@ -1,7 +1,7 @@
 import { VenueProvider } from "@/app/context/venue"
 import { PropsWithChildren, use } from "react"
 
-export const Layout = ({
+const Layout = ({
     children,
     params,
 }: PropsWithChildren<{ params: Promise<{ venueId: string }> }>) => {
