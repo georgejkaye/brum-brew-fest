@@ -33,7 +33,7 @@ export const Page = () => {
     let { userSummary, isLoadingUserSummary } = useContext(UserSummaryContext)
     console.log(userSummary)
     return (
-        <div className="w-1/3 flex flex-col items-center mx-auto p-4">
+        <div className="md:w-1/3 flex flex-col items-center md:mx-auto p-4">
             {isLoadingUserSummary ? (
                 <Loader />
             ) : !userSummary ? (

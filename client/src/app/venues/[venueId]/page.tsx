@@ -144,7 +144,7 @@ export const Page = () => {
         router.push(`/venues/${venue?.venueId}/visit`)
     }
     return (
-        <div className="flex flex-col w-1/2 lg:w-1/3 p-4 mx-auto">
+        <div className="flex flex-col md:w-1/3 p-4 md:mx-auto">
             {venue && (
                 <div className="flex flex-col gap-4">
                     <VenueDetails venue={venue} />
