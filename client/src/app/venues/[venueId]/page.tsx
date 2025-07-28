@@ -4,11 +4,20 @@ import { LoginButton } from "@/app/components/login"
 import { UserContext } from "@/app/context/user"
 import { VenueContext } from "@/app/context/venue"
 import { Venue, VenueVisit } from "@/app/interfaces"
+import Pin from "@/app/Pin"
 import { Rating } from "@smastrom/react-rating"
-import { Layer, LayerProps, Map, Source } from "@vis.gl/react-maplibre"
+import {
+    Layer,
+    LayerProps,
+    Map,
+    MapRef,
+    Marker,
+    MarkerEvent,
+    Source,
+} from "@vis.gl/react-maplibre"
 import { Feature } from "geojson"
 import { useRouter } from "next/navigation"
-import { useContext } from "react"
+import { useContext, useRef } from "react"
 
 interface VenueDetailsProps {
     venue: Venue
@@ -32,8 +41,18 @@ const VenueMap = ({ venue }: VenueDetailsProps) => {
             "circle-radius": 20,
         },
     }
+    const mapRef = useRef<MapRef>(null)
+    const onClickMarker = (e: MarkerEvent<any>) => {
+        e.originalEvent.stopPropagation()
+        mapRef.current?.flyTo({
+            center: [venue.longitude, venue.latitude],
+            duration: 2000,
+            animate: true,
+        })
+    }
     return (
         <Map
+            ref={mapRef}
             initialViewState={{
                 latitude: venue.latitude,
                 longitude: venue.longitude,
@@ -42,8 +61,17 @@ const VenueMap = ({ venue }: VenueDetailsProps) => {
             style={{ height: "500px" }}
             mapStyle={"https://tiles.openfreemap.org/styles/bright"}
         >
-            <Source id="venue" type="geojson" data={venuePoint} />
-            <Layer {...layer} />
+            <Source id="venue" type="geojson" data={venuePoint}>
+                <Marker
+                    key={venue.venueId}
+                    longitude={venue.longitude}
+                    latitude={venue.latitude}
+                    anchor="bottom"
+                    onClick={onClickMarker}
+                >
+                    <Pin colour="#00a300" size={40} />
+                </Marker>
+            </Source>
         </Map>
     )
 }
@@ -51,7 +79,9 @@ const VenueMap = ({ venue }: VenueDetailsProps) => {
 const VenueDetails = ({ venue }: VenueDetailsProps) => {
     let venueVisitCount = venue.visits.length
     let averageVenueRating =
-        venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
+        venueVisitCount === 0
+            ? 0
+            : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
     return (
         <div className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold">{venue.name}</h2>
