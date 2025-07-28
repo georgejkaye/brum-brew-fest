@@ -15,7 +15,7 @@ const TopBar = () => {
                     <Link href="/">Map</Link>
                     <Link href="/venues/list">Venues</Link>
                     {user ? (
-                        <Link href="/user/account">{user.displayName}</Link>
+                        <Link href="/users/account">{user.displayName}</Link>
                     ) : (
                         <Link href="/login">Login</Link>
                     )}
