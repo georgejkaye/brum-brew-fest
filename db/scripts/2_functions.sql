@@ -344,6 +344,7 @@ AS
 $$
 SELECT
     app_user.user_id,
+    app_user.email,
     app_user.display_name,
     visit_table.visits
 FROM app_user
