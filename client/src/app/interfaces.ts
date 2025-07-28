@@ -10,6 +10,7 @@ export interface SingleUserVisit {
     visitDate: Date
     notes: string
     rating: number
+    drink: string
 }
 
 export interface User {

@@ -187,6 +187,7 @@ const responseToUserVisit = (response: any) => ({
     visitDate: new Date(Date.parse(response["visit_date"])),
     notes: response["notes"],
     rating: response["rating"],
+    drink: response["drink"],
 })
 
 const responseToUserSummary = (response: any) => ({
@@ -199,7 +200,7 @@ const responseToUserSummary = (response: any) => ({
 export const getUser = async (
     userId: number
 ): Promise<UserSummary | undefined> => {
-    let endpoint = `/api/user/${userId}`
+    let endpoint = `/api/users/${userId}`
     try {
         let response = await axios.get(endpoint)
         let data = response.data
