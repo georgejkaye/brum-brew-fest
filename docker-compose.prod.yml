@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.bbf_api.tls.certresolver=lets-encrypt"
       - "traefik.http.services.bbf_api.loadbalancer.server.port=${API_PORT:-8000}"
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:$$API_PORT/ || exit 1"]
+      test: ["CMD-SHELL", "curl --fail ${API_PROTOCOL}://${API_HOST} || exit 1"]
       interval: 10s
       timeout: 1s
       retries: 100
