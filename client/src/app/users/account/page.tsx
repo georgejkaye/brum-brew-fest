@@ -9,7 +9,7 @@ export const Page = () => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [isLoggedOut, setLoggedOut] = useState(false)
-    const onClickLogout = (e: MouseEvent<any>) => {
+    const onClickLogout = () => {
         setLoggedOut(true)
         setUser(undefined)
         localStorage.removeItem("token")

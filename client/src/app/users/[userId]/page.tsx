@@ -23,7 +23,7 @@ const UserSummaryVisitCard = ({ visit }: UserSummaryVisitCardProps) => {
             <div>
                 <span className="font-bold">Drink:</span> {visit.drink}
             </div>
-            <div>'{visit.notes}'</div>
+            <div>&apos;{visit.notes}&apos;</div>
             <Rating style={{ maxWidth: 100 }} value={visit.rating} readOnly />
         </div>
     )

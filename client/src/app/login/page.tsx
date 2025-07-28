@@ -18,7 +18,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
         const loginResult = await performLogin(emailString, passwordString)
         setPasswordString("")
     }
-    const onClickLogin = (e: MouseEvent<any>) => {
+    const onClickLogin = () => {
         submitForm()
     }
     const onKeyDownPassword = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -102,7 +102,7 @@ export const Page = () => {
                         )}
                         <LoginBox performLogin={performLogin} />
                         <div className="flex flex-col md:flex-row gap-2">
-                            <span>Don't have an account?</span>
+                            <span>Don&apos;t have an account?</span>
                             <Link
                                 href="/register"
                                 className="font-bold text-blue-500 underline"
