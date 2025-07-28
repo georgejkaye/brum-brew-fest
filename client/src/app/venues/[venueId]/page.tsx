@@ -125,7 +125,7 @@ const VenueVisitCard = ({ visit }: VenueVisitProps) => {
     )
 }
 
-export const Page = () => {
+const Page = () => {
     const router = useRouter()
     const { venue } = useContext(VenueContext)
     const { user } = useContext(UserContext)

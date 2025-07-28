@@ -33,7 +33,7 @@ const VenueCard = ({ venue }: VenueCardProps) => {
     )
 }
 
-export const Page = () => {
+const Page = () => {
     const { venues } = useContext(VenuesContext)
     const [filteredVenues, setFilteredVenues] = useState([...venues])
     const [searchValue, setSearchValue] = useState("")

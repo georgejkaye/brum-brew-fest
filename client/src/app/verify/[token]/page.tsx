@@ -3,7 +3,7 @@ import { verifyUser } from "@/app/api"
 import { Loader } from "@/app/Loader"
 import { use, useEffect, useState } from "react"
 
-export const Page = ({ params }: { params: Promise<{ token: string }> }) => {
+const Page = ({ params }: { params: Promise<{ token: string }> }) => {
     const { token } = use(params)
 
     const [isLoading, setLoading] = useState(true)

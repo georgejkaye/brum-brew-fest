@@ -74,7 +74,7 @@ export const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
     )
 }
 
-export const Page = () => {
+const Page = () => {
     const { token, user, refreshUser, isLoadingUser } = useContext(UserContext)
     const { venue, isLoadingVenue } = useContext(VenueContext)
     const router = useRouter()

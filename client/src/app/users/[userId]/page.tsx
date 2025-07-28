@@ -29,7 +29,7 @@ const UserSummaryVisitCard = ({ visit }: UserSummaryVisitCardProps) => {
     )
 }
 
-export const Page = () => {
+const Page = () => {
     const { userSummary, isLoadingUserSummary } = useContext(UserSummaryContext)
     console.log(userSummary)
     return (

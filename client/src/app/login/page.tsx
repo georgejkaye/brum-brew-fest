@@ -56,7 +56,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
     )
 }
 
-export const Page = () => {
+const Page = () => {
     const { setUser } = useContext(UserContext)
     const router = useRouter()
     const [isLoading, setLoading] = useState(false)

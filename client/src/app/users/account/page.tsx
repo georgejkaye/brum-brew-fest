@@ -4,7 +4,7 @@ import { Loader } from "@/app/Loader"
 import { useRouter } from "next/navigation"
 import { useContext, MouseEvent, useEffect, useState } from "react"
 
-export const Page = () => {
+const Page = () => {
     const { user, setUser } = useContext(UserContext)
     const router = useRouter()
     const [loading, setLoading] = useState(false)
