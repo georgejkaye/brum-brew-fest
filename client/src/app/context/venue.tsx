@@ -23,7 +23,7 @@ export const VenueProvider = ({
             if (isNaN(venueId)) {
                 router.push("/")
             }
-            let venueResult = await getVenue(venueId)
+            const venueResult = await getVenue(venueId)
             if (venueResult) {
                 setVenue(venueResult)
                 setLoadingVenue(false)

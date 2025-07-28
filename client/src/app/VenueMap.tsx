@@ -1,33 +1,22 @@
 "use client"
 import {
-    Layer,
-    LayerProps,
     Map,
     MapRef,
     Marker,
     MarkerEvent,
-    MarkerInstance,
     Popup,
     Source,
 } from "@vis.gl/react-maplibre"
-import {
-    GeoJSON,
-    Geometry,
-    GeoJsonProperties,
-    FeatureCollection,
-    Feature,
-} from "geojson"
+import { GeoJSON, Geometry, GeoJsonProperties, Feature } from "geojson"
 import { User, Venue } from "./interfaces"
 import {
     Dispatch,
     MouseEvent,
     SetStateAction,
-    useCallback,
     useContext,
     useEffect,
     useMemo,
     useRef,
-    useState,
 } from "react"
 import { UserContext } from "./context/user"
 import Pin from "./Pin"
@@ -40,7 +29,7 @@ import { getFirstVisitToVenue } from "./utils"
 const getVenueFeatureCollection = (
     venues: Venue[]
 ): GeoJSON<Geometry, GeoJsonProperties> => {
-    let features: Feature[] = venues.map((venue) => ({
+    const features: Feature[] = venues.map((venue) => ({
         type: "Feature",
         properties: {
             id: venue.venueId,
@@ -113,8 +102,8 @@ const CurrentVenueBox = ({
     setCurrentVenue,
 }: CurrentVenueBoxProps) => {
     const router = useRouter()
-    let venueVisitCount = venue.visits.length
-    let averageVenueRating =
+    const venueVisitCount = venue.visits.length
+    const averageVenueRating =
         venueVisitCount === 0
             ? 0
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
@@ -190,8 +179,8 @@ export const VenueMap = ({
     currentVenue,
     setCurrentVenue,
 }: VenueMapProps) => {
-    let venueFeatureCollection = getVenueFeatureCollection(venues)
-    let venuePins = useMemo(
+    const venueFeatureCollection = getVenueFeatureCollection(venues)
+    const venuePins = useMemo(
         () =>
             venues.map((venue) => (
                 <VenueMarker

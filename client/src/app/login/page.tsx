@@ -15,7 +15,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
     const [emailString, setEmailString] = useState("")
     const [passwordString, setPasswordString] = useState("")
     const submitForm = async () => {
-        let loginResult = await performLogin(emailString, passwordString)
+        const loginResult = await performLogin(emailString, passwordString)
         setPasswordString("")
     }
     const onClickLogin = (e: MouseEvent<any>) => {
@@ -64,7 +64,7 @@ export const Page = () => {
     const [errorString, setErrorString] = useState("")
     const performLogin = async (email: string, password: string) => {
         setLoading(true)
-        let loginResult = await login(email, password)
+        const loginResult = await login(email, password)
         if (loginResult.token === undefined) {
             setErrorString(`Could not log in: ${loginResult.error}`)
             setLoading(false)
@@ -72,7 +72,7 @@ export const Page = () => {
         } else {
             setLoginSuccessful(true)
             localStorage.setItem("token", loginResult.token)
-            let user = await getUserDetails(loginResult.token)
+            const user = await getUserDetails(loginResult.token)
             setUser(user)
             setErrorString("")
             setLoading(false)

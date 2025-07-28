@@ -12,7 +12,7 @@ export const Page = ({ params }: { params: Promise<{ token: string }> }) => {
 
     useEffect(() => {
         const getVerifyResult = async () => {
-            let verifyResult = await verifyUser(token)
+            const verifyResult = await verifyUser(token)
             if (verifyResult.user === undefined) {
                 setErrorString(`Verification failed: ${verifyResult.error}`)
             } else {

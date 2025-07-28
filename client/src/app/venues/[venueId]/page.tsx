@@ -7,7 +7,6 @@ import { Venue, VenueVisit } from "@/app/interfaces"
 import Pin from "@/app/Pin"
 import { Rating } from "@smastrom/react-rating"
 import {
-    Layer,
     LayerProps,
     Map,
     MapRef,
@@ -25,7 +24,7 @@ interface VenueDetailsProps {
 }
 
 const VenueMap = ({ venue }: VenueDetailsProps) => {
-    let venuePoint: Feature = {
+    const venuePoint: Feature = {
         type: "Feature",
         properties: { id: venue.venueId },
         geometry: {
@@ -78,8 +77,8 @@ const VenueMap = ({ venue }: VenueDetailsProps) => {
 }
 
 const VenueDetails = ({ venue }: VenueDetailsProps) => {
-    let venueVisitCount = venue.visits.length
-    let averageVenueRating =
+    const venueVisitCount = venue.visits.length
+    const averageVenueRating =
         venueVisitCount === 0
             ? 0
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount

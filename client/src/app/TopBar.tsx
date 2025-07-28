@@ -29,7 +29,7 @@ const TopBar = () => {
                             )}
                         </div>
                         <div
-                            onClick={(e) =>
+                            onClick={() =>
                                 setMenuOpen((isMenuOpen) => !isMenuOpen)
                             }
                             className="md:hidden cursor-pointer"

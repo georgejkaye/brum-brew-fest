@@ -12,15 +12,15 @@ const responseToUser = (response: any) => ({
 })
 
 export const getUserDetails = async (token: string) => {
-    let endpoint = "/api/auth/me"
+    const endpoint = "/api/auth/me"
     try {
-        let headers = {
+        const headers = {
             accept: "application/json",
             Authorization: `Bearer ${token}`,
         }
-        let response = await axios.get(endpoint, { headers })
-        let data = response.data
-        let user = responseToUser(data)
+        const response = await axios.get(endpoint, { headers })
+        const data = response.data
+        const user = responseToUser(data)
         return user
     } catch (e) {
         return undefined
@@ -28,9 +28,9 @@ export const getUserDetails = async (token: string) => {
 }
 
 export const login = async (email: string, password: string) => {
-    let endpoint = "/api/auth/jwt/login"
+    const endpoint = "/api/auth/jwt/login"
     try {
-        let body = {
+        const body = {
             grant_type: "password",
             username: email,
             password: password,
@@ -38,18 +38,18 @@ export const login = async (email: string, password: string) => {
             client_id: "",
             client_secret: "",
         }
-        let headers = {
+        const headers = {
             accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         }
-        let response = await axios.post(endpoint, body, { headers })
-        let data = response.data
+        const response = await axios.post(endpoint, body, { headers })
+        const data = response.data
         return { token: data["access_token"] }
     } catch (e) {
         console.error(e)
-        let error = e as AxiosError
+        const error = e as AxiosError
         if (error.response?.data != undefined) {
-            let errorData = error.response.data as any
+            const errorData = error.response.data as any
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -62,22 +62,22 @@ export const registerUser = async (
     password: string,
     displayName: string
 ) => {
-    let endpoint = "/api/auth/register"
+    const endpoint = "/api/auth/register"
     try {
-        let body = {
+        const body = {
             email: email,
             password: password,
             display_name: displayName,
         }
-        let response = await axios.post(endpoint, body)
-        let data = response.data
-        let user = responseToUser(data)
+        const response = await axios.post(endpoint, body)
+        const data = response.data
+        const user = responseToUser(data)
         return { user }
     } catch (e) {
         console.error(e)
-        let error = e as AxiosError
+        const error = e as AxiosError
         if (error.response?.data != undefined) {
-            let errorData = error.response.data as any
+            const errorData = error.response.data as any
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -86,26 +86,26 @@ export const registerUser = async (
 }
 
 export const requestVerifyToken = async (email: string) => {
-    let endpoint = "/api/auth/request-verify-token"
+    const endpoint = "/api/auth/request-verify-token"
     try {
-        let body = { email }
+        const body = { email }
         await axios.post(endpoint, body)
     } catch (e) {}
 }
 
 export const verifyUser = async (token: string) => {
-    let endpoint = "/api/auth/verify"
+    const endpoint = "/api/auth/verify"
     try {
-        let body = { token }
-        let response = await axios.post(endpoint, body)
-        let data = response.data
-        let user = responseToUser(data)
+        const body = { token }
+        const response = await axios.post(endpoint, body)
+        const data = response.data
+        const user = responseToUser(data)
         return { user }
     } catch (e) {
         console.error(e)
-        let error = e as AxiosError
+        const error = e as AxiosError
         if (error.response?.data != undefined) {
-            let errorData = error.response.data as any
+            const errorData = error.response.data as any
             return { error: errorData.detail }
         } else {
             return { error: "Unknown error " }
@@ -114,9 +114,9 @@ export const verifyUser = async (token: string) => {
 }
 
 export const requestPasswordReset = async (email: string) => {
-    let endpoint = "/api/auth/forgot-password"
+    const endpoint = "/api/auth/forgot-password"
     try {
-        let body = { email }
+        const body = { email }
         await axios.post(endpoint, body)
     } catch (e) {
         console.error(e)
@@ -124,11 +124,11 @@ export const requestPasswordReset = async (email: string) => {
 }
 
 export const resetPassword = async (token: string) => {
-    let endpoint = "/api/auth/verify"
+    const endpoint = "/api/auth/verify"
     try {
-        let body = { token }
-        let response = await axios.post(endpoint, body)
-        let data = response.data
+        const body = { token }
+        const response = await axios.post(endpoint, body)
+        const data = response.data
         return data as string
     } catch (e) {
         console.error(e)
@@ -156,11 +156,11 @@ const responseToVenue = (response: any) => ({
 })
 
 export const getVenues = async (): Promise<Venue[]> => {
-    let endpoint = "/api/venues"
+    const endpoint = "/api/venues"
     try {
-        let response = await axios.get(endpoint)
-        let data = response.data
-        let venues = data.map(responseToVenue)
+        const response = await axios.get(endpoint)
+        const data = response.data
+        const venues = data.map(responseToVenue)
         return venues
     } catch (e) {
         console.error(e)
@@ -169,11 +169,11 @@ export const getVenues = async (): Promise<Venue[]> => {
 }
 
 export const getVenue = async (venueId: number): Promise<Venue | undefined> => {
-    let endpoint = `/api/venues/${venueId}`
+    const endpoint = `/api/venues/${venueId}`
     try {
-        let response = await axios.get(endpoint)
-        let data = response.data
-        let venue = responseToVenue(data)
+        const response = await axios.get(endpoint)
+        const data = response.data
+        const venue = responseToVenue(data)
         return venue
     } catch (e) {
         console.error(e)
@@ -200,11 +200,11 @@ const responseToUserSummary = (response: any) => ({
 export const getUser = async (
     userId: number
 ): Promise<UserSummary | undefined> => {
-    let endpoint = `/api/users/${userId}`
+    const endpoint = `/api/users/${userId}`
     try {
-        let response = await axios.get(endpoint)
-        let data = response.data
-        let user = responseToUserSummary(data)
+        const response = await axios.get(endpoint)
+        const data = response.data
+        const user = responseToUserSummary(data)
         return user
     } catch (e) {
         console.error(e)
@@ -225,11 +225,11 @@ const responseToVisit = (response: any) => ({
 })
 
 export const getVisits = async (): Promise<Visit[]> => {
-    let endpoint = `/api/visits`
+    const endpoint = `/api/visits`
     try {
-        let response = await axios.get(endpoint)
-        let data = response.data
-        let visits = data.map(responseToVisit)
+        const response = await axios.get(endpoint)
+        const data = response.data
+        const visits = data.map(responseToVisit)
         return visits
     } catch (e) {
         console.error(e)
@@ -245,24 +245,24 @@ export const postVisit = async (
     rating: number,
     drink: string
 ) => {
-    let endpoint = `/api/visit`
-    let params = {
+    const endpoint = `/api/visit`
+    const params = {
         venue_id: venueId,
         visit_date: visitDate,
         notes,
         rating,
         drink,
     }
-    let headers = {
+    const headers = {
         Authorization: `Bearer ${token}`,
     }
     try {
         await axios.post(endpoint, undefined, { headers, params })
         return { success: true }
     } catch (e) {
-        let error = e as AxiosError
+        const error = e as AxiosError
         if (error.response?.data != undefined) {
-            let errorData = error.response.data as any
+            const errorData = error.response.data as any
             return { success: false, error: errorData.detail }
         } else {
             return { success: false, error: "Unknown error " }

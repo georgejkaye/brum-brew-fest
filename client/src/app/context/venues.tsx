@@ -3,7 +3,6 @@
 import { createContext, useState, PropsWithChildren, useEffect } from "react"
 import { Venue } from "../interfaces"
 import { getVenues } from "../api"
-import { useRouter } from "next/navigation"
 
 export const VenuesContext = createContext({
     venues: [] as Venue[],
@@ -16,7 +15,7 @@ export const VenuesProvider = ({ children }: PropsWithChildren) => {
     useEffect(() => {
         setLoadingVenues(true)
         const fetchVenues = async () => {
-            let venuesResult = await getVenues()
+            const venuesResult = await getVenues()
             if (venuesResult) {
                 setVenues(venuesResult)
                 setLoadingVenues(false)

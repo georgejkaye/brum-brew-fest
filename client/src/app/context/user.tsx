@@ -24,7 +24,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     const [user, setUser] = useState<User | undefined>(undefined)
     const [isLoadingUser, setLoadingUser] = useState(true)
     const fetchUser = async (token: string) => {
-        let user = await getUserDetails(token)
+        const user = await getUserDetails(token)
         if (user) {
             setUser(user)
             setToken(token)
@@ -36,7 +36,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         setLoadingUser(false)
     }
     const refreshUser = () => {
-        let token = localStorage.getItem("token")
+        const token = localStorage.getItem("token")
         if (token) {
             fetchUser(token)
         } else {

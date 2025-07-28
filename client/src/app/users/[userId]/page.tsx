@@ -30,7 +30,7 @@ const UserSummaryVisitCard = ({ visit }: UserSummaryVisitCardProps) => {
 }
 
 export const Page = () => {
-    let { userSummary, isLoadingUserSummary } = useContext(UserSummaryContext)
+    const { userSummary, isLoadingUserSummary } = useContext(UserSummaryContext)
     console.log(userSummary)
     return (
         <div className="md:w-1/3 flex flex-col items-center md:mx-auto p-4">

@@ -20,7 +20,7 @@ const Page = () => {
             setPasswordString("")
             setConfirmPasswordString("")
         } else {
-            let registerResult = await registerUser(
+            const registerResult = await registerUser(
                 emailString,
                 passwordString,
                 displayNameString

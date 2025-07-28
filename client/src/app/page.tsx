@@ -23,8 +23,8 @@ export default function Home() {
 
     useEffect(() => {
         const fetchData = async () => {
-            let venueData = await getVenues()
-            let visitData = await getVisits()
+            const venueData = await getVenues()
+            const visitData = await getVisits()
             setVenues(venueData)
             setVisits(visitData)
         }

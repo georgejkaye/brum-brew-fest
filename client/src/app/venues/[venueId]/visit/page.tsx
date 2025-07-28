@@ -107,7 +107,7 @@ export const Page = () => {
             setErrorText("Could not submit visit: invalid venue")
             return false
         } else {
-            let visitResult = await postVisit(
+            const visitResult = await postVisit(
                 token,
                 venue.venueId,
                 new Date(Date.now()),

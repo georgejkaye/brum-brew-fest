@@ -1,8 +1,8 @@
 "use client"
 
 import { createContext, useState, PropsWithChildren, useEffect } from "react"
-import { User, UserSummary, Venue } from "../interfaces"
-import { getUser, getUserDetails, getVenue } from "../api"
+import { UserSummary } from "../interfaces"
+import { getUser } from "../api"
 import { useRouter } from "next/navigation"
 
 export const UserSummaryContext = createContext({
@@ -25,7 +25,7 @@ export const UserSummaryProvider = ({
             if (isNaN(userId)) {
                 router.push("/")
             }
-            let userSummaryResult = await getUser(userId)
+            const userSummaryResult = await getUser(userId)
             if (userSummaryResult) {
                 setUserSummary(userSummaryResult)
                 setLoadingUserSummary(false)

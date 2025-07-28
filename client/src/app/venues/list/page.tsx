@@ -10,8 +10,8 @@ interface VenueCardProps {
 }
 
 const VenueCard = ({ venue }: VenueCardProps) => {
-    let visitCount = venue.visits.length
-    let venueAverageRating =
+    const visitCount = venue.visits.length
+    const venueAverageRating =
         visitCount === 0
             ? 0
             : venue.visits.reduce((a, b) => a + b.rating, 0) / visitCount
