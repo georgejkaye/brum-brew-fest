@@ -7,6 +7,7 @@ import {
     Marker,
     MarkerEvent,
     MarkerInstance,
+    Popup,
     Source,
 } from "@vis.gl/react-maplibre"
 import {
@@ -16,9 +17,11 @@ import {
     FeatureCollection,
     Feature,
 } from "geojson"
-import { Venue } from "./interfaces"
+import { User, Venue } from "./interfaces"
 import {
+    Dispatch,
     MouseEvent,
+    SetStateAction,
     useCallback,
     useContext,
     useEffect,
@@ -28,6 +31,11 @@ import {
 } from "react"
 import { UserContext } from "./context/user"
 import Pin from "./Pin"
+import { LoginButton } from "./components/login"
+import { useRouter } from "next/navigation"
+import { Rating } from "@smastrom/react-rating"
+import { getFirstVisitToVenue } from "./utils"
+import Link from "next/link"
 
 const getVenueFeatureCollection = (
     venues: Venue[]
@@ -48,24 +56,25 @@ const getVenueFeatureCollection = (
     }
 }
 
-interface VenueMapProps {
-    venues: Venue[]
-}
-
 interface VenueMarkerProps {
     venue: Venue
-    setCurrentVenue: (venue: Venue) => void
-    isCurrentVenue: boolean
+    currentVenue: Venue | undefined
+    setCurrentVenue: (venue: Venue | undefined) => void
 }
 
 const VenueMarker = ({
     venue,
+    currentVenue,
     setCurrentVenue,
-    isCurrentVenue,
 }: VenueMarkerProps) => {
     const { user } = useContext(UserContext)
     const onClickMarker = (e: MarkerEvent<any>) => {
-        setCurrentVenue(venue)
+        e.originalEvent.stopPropagation()
+        if (currentVenue && currentVenue.venueId === venue.venueId) {
+            setCurrentVenue(undefined)
+        } else {
+            setCurrentVenue(venue)
+        }
     }
     const userHasVisitedVenue = !user
         ? false
@@ -80,16 +89,102 @@ const VenueMarker = ({
             anchor="bottom"
             onClick={onClickMarker}
         >
-            <Pin colour={pinColour} size={isCurrentVenue ? 40 : 30} />
+            <Pin
+                colour={pinColour}
+                size={
+                    currentVenue && currentVenue.venueId === venue.venueId
+                        ? 40
+                        : 30
+                }
+            />
         </Marker>
     )
 }
 
-export const VenueMap = ({ venues }: VenueMapProps) => {
-    let venueFeatureCollection = getVenueFeatureCollection(venues)
-    const [currentVenue, setCurrentVenue] = useState<Venue | undefined>(
-        undefined
+interface CurrentVenueBoxProps {
+    user: User | undefined
+    venue: Venue
+    setCurrentVenue: (venue: Venue | undefined) => void
+}
+
+const CurrentVenueBox = ({
+    user,
+    venue,
+    setCurrentVenue,
+}: CurrentVenueBoxProps) => {
+    const router = useRouter()
+    let venueVisitCount = venue.visits.length
+    let averageVenueRating =
+        venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
+    const onClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
+        router.push(`/venues/${venue.venueId}`)
+    }
+    const onClickRecord = (e: MouseEvent<HTMLButtonElement>) => {
+        router.push(`/venues/${venue.venueId}/visit`)
+    }
+    console.log(venue)
+    return (
+        <Popup
+            anchor="bottom"
+            longitude={venue.longitude}
+            latitude={venue.latitude}
+            onClose={() => setCurrentVenue(undefined)}
+            closeButton={false}
+            offset={47}
+            maxWidth="60"
+            className="w-3/4 md:w-1/2 lg:w-1/4"
+        >
+            <div className="flex flex-col gap-2">
+                <div className="font-bold text-xl">
+                    <Link href={`/venues/${venue.venueId}`}>{venue.name}</Link>
+                </div>
+                <div className="flex flex-row gap-4 items-center">
+                    <div>
+                        {venueVisitCount}{" "}
+                        {venueVisitCount === 1 ? "visit" : "visits"}
+                    </div>
+                    <Rating
+                        style={{ maxWidth: 100 }}
+                        value={averageVenueRating}
+                        readOnly={true}
+                    />
+                </div>
+                {user && (
+                    <div>
+                        You visited on{" "}
+                        {getFirstVisitToVenue(
+                            user,
+                            venue
+                        ).visitDate.toLocaleDateString()}
+                    </div>
+                )}
+                <div className="flex flex-col gap-2">
+                    {user && (
+                        <LoginButton
+                            label="Record visit"
+                            onClick={onClickRecord}
+                        />
+                    )}
+                </div>
+            </div>
+        </Popup>
     )
+}
+
+interface VenueMapProps {
+    user: User | undefined
+    venues: Venue[]
+    currentVenue: Venue | undefined
+    setCurrentVenue: Dispatch<SetStateAction<Venue | undefined>>
+}
+
+export const VenueMap = ({
+    user,
+    venues,
+    currentVenue,
+    setCurrentVenue,
+}: VenueMapProps) => {
+    let venueFeatureCollection = getVenueFeatureCollection(venues)
     let venuePins = useMemo(
         () =>
             venues.map((venue) => (
@@ -97,11 +192,7 @@ export const VenueMap = ({ venues }: VenueMapProps) => {
                     key={venue.venueId}
                     venue={venue}
                     setCurrentVenue={setCurrentVenue}
-                    isCurrentVenue={
-                        !currentVenue
-                            ? false
-                            : venue.venueId === currentVenue?.venueId
-                    }
+                    currentVenue={currentVenue}
                 />
             )),
         [venues, currentVenue]
@@ -126,7 +217,7 @@ export const VenueMap = ({ venues }: VenueMapProps) => {
                 longitude: -1.9422,
                 zoom: 12.5,
             }}
-            style={{ width: "100%", height: "100vh" }}
+            style={{ width: "100%", height: "93vh" }}
             mapStyle={"https://tiles.openfreemap.org/styles/bright"}
         >
             <Source
@@ -138,6 +229,13 @@ export const VenueMap = ({ venues }: VenueMapProps) => {
                 clusterRadius={100}
             >
                 {venuePins}
+                {currentVenue && (
+                    <CurrentVenueBox
+                        user={user}
+                        venue={currentVenue}
+                        setCurrentVenue={setCurrentVenue}
+                    />
+                )}
             </Source>
         </Map>
     )

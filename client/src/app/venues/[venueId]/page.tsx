@@ -57,7 +57,10 @@ const VenueDetails = ({ venue }: VenueDetailsProps) => {
             <h2 className="text-2xl font-bold">{venue.name}</h2>
             <div>{venue.address}</div>
             <div className="flex flex-row gap-2">
-                <div>{venueVisitCount} visits</div>
+                <div>
+                    {venueVisitCount}{" "}
+                    {venueVisitCount === 1 ? "visit" : "visits"}
+                </div>
                 <Rating
                     style={{ maxWidth: 100 }}
                     value={averageVenueRating}
