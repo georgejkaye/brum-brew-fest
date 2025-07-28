@@ -43,47 +43,6 @@ interface VenueMapProps {
     venues: Venue[]
 }
 
-const clusterLayer: LayerProps = {
-    id: "clusters",
-    type: "circle",
-    source: "venues",
-    filter: ["has", "point_count"],
-    paint: {
-        "circle-color": [
-            "step",
-            ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1",
-        ],
-        "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
-    },
-}
-
-const clusterCountLayer: LayerProps = {
-    id: "cluster-count",
-    type: "symbol",
-    source: "venues",
-    filter: ["has", "point_count"],
-    layout: {
-        "text-field": "{point_count_abbreviated}",
-        "text-size": 12,
-    },
-}
-
-const unclusteredPointLayer: LayerProps = {
-    id: "unclustered-point",
-    type: "circle",
-    source: "venues",
-    filter: ["!", ["has", "point_count"]],
-    paint: {
-        "circle-color": "#11b4da",
-        "circle-radius": 20,
-    },
-}
-
 interface VenueMarkerProps {
     venue: Venue
     setCurrentVenue: (venue: Venue) => void
@@ -99,7 +58,7 @@ const VenueMarker = ({ venue, setCurrentVenue }: VenueMarkerProps) => {
         ? false
         : user.visits.filter((visit) => visit.venueId === venue.venueId)
               .length > 0
-    const pinColour = !user || !userHasVisitedVenue ? "#ff0000" : "#00ff00"
+    const pinColour = !user || !userHasVisitedVenue ? "#960000" : "#00a300"
     return (
         <Marker
             key={venue.venueId}
