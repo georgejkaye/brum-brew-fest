@@ -34,8 +34,8 @@ import Pin from "./Pin"
 import { LoginButton } from "./components/login"
 import { useRouter } from "next/navigation"
 import { Rating } from "@smastrom/react-rating"
-import { getFirstVisitToVenue } from "./utils"
 import Link from "next/link"
+import { getFirstVisitToVenue } from "./utils"
 
 const getVenueFeatureCollection = (
     venues: Venue[]
@@ -115,14 +115,19 @@ const CurrentVenueBox = ({
     const router = useRouter()
     let venueVisitCount = venue.visits.length
     let averageVenueRating =
-        venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
+        venueVisitCount === 0
+            ? 0
+            : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
     const onClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
         router.push(`/venues/${venue.venueId}`)
     }
     const onClickRecord = (e: MouseEvent<HTMLButtonElement>) => {
         router.push(`/venues/${venue.venueId}/visit`)
     }
-    console.log(venue)
+    const firstVisitToVenue = !user
+        ? undefined
+        : getFirstVisitToVenue(user, venue)
+
     return (
         <Popup
             anchor="bottom"
@@ -132,13 +137,13 @@ const CurrentVenueBox = ({
             closeButton={false}
             offset={47}
             maxWidth="60"
-            className="w-3/4 md:w-1/2 lg:w-1/4"
+            className="w-3/4 md:w-1/2 lg:w-1/10"
         >
             <div className="flex flex-col gap-2">
                 <div className="font-bold text-xl">
                     <Link href={`/venues/${venue.venueId}`}>{venue.name}</Link>
                 </div>
-                <div className="flex flex-row gap-4 items-center">
+                <div className="flex flex-row gap-2 h-5">
                     <div>
                         {venueVisitCount}{" "}
                         {venueVisitCount === 1 ? "visit" : "visits"}
@@ -149,16 +154,17 @@ const CurrentVenueBox = ({
                         readOnly={true}
                     />
                 </div>
-                {user && (
+                {firstVisitToVenue && (
                     <div>
                         You visited on{" "}
-                        {getFirstVisitToVenue(
-                            user,
-                            venue
-                        ).visitDate.toLocaleDateString()}
+                        {firstVisitToVenue.visitDate.toLocaleDateString()}
                     </div>
                 )}
                 <div className="flex flex-col gap-2">
+                    <LoginButton
+                        label="More details"
+                        onClick={onClickDetails}
+                    />
                     {user && (
                         <LoginButton
                             label="Record visit"
@@ -217,7 +223,7 @@ export const VenueMap = ({
                 longitude: -1.9422,
                 zoom: 12.5,
             }}
-            style={{ width: "100%", height: "93vh" }}
+            style={{ width: "100%", height: "100vh" }}
             mapStyle={"https://tiles.openfreemap.org/styles/bright"}
         >
             <Source
