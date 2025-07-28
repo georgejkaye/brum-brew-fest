@@ -16,6 +16,7 @@ import {
     Source,
 } from "@vis.gl/react-maplibre"
 import { Feature } from "geojson"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useContext, useRef } from "react"
 
@@ -109,18 +110,28 @@ interface VenueVisitProps {
 const VenueVisitCard = ({ visit }: VenueVisitProps) => {
     return (
         <div className="rounded p-2 bg-green-200 flex flex-col gap-2">
-            <div className="font-bold text-xl">{visit.userDisplayName}</div>
-            <div>{visit.visitDate.toLocaleDateString()}</div>
-            <Rating
-                style={{ maxWidth: 100 }}
-                value={visit.rating}
-                readOnly={true}
-            />
+            <div className="font-bold text-xl">
+                <Link href={`/users/${visit.userId}`}>
+                    {visit.userDisplayName}
+                </Link>
+            </div>
+            <div className="">
+                {visit.visitDate.toLocaleDateString()}{" "}
+                {visit.visitDate.toLocaleTimeString("en-UK", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })}
+            </div>
             <div>
                 <span className="font-bold">Drink: </span>
                 {visit.drink}
             </div>
             <div>'{visit.notes}'</div>
+            <Rating
+                style={{ maxWidth: 100 }}
+                value={visit.rating}
+                readOnly={true}
+            />
         </div>
     )
 }
