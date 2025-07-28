@@ -346,9 +346,9 @@ SELECT
     app_user.user_id,
     app_user.email,
     app_user.display_name,
-    visit_table.visits
+    COALESCE(visit_table.visits, ARRAY[]::single_user_visit_data[])
 FROM app_user
-INNER JOIN (
+LEFT JOIN (
     SELECT
         visit.user_id,
         ARRAY_AGG((
