@@ -52,6 +52,7 @@ class VenueInput:
     venue_address: str
     latitude: Decimal
     longitude: Decimal
+    pin_location: bool
 
 
 @dataclass
@@ -62,6 +63,7 @@ class Venue:
     latitude: Decimal
     longitude: Decimal
     visits: list[VenueVisit]
+    pin_location: bool
 
 
 @dataclass

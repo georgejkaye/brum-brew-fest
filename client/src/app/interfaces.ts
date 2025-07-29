@@ -38,6 +38,7 @@ export interface Venue {
     latitude: number
     longitude: number
     visits: VenueVisit[]
+    pinLocation: boolean
 }
 
 export interface UserSummary {

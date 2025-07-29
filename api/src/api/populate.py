@@ -15,12 +15,14 @@ with open(venue_json_path, "r") as f:
 venues: list[VenueInput] = []
 
 for venue in venue_json:
+    pin_location = venue.get("pin_location")
     venues.append(
         VenueInput(
             venue["name"],
             venue["address"],
             venue["latitude"],
             venue["longitude"],
+            pin_location if pin_location is not None else False,
         )
     )
 

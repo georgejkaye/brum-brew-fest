@@ -52,7 +52,8 @@ CREATE OR REPLACE FUNCTION insert_venue (
     p_venue_name TEXT,
     p_address TEXT,
     p_latitude DECIMAL,
-    p_longitude DECIMAL
+    p_longitude DECIMAL,
+    p_pin_location BOOLEAN
 )
 RETURNS INTEGER
 LANGUAGE sql
@@ -62,13 +63,15 @@ INSERT INTO venue (
     venue_name,
     venue_address,
     latitude,
-    longitude
+    longitude,
+    pin_location
 )
 VALUES (
     p_venue_name,
     p_address,
     p_latitude,
-    p_longitude
+    p_longitude,
+    p_pin_location
 )
 RETURNING venue_id;
 $$;
@@ -84,13 +87,15 @@ INSERT INTO venue (
     venue_name,
     venue_address,
     latitude,
-    longitude
+    longitude,
+    pin_location
 )
 SELECT
     v_venue.venue_name,
     v_venue.venue_address,
     v_venue.latitude,
-    v_venue.longitude
+    v_venue.longitude,
+    v_venue.pin_location
 FROM UNNEST(p_venues) AS v_venue;
 $$;
 
@@ -176,7 +181,8 @@ SELECT
     venue.venue_address,
     venue.latitude,
     venue.longitude,
-    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
+    venue.pin_location
 FROM venue
 LEFT JOIN (
     SELECT
@@ -226,7 +232,8 @@ SELECT
     venue.venue_address,
     venue.latitude,
     venue.longitude,
-    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
+    venue.pin_location
 FROM venue
 LEFT JOIN (
     SELECT
@@ -276,7 +283,8 @@ SELECT
     venue.venue_address,
     venue.latitude,
     venue.longitude,
-    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits
+    COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
+    venue.pin_location
 FROM venue
 LEFT JOIN (
     SELECT
