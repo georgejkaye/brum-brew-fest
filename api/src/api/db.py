@@ -54,7 +54,13 @@ def insert_venue(
 
 def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
     venue_tuples = [
-        (venue.venue_name, venue.venue_address, venue.latitude, venue.longitude)
+        (
+            venue.venue_name,
+            venue.venue_address,
+            venue.latitude,
+            venue.longitude,
+            venue.pin_location,
+        )
         for venue in venues
     ]
     conn.execute(

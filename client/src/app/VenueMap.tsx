@@ -125,12 +125,15 @@ const CurrentVenueBox = ({
             closeButton={false}
             offset={47}
             maxWidth="60"
-            className="w-3/4 md:w-1/2 lg:w-1/10"
+            className="w-3/4 md:w-1/2 lg:w-1/8"
         >
             <div className="flex flex-col gap-2">
                 <div className="font-bold text-xl">
                     <Link href={`/venues/${venue.venueId}`}>{venue.name}</Link>
                 </div>
+                {venue.pinLocation && (
+                    <div className="font-bold">Pin location!</div>
+                )}
                 <div className="flex flex-row gap-2 h-5">
                     <div>
                         {venueVisitCount}{" "}

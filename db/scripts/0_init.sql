@@ -14,7 +14,8 @@ CREATE TABLE venue (
     venue_name TEXT NOT NULL,
     venue_address TEXT NOT NULL,
     latitude DECIMAL NOT NULL,
-    longitude DECIMAL NOT NULL
+    longitude DECIMAL NOT NULL,
+    pin_location BOOLEAN NOT NULL
 );
 
 CREATE TABLE visit (
