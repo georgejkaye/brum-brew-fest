@@ -53,7 +53,8 @@ CREATE OR REPLACE FUNCTION insert_venue (
     p_address TEXT,
     p_latitude DECIMAL,
     p_longitude DECIMAL,
-    p_pin_location BOOLEAN
+    p_pin_location BOOLEAN,
+    p_venue_id INTEGER
 )
 RETURNS INTEGER
 LANGUAGE sql
@@ -64,14 +65,16 @@ INSERT INTO venue (
     venue_address,
     latitude,
     longitude,
-    pin_location
+    pin_location,
+    p_venue_area_id
 )
 VALUES (
     p_venue_name,
     p_address,
     p_latitude,
     p_longitude,
-    p_pin_location
+    p_pin_location,
+    p_venue_area_id
 )
 RETURNING venue_id;
 $$;
@@ -88,14 +91,16 @@ INSERT INTO venue (
     venue_address,
     latitude,
     longitude,
-    pin_location
+    pin_location,
+    venue_area_id
 )
 SELECT
     v_venue.venue_name,
     v_venue.venue_address,
     v_venue.latitude,
     v_venue.longitude,
-    v_venue.pin_location
+    v_venue.pin_location,
+    v_venue.venue_area_id
 FROM UNNEST(p_venues) AS v_venue;
 $$;
 
