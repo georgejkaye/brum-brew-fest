@@ -65,6 +65,7 @@ class Venue:
     longitude: Decimal
     visits: list[VenueVisit]
     pin_location: bool
+    venue_area_id: int
     venue_area_name: str
 
 
