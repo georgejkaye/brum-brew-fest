@@ -45,7 +45,7 @@ CREATE TYPE venue_data AS (
     visits venue_visit_data[],
     pin_location BOOLEAN,
     venue_area_id INTEGER,
-    venue_area_name INTEGER
+    venue_area_name TEXT
 );
 
 CREATE TYPE user_visit_data AS (

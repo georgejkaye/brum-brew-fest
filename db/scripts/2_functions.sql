@@ -8,7 +8,6 @@ DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
-DROP FUNCTION IF EXISTS update_user_password;
 DROP FUNCTION IF EXISTS update_user_display_name;
 DROP FUNCTION IF EXISTS delete_user;
 
@@ -54,7 +53,7 @@ CREATE OR REPLACE FUNCTION insert_venue (
     p_latitude DECIMAL,
     p_longitude DECIMAL,
     p_pin_location BOOLEAN,
-    p_venue_id INTEGER
+    p_venue_area_id INTEGER
 )
 RETURNS INTEGER
 LANGUAGE sql
@@ -66,7 +65,7 @@ INSERT INTO venue (
     latitude,
     longitude,
     pin_location,
-    p_venue_area_id
+    venue_area_id
 )
 VALUES (
     p_venue_name,
@@ -187,8 +186,12 @@ SELECT
     venue.latitude,
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
-    venue.pin_location
+    venue.pin_location,
+    venue.venue_area_id,
+    venue_area.venue_area_name
 FROM venue
+LEFT JOIN venue_area
+ON venue.venue_area_id = venue_area.venue_area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
@@ -238,8 +241,12 @@ SELECT
     venue.latitude,
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
-    venue.pin_location
+    venue.pin_location,
+    venue.venue_area_id,
+    venue_area.venue_area_name
 FROM venue
+LEFT JOIN venue_area
+ON venue.venue_area_id = venue_area.venue_area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
@@ -289,8 +296,12 @@ SELECT
     venue.latitude,
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
-    venue.pin_location
+    venue.pin_location,
+    venue.venue_area_id,
+    venue_area.venue_area_id
 FROM venue
+LEFT JOIN venue_area
+ON venue.venue_area_id = venue_area.venue_area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
