@@ -39,6 +39,8 @@ export interface Venue {
     longitude: number
     visits: VenueVisit[]
     pinLocation: boolean
+    venueAreaId: number
+    venueAreaName: string
 }
 
 export interface UserSummary {

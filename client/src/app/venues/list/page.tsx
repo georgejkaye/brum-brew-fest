@@ -33,6 +33,21 @@ const VenueCard = ({ venue }: VenueCardProps) => {
     )
 }
 
+const partitionByArea = (venues: Venue[]) =>
+    venues.reduce(
+        (
+            partitionedVenues: { [venueAreaName: string]: Venue[] },
+            currentVenue
+        ) => {
+            if (!partitionedVenues[currentVenue.venueAreaName]) {
+                partitionedVenues[currentVenue.venueAreaName] = []
+            }
+            partitionedVenues[currentVenue.venueAreaName].push(currentVenue)
+            return partitionedVenues
+        },
+        {}
+    )
+
 const Page = () => {
     const { venues } = useContext(VenuesContext)
     const [filteredVenues, setFilteredVenues] = useState([...venues])
