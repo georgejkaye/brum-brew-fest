@@ -1,4 +1,5 @@
 DROP FUNCTION IF EXISTS insert_user;
+DROP FUNCTION IF EXISTS insert_area;
 DROP FUNCTION IF EXISTS insert_venue;
 DROP FUNCTION IF EXISTS insert_venues;
 DROP FUNCTION IF EXISTS insert_visit;
@@ -47,13 +48,28 @@ RETURNING (
     last_verify_request)
 $$;
 
+CREATE OR REPLACE FUNCTION insert_area (
+    p_area_name TEXT
+)
+RETURNS INTEGER
+LANGUAGE sql
+AS
+$$
+INSERT INTO area (
+    area_name
+) VALUES (
+    p_area_name
+)
+RETURNING area_id;
+$$;
+
 CREATE OR REPLACE FUNCTION insert_venue (
     p_venue_name TEXT,
     p_address TEXT,
     p_latitude DECIMAL,
     p_longitude DECIMAL,
     p_pin_location BOOLEAN,
-    p_venue_area_id INTEGER
+    p_area_id INTEGER
 )
 RETURNS INTEGER
 LANGUAGE sql
@@ -65,7 +81,7 @@ INSERT INTO venue (
     latitude,
     longitude,
     pin_location,
-    venue_area_id
+    area_id
 )
 VALUES (
     p_venue_name,
@@ -73,7 +89,7 @@ VALUES (
     p_latitude,
     p_longitude,
     p_pin_location,
-    p_venue_area_id
+    p_area_id
 )
 RETURNING venue_id;
 $$;
@@ -91,7 +107,7 @@ INSERT INTO venue (
     latitude,
     longitude,
     pin_location,
-    venue_area_id
+    area_id
 )
 SELECT
     v_venue.venue_name,
@@ -99,7 +115,7 @@ SELECT
     v_venue.latitude,
     v_venue.longitude,
     v_venue.pin_location,
-    v_venue.venue_area_id
+    v_venue.area_id
 FROM UNNEST(p_venues) AS v_venue;
 $$;
 
@@ -187,11 +203,11 @@ SELECT
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
     venue.pin_location,
-    venue.venue_area_id,
-    venue_area.venue_area_name
+    venue.area_id,
+    area.area_name
 FROM venue
-LEFT JOIN venue_area
-ON venue.venue_area_id = venue_area.venue_area_id
+LEFT JOIN area
+ON venue.area_id = area.area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
@@ -242,11 +258,11 @@ SELECT
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
     venue.pin_location,
-    venue.venue_area_id,
-    venue_area.venue_area_name
+    venue.area_id,
+    area.area_name
 FROM venue
-LEFT JOIN venue_area
-ON venue.venue_area_id = venue_area.venue_area_id
+LEFT JOIN area
+ON venue.area_id = area.area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
@@ -297,11 +313,11 @@ SELECT
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,
     venue.pin_location,
-    venue.venue_area_id,
-    venue_area.venue_area_id
+    venue.area_id,
+    area.area_id
 FROM venue
-LEFT JOIN venue_area
-ON venue.venue_area_id = venue_area.venue_area_id
+LEFT JOIN area
+ON venue.area_id = area.area_id
 LEFT JOIN (
     SELECT
         visit_table.venue_id,
