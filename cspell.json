@@ -1,0 +1,19 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "Alcester",
+    "Cotteridge",
+    "Harborne",
+    "Hazelwell",
+    "Houblon",
+    "Metchley",
+    "Pershore",
+    "Smethwick",
+    "Stirchley"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

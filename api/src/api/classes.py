@@ -47,8 +47,14 @@ class VenueVisit:
 
 
 @dataclass
+class AreaInput:
+    area_name: str
+
+
+@dataclass
 class VenueInput:
     venue_name: str
+    area_id: int
     venue_address: str
     latitude: Decimal
     longitude: Decimal
@@ -64,6 +70,8 @@ class Venue:
     longitude: Decimal
     visits: list[VenueVisit]
     pin_location: bool
+    area_id: int
+    area_name: str
 
 
 @dataclass
@@ -95,3 +103,8 @@ class InsertVisitResult:
 @dataclass
 class InsertVenueResult:
     insert_venue: int
+
+
+@dataclass
+class InsertAreaResult:
+    insert_area: int

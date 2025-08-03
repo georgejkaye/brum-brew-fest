@@ -39,6 +39,8 @@ export interface Venue {
     longitude: number
     visits: VenueVisit[]
     pinLocation: boolean
+    venueAreaId: number
+    venueAreaName: string
 }
 
 export interface UserSummary {
@@ -57,4 +59,10 @@ export interface Visit {
     visitDate: Date
     notes: string
     rating: number
+}
+
+export interface Area {
+    areaId: number
+    areaName: string
+    venues: Venue[]
 }

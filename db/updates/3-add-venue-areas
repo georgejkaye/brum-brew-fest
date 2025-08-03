@@ -1,0 +1,12 @@
+CREATE TABLE area (
+    area_id SERIAL PRIMARY KEY,
+    area_name TEXT NOT NULL
+);
+
+ALTER TABLE venue
+ADD COLUMN area_id INTEGER;
+
+ALTER TABLE venue
+ADD CONSTRAINT venue_area_id_fkey
+FOREIGN KEY (area_id)
+REFERENCES area(area_id);

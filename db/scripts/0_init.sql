@@ -9,13 +9,20 @@ CREATE TABLE app_user (
     last_verify_request TIMESTAMP WITH TIME ZONE
 );
 
+CREATE TABLE area (
+    area_id SERIAL PRIMARY KEY,
+    area_name TEXT NOT NULL
+);
+
 CREATE TABLE venue (
     venue_id SERIAL PRIMARY KEY,
     venue_name TEXT NOT NULL,
     venue_address TEXT NOT NULL,
     latitude DECIMAL NOT NULL,
     longitude DECIMAL NOT NULL,
-    pin_location BOOLEAN NOT NULL
+    pin_location BOOLEAN NOT NULL,
+    area_id INTEGER NOT NULL,
+    FOREIGN KEY area_id REFERENCES area(area_id)
 );
 
 CREATE TABLE visit (

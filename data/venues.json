@@ -1,35 +1,182 @@
-[
-    {
-        "name": "Hop Garden",
-        "address": "19 Metchley Ln, Harborne, Birmingham B17 0HT",
-        "latitude": 52.459930,
-        "longitude": -1.943325
-    },
-    {
-        "name": "Cherry Reds",
-        "address": "88-92 John Bright St, Birmingham B1 1BN",
-        "latitude": 52.477033,
-        "longitude": -1.901150,
-        "pins": true
-    },
-    {
-        "name": "The Wolf",
-        "address": "2-10 Constitution Hill, Birmingham B19 3LY",
-        "latitude": 52.4864962,
-        "longitude": -1.9017338,
-        "pins": true
-    },
-    {
-        "name": "Attic Brew Co.",
-        "address": "29B Mary Vale Rd, Stirchley, Birmingham B30 2DA",
-        "latitude": "52.4262647",
-        "longitude": "-1.9254014",
-        "pins": true
-    },
-    {
-        "name": "The Barrel Store",
-        "address": "Arch 32 Water St, Birmingham B3 1HL",
-        "latitude": "52.4859021",
-        "longitude": "-1.9024120"
-    }
-]
+{
+    "areas": [
+        {
+            "name": "Harborne/Bearwood",
+            "venues": [
+                {
+                    "name": "Hop Garden",
+                    "address": "19 Metchley Ln, Harborne, Birmingham, B17 0HT",
+                    "latitude": 52.459930,
+                    "longitude": -1.943325
+                },
+                {
+                    "name": "The Plough",
+                    "address": "21 High St, Harborne, Birmingham, B17 9NT",
+                    "latitude": 52.461080,
+                    "longitude": -1.943751
+                },
+                {
+                    "name": "The Courtyard",
+                    "address": "2 War Ln, Harborne, Birmingham, B17 9RN",
+                    "latitude": 52.457700,
+                    "longitude": -1.958750
+                },
+                {
+                    "name": "1000 Trades on the Park",
+                    "address": "2 Adkins Ln, Bearwood, Smethwick, B67 5DP",
+                    "latitude": 52.4720148,
+                    "longitude": -1.9714495
+                },
+                {
+                    "name": "Craft Inn Bearwood",
+                    "address": "608 Bearwood Rd, Bearwood, Birmingham, Smethwick, B66 4BW",
+                    "latitude": 52.4720148,
+                    "longitude": -1.9714495
+                }
+            ]
+        },
+        {
+            "name": "Jewellery Quarter",
+            "venues": [
+                {
+                    "name": "Temper and Brown",
+                    "address": "12-13 Albion St, Birmingham, B1 3ED",
+                    "latitude": 52.484619,
+                    "longitude": -1.914499
+                },
+                {
+                    "name": "1000 Trades",
+                    "address": "16 Frederick St, Birmingham, B1 3HE",
+                    "latitude": 52.485172,
+                    "longitude": -1.911455
+                },
+                {
+                    "name": "Burning Soul Brewing",
+                    "address": "Unit 1, 51 Mott St, Birmingham, B19 3HE",
+                    "latitude": 52.4889908,
+                    "longitude": -1.9054923
+                },
+                {
+                    "name": "The Barrel Store",
+                    "address": "Arch 32, Water St, Birmingham, B3 1HL",
+                    "latitude": "52.4859021",
+                    "longitude": "-1.9024120"
+                },
+                {
+                    "name": "Indian Brewery Taproom",
+                    "address": "1 Mary Ann St, Birmingham, B3 1RL",
+                    "latitude": 52.485945,
+                    "longitude": -1.903843
+                },
+                {
+                    "name": "The Wolf",
+                    "address": "2-10 Constitution Hill, Birmingham B19 3LY",
+                    "latitude": 52.4864962,
+                    "longitude": -1.9017338,
+                    "pins": true
+                }
+            ]
+        },
+        {
+            "name": "Stirchley",
+            "venues": [
+                {
+                    "name": "RedBeer'd",
+                    "address": "1891 Pershore Rd, Cotteridge, Birmingham, B30 3DJ",
+                    "latitude": 52.4161901,
+                    "longitude": -1.9299923
+                },
+                {
+                    "name": "Stirchley Wines & Spirits",
+                    "address": "1535-1537 Pershore Rd, Stirchley, Birmingham, B30 2JH",
+                    "latitude": 52.4241020,
+                    "longitude": -1.9217880
+                },
+                {
+                    "name": "Birmingham Brewing Company",
+                    "address": "Unit 17, Stirchley Trading Estate, Hazelwell Rd, Stirchley, Birmingham, B30 2PF",
+                    "latitude": 52.4270455,
+                    "longitude": -1.9177691
+                },
+                {
+                    "name": "GlassHouse",
+                    "address": "Waterside Business Park, Unit 6B, 1649-1652, Pershore Rd, Birmingham, B30 3DR",
+                    "latitude": 52.4219842,
+                    "longitude": -1.9238760
+                },
+                {
+                    "name": "The Den",
+                    "address": "1465 Pershore Rd, Stirchley, Birmingham, B30 2JL",
+                    "latitude": 52.425759,
+                    "longitude": -1.922157
+                },
+                {
+                    "name": "cork and cage",
+                    "address": "1373 Pershore Rd, Stirchley, Birmingham, B30 2JR",
+                    "latitude": 52.4278600,
+                    "longitude": -1.9225770
+                },
+                {
+                    "name": "Attic Brew Co.",
+                    "address": "29B Mary Vale Rd, Stirchley, Birmingham B30 2DA",
+                    "latitude": "52.4262647",
+                    "longitude": "-1.9254014",
+                    "pins": true
+                }
+            ]
+        },
+        {
+            "name": "Kings Heath/Moseley",
+            "venues": [
+                {
+                    "name": "Schooners",
+                    "address": "31 York Rd, King's Heath, Birmingham, B14 7SA",
+                    "latitude": 52.4344206,
+                    "longitude": -1.8942121
+                },
+                {
+                    "name": "The Juke",
+                    "address": "16 York Rd, King's Heath, Birmingham, B14 7RZ",
+                    "latitude": 52.434664,
+                    "longitude": -1.894299
+                },
+                {
+                    "name": "Fletchers Bar and Eatery",
+                    "address": "7 York Rd, King's Heath, Birmingham, B14 7SA",
+                    "latitude": 52.4344025,
+                    "longitude": -1.8934453
+                },
+                {
+                    "name": "Houblon",
+                    "address": "7 Institute Rd, King's Heath, Birmingham, B14 7EG",
+                    "latitude": 52.4337575,
+                    "longitude": -1.8923317
+                },
+                {
+                    "name": "HOP & SCOTCH",
+                    "address": "9 Institute Rd, King's Heath, Birmingham, B14 7EG",
+                    "latitude": 52.4337521,
+                    "longitude": -1.8922043
+                },
+                {
+                    "name": "The Dark Horse",
+                    "address": "145 Alcester Rd, Moseley, Birmingham, B13 8JP",
+                    "latitude": 52.446018,
+                    "longitude": -1.888879
+                }
+            ]
+        },
+        {
+            "name": "City Centre",
+            "venues": [
+                {
+                    "name": "Cherry Reds",
+                    "address": "88-92 John Bright St, Birmingham B1 1BN",
+                    "latitude": 52.477033,
+                    "longitude": -1.901150,
+                    "pins": true
+                }
+            ]
+        }
+    ]
+}

@@ -155,6 +155,8 @@ const responseToVenue = (response: any) => ({
     longitude: response["longitude"],
     visits: response["visits"].map(responseToVenueVisit),
     pinLocation: response["pin_location"],
+    venueAreaId: response["area_id"],
+    venueAreaName: response["area_name"],
 })
 
 export const getVenues = async (): Promise<Venue[]> => {
