@@ -11,7 +11,7 @@ const TopBar = () => {
     }
     return (
         <div>
-            <div className="flex flex-row p-4 bg-[#38db98] w-full items-center">
+            <div className="flex flex-row p-4 bg-[#38db98] w-full items-center h-[60px]">
                 <div className="flex-1 text-2xl text-black font-bold">
                     <Link href="/">Brum Brew Fest Tracker</Link>
                 </div>

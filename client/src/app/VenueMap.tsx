@@ -214,7 +214,7 @@ export const VenueMap = ({
                 longitude: -1.9422,
                 zoom: 12.5,
             }}
-            style={{ width: "100%", height: "100vh" }}
+            style={{ width: "100%", height: "calc(100vh - 60px)" }}
             mapStyle={"https://tiles.openfreemap.org/styles/bright"}
         >
             <Source
