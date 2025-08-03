@@ -22,7 +22,7 @@ CREATE TABLE venue (
     longitude DECIMAL NOT NULL,
     pin_location BOOLEAN NOT NULL,
     area_id INTEGER NOT NULL,
-    FOREIGN KEY area_id REFERENCES area(area_id)
+    FOREIGN KEY (area_id) REFERENCES area(area_id)
 );
 
 CREATE TABLE visit (
