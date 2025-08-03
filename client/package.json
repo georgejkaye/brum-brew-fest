@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@smastrom/react-rating": "^1.5.0",
+    "@turf/bbox": "^7.2.0",
     "@vis.gl/react-maplibre": "^8.0.4",
     "axios": "^1.11.0",
     "geojson": "^0.5.0",
