@@ -8,6 +8,8 @@ from psycopg.rows import TupleRow, class_row
 from psycopg.types.composite import CompositeInfo, register_composite
 
 from api.classes import (
+    AreaInput,
+    InsertAreaResult,
     InsertVenueResult,
     InsertVisitResult,
     SingleUserVisit,
@@ -38,18 +40,30 @@ def insert_user(
 
 def insert_venue(
     conn: Connection,
+    area_id: int,
     venue_name: str,
     address: str,
     latitude: Decimal,
     longitude: Decimal,
+    pin_location: bool,
 ) -> Optional[int]:
     with conn.cursor(row_factory=class_row(InsertVenueResult)) as cur:
         result = cur.execute(
-            "SELECT * FROM insert_venue(%s, %s, %s)",
-            [venue_name, address, latitude, longitude],
+            "SELECT * FROM insert_venue(%s, %s, %s, %s, %s)",
+            [venue_name, address, latitude, longitude, pin_location, area_id],
         ).fetchone()
         conn.commit()
         return result.insert_venue if result is not None else None
+
+
+def insert_area(conn: Connection, area: AreaInput) -> Optional[int]:
+    with conn.cursor(row_factory=class_row(InsertAreaResult)) as cur:
+        result = cur.execute(
+            "SELECT * FROM insert_area(%s)",
+            [area.area_name],
+        ).fetchone()
+        conn.commit()
+        return result.insert_area if result is not None else None
 
 
 def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
@@ -60,6 +74,7 @@ def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
             venue.latitude,
             venue.longitude,
             venue.pin_location,
+            venue.area_id,
         )
         for venue in venues
     ]
