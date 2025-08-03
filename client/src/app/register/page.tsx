@@ -114,6 +114,12 @@ const Page = () => {
                         <LoginButton
                             label="Register"
                             onClick={onClickRegister}
+                            disabled={
+                                emailString === "" ||
+                                passwordString === "" ||
+                                confirmPasswordString === "" ||
+                                displayNameString === ""
+                            }
                         />
                     </form>
                     <div className="flex flex-col lg:flex-row gap-2">

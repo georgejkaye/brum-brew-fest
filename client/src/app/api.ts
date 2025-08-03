@@ -124,16 +124,22 @@ export const requestPasswordReset = async (email: string) => {
     }
 }
 
-export const resetPassword = async (token: string) => {
-    const endpoint = "/api/auth/verify"
+export const resetPassword = async (token: string, password: string) => {
+    const endpoint = "/api/auth/reset-password"
     try {
-        const body = { token }
+        const body = { token, password }
         const response = await axios.post(endpoint, body)
         const data = response.data
-        return data as string
+        return { success: data as string }
     } catch (e) {
         console.error(e)
-        return undefined
+        const error = e as AxiosError
+        if (error.response?.data != undefined) {
+            const errorData = error.response.data as { detail: string }
+            return { error: errorData.detail }
+        } else {
+            return { error: "Unknown error " }
+        }
     }
 }
 

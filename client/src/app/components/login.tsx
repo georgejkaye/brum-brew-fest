@@ -68,14 +68,20 @@ export const LoginTextAreaInput = ({
 interface LoginButtonProps {
     label: string
     onClick: (e: MouseEvent<HTMLButtonElement>) => void
+    disabled?: boolean
 }
 
-export const LoginButton = ({ label, onClick }: LoginButtonProps) => {
+export const LoginButton = ({
+    label,
+    onClick,
+    disabled = false,
+}: LoginButtonProps) => {
     return (
         <button
             type="submit"
-            className="font-bold p-2 rounded bg-green-300 cursor-pointer hover:bg-green-200"
+            className="font-bold p-2 rounded bg-green-300 cursor-pointer hover:bg-green-200 disabled:bg-green-100 disabled:cursor-not-allowed"
             onClick={onClick}
+            disabled={disabled}
         >
             {label}
         </button>
