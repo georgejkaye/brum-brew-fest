@@ -23,7 +23,7 @@ const Page = () => {
         }
     }, [])
     return (
-        <div className="flex flex-col md:w-1/3 lg:w-1/4 mx-auto p-4 gap-2 items-center">
+        <div className="flex flex-col md:w-1/2 lg:w-1/3 mx-auto p-4 gap-2 items-center">
             {isLoggedOut ? (
                 <>
                     <div className="w-full bg-green-300 rounded p-4">

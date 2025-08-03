@@ -51,7 +51,11 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
                     />
                 </div>
             </div>
-            <LoginButton label="Login" onClick={onClickLogin} />
+            <LoginButton
+                label="Login"
+                onClick={onClickLogin}
+                disabled={emailString === "" || passwordString === ""}
+            />
         </div>
     )
 }
@@ -66,7 +70,11 @@ const Page = () => {
         setLoading(true)
         const loginResult = await login(email, password)
         if (loginResult.token === undefined) {
-            setErrorString(`Could not log in: ${loginResult.error}`)
+            if (loginResult.error === "LOGIN_BAD_CREDENTIALS") {
+                setErrorString("Could not log in: invalid credentials")
+            } else {
+                setErrorString(`Could not log in: ${loginResult.error}`)
+            }
             setLoading(false)
             return false
         } else {
@@ -81,7 +89,7 @@ const Page = () => {
         }
     }
     return (
-        <div className="flex flex-col md:w-1/3 md:mx-auto p-4 items-center">
+        <div className="flex flex-col md:w-1/2 lg:w-1/3 md:mx-auto p-4 items-center">
             {isLoading ? (
                 <Loader />
             ) : isLoginSuccessful ? (
@@ -101,6 +109,14 @@ const Page = () => {
                             </div>
                         )}
                         <LoginBox performLogin={performLogin} />
+                        <div className="flex flex-col md:flex-row gap-2">
+                            <Link
+                                href="/forgot"
+                                className="font-bold text-blue-500 underline"
+                            >
+                                Forgot your password?
+                            </Link>
+                        </div>
                         <div className="flex flex-col md:flex-row gap-2">
                             <span>Don&apos;t have an account?</span>
                             <Link

@@ -73,7 +73,8 @@ def send_verify_email(user: FastApiUser, token: str) -> None:
 
 def send_forgot_password_email(user: FastApiUser, token: str) -> None:
     body = write_email_template(
-        "forgot-password.txt", {"client_host": client_host, "token": token}
+        "forgot-password.txt",
+        {"reset_url": f"{client_protocol}://{client_host}/reset/{token}"},
     )
     message = write_email("[bbf] Password reset request", user.email, body)
     send_email(message)
