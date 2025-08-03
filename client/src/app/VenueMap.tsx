@@ -1,11 +1,18 @@
 "use client"
 import {
+    FullscreenControl,
+    LngLatBoundsLike,
     Map,
     MapRef,
     Marker,
     MarkerEvent,
+    NavigationControl,
+    PaddingOptions,
+    PointLike,
     Popup,
+    ScaleControl,
     Source,
+    ViewState,
 } from "@vis.gl/react-maplibre"
 import { GeoJSON, Geometry, GeoJsonProperties, Feature } from "geojson"
 import { User, Venue } from "./interfaces"
@@ -16,6 +23,7 @@ import {
     useEffect,
     useMemo,
     useRef,
+    useState,
 } from "react"
 import { UserContext } from "./context/user"
 import Pin from "./Pin"
@@ -24,6 +32,7 @@ import { useRouter } from "next/navigation"
 import { Rating } from "@smastrom/react-rating"
 import Link from "next/link"
 import { getFirstVisitToVenue } from "./utils"
+import bbox from "@turf/bbox"
 
 const getVenueFeatureCollection = (
     venues: Venue[]
@@ -168,20 +177,26 @@ const CurrentVenueBox = ({
     )
 }
 
-interface VenueMapProps {
+interface MapComponentProps {
     user: User | undefined
     venues: Venue[]
+    featureCollection: GeoJSON<Geometry, GeoJsonProperties>
     currentVenue: Venue | undefined
     setCurrentVenue: Dispatch<SetStateAction<Venue | undefined>>
 }
 
-export const VenueMap = ({
+const MapComponent = ({
     user,
     venues,
+    featureCollection,
     currentVenue,
     setCurrentVenue,
-}: VenueMapProps) => {
-    const venueFeatureCollection = getVenueFeatureCollection(venues)
+}: MapComponentProps) => {
+    const [minLng, minLat, maxLng, maxLat] = bbox(featureCollection)
+    const [mapViewState, setMapViewState] = useState<InitMapViewProps>({
+        bounds: [minLng, minLat, maxLng, maxLat],
+        fitBoundsOptions: { padding: 50 },
+    })
     const venuePins = useMemo(
         () =>
             venues.map((venue) => (
@@ -192,7 +207,7 @@ export const VenueMap = ({
                     currentVenue={currentVenue}
                 />
             )),
-        [venues, currentVenue]
+        [venues, currentVenue, setCurrentVenue]
     )
     const mapRef = useRef<MapRef>(null)
 
@@ -208,19 +223,19 @@ export const VenueMap = ({
 
     return (
         <Map
+            {...mapViewState}
+            onMove={(evt) => setMapViewState(evt.viewState)}
             ref={mapRef}
-            initialViewState={{
-                latitude: 52.4864,
-                longitude: -1.9422,
-                zoom: 12.5,
-            }}
             style={{ width: "100%", height: "calc(100vh - 60px)" }}
             mapStyle={"https://tiles.openfreemap.org/styles/bright"}
         >
+            <FullscreenControl position="top-left" />
+            <NavigationControl position="top-left" />
+            <ScaleControl />
             <Source
                 id="venues"
                 type="geojson"
-                data={venueFeatureCollection}
+                data={featureCollection}
                 cluster={true}
                 clusterMaxZoom={1}
                 clusterRadius={100}
@@ -235,5 +250,42 @@ export const VenueMap = ({
                 )}
             </Source>
         </Map>
+    )
+}
+
+interface VenueMapProps {
+    user: User | undefined
+    venues: Venue[]
+    currentVenue: Venue | undefined
+    setCurrentVenue: Dispatch<SetStateAction<Venue | undefined>>
+}
+
+type InitMapViewProps = Partial<ViewState> & {
+    bounds?: LngLatBoundsLike
+    fitBoundsOptions?: {
+        offset?: PointLike
+        minZoom?: number
+        maxZoom?: number
+        padding?: number | PaddingOptions
+    }
+}
+
+export const VenueMap = ({
+    user,
+    venues,
+    currentVenue,
+    setCurrentVenue,
+}: VenueMapProps) => {
+    const venueFeatureCollection = getVenueFeatureCollection(venues)
+    return (
+        venues.length > 0 && (
+            <MapComponent
+                user={user}
+                venues={venues}
+                featureCollection={venueFeatureCollection}
+                currentVenue={currentVenue}
+                setCurrentVenue={setCurrentVenue}
+            />
+        )
     )
 }
