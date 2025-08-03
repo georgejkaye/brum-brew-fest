@@ -60,3 +60,9 @@ export interface Visit {
     notes: string
     rating: number
 }
+
+export interface Area {
+    areaId: number
+    areaName: string
+    venues: Venue[]
+}
