@@ -40,7 +40,7 @@ const TopBar = () => {
                 )}
             </div>
             {isMenuOpen && (
-                <div className="absolute z-999 top-16 left-0 bg-green-300 p-4 flex flex-col gap-3 items-end w-full">
+                <div className="absolute z-999 top-[60px] left-0 bg-green-300 p-4 flex flex-col gap-3 items-end w-full">
                     <Link onClick={onClickLink} href="/">
                         Map
                     </Link>
