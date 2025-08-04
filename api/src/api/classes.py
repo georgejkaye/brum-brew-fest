@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
 
 @dataclass
@@ -49,6 +50,24 @@ class VenueVisit:
 @dataclass
 class AreaInput:
     area_name: str
+
+
+@dataclass
+class AreaVenue:
+    venue_id: int
+    venue_name: str
+    venue_address: str
+    latitude: Decimal
+    longitude: Decimal
+    visits: list[VenueVisit]
+    pin_location: bool
+
+
+@dataclass
+class Area:
+    area_id: int
+    area_name: str
+    venues: list[AreaVenue]
 
 
 @dataclass
@@ -107,4 +126,4 @@ class InsertVenueResult:
 
 @dataclass
 class InsertAreaResult:
-    insert_area: int
+    insert_area: Optional[int]
