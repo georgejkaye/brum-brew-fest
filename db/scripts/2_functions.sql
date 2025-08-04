@@ -5,6 +5,7 @@ DROP FUNCTION IF EXISTS insert_venues;
 DROP FUNCTION IF EXISTS insert_visit;
 DROP FUNCTION IF EXISTS select_user_by_user_id;
 DROP FUNCTION IF EXISTS select_user_by_email;
+DROP FUNCTION IF EXISTS select_area_by_name;
 DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
@@ -60,6 +61,7 @@ INSERT INTO area (
 ) VALUES (
     p_area_name
 )
+ON CONFLICT DO NOTHING
 RETURNING area_id;
 $$;
 
@@ -91,6 +93,14 @@ VALUES (
     p_pin_location,
     p_area_id
 )
+ON CONFLICT (venue_name, venue_address) DO UPDATE
+SET
+    venue_name = p_venue_name,
+    venue_address = p_address,
+    latitude = p_latitude,
+    longitude = p_longitude,
+    pin_location = p_pin_location,
+    area_id = p_area_id
 RETURNING venue_id;
 $$;
 
@@ -116,7 +126,8 @@ SELECT
     v_venue.longitude,
     v_venue.pin_location,
     v_venue.area_id
-FROM UNNEST(p_venues) AS v_venue;
+FROM UNNEST(p_venues) AS v_venue
+ON CONFLICT (venue_name, venue_address) DO NOTHING
 $$;
 
 CREATE OR REPLACE FUNCTION insert_visit (
@@ -188,6 +199,75 @@ SELECT
     app_user.last_verify_request
 FROM app_user
 WHERE app_user.email = p_email;
+$$;
+
+CREATE OR REPLACE FUNCTION select_area_by_name (
+    p_area_name TEXT
+)
+RETURNS SETOF area_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    area.area_id,
+    area.area_name,
+    COALESCE(venue_data_table.venues, ARRAY[]::area_venue_data[]) AS venues
+FROM area
+INNER JOIN (
+    SELECT
+        area.area_id,
+        ARRAY_AGG((
+            venue.venue_id,
+            venue.venue_name,
+            venue.venue_address,
+            venue.latitude,
+            venue.longitude,
+            COALESCE(
+                visit_data_table.visits,
+                ARRAY[]::venue_visit_data[]
+            ),
+            venue.pin_location)::area_venue_data
+            ORDER BY venue.venue_name
+        ) AS venues
+    FROM area
+    INNER JOIN venue
+    ON area.area_id = venue.area_id
+    LEFT JOIN (
+        SELECT
+            visit_table.venue_id,
+            ARRAY_AGG((
+                visit_table.visit_id,
+                visit_table.user_id,
+                visit_table.display_name,
+                visit_table.visit_date,
+                visit_table.notes,
+                visit_table.rating,
+                visit_table.drink)::venue_visit_data
+                ORDER BY visit_table.visit_date
+            ) AS visits
+        FROM (
+            SELECT
+                venue.venue_id,
+                visit.visit_id,
+                app_user.user_id,
+                app_user.display_name,
+                visit.visit_date,
+                visit.notes,
+                visit.rating,
+                visit.drink
+            FROM venue
+            INNER JOIN visit
+            ON venue.venue_id = visit.venue_id
+            INNER JOIN app_user
+            ON visit.user_id = app_user.user_id
+        ) visit_table
+        GROUP BY visit_table.venue_id
+    ) visit_data_table
+    ON venue.venue_id = visit_data_table.venue_id
+    GROUP BY area.area_id
+) venue_data_table
+ON area.area_id = venue_data_table.area_id
+WHERE area.area_name = p_area_name;
 $$;
 
 CREATE OR REPLACE FUNCTION select_venues ()
