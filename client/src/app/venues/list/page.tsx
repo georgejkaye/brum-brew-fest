@@ -40,15 +40,20 @@ const VenueCard = ({ venue, location }: VenueCardProps) => {
 
 interface AreaGroupProps {
     area: Area
+    location: GeolocationPosition | undefined
 }
 
-const AreaGroup = ({ area }: AreaGroupProps) => {
+const AreaGroup = ({ area, location }: AreaGroupProps) => {
     return (
         <div>
             <h3 className="font-bold text-xl mb-4">{area.areaName}</h3>
             <div className="flex flex-col gap-4">
                 {area.venues.map((venue) => (
-                    <VenueCard key={`venue-${venue.venueId}`} venue={venue} />
+                    <VenueCard
+                        key={`venue-${venue.venueId}`}
+                        venue={venue}
+                        location={location}
+                    />
                 ))}
             </div>
         </div>
@@ -145,6 +150,8 @@ const Page = () => {
                 ? visitsDescendingSort
                 : sortByValue === "rating-asc"
                 ? ratingAscendingSort
+                : sortByValue === "rating-desc"
+                ? ratingDescendingSort
                 : sortByValue === "distance-asc"
                 ? distanceAscendingSort
                 : distanceDescendingSort
@@ -224,10 +231,18 @@ const Page = () => {
             </div>
             {groupByArea
                 ? filteredAreas.map((area) => (
-                      <AreaGroup key={`area-${area.areaId}`} area={area} />
+                      <AreaGroup
+                          key={`area-${area.areaId}`}
+                          area={area}
+                          location={location}
+                      />
                   ))
                 : filteredVenues.map((venue) => (
-                      <VenueCard key={`venue-${venue.venueId}`} venue={venue} />
+                      <VenueCard
+                          key={`venue-${venue.venueId}`}
+                          venue={venue}
+                          location={location}
+                      />
                   ))}
         </div>
     )
