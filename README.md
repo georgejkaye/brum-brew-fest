@@ -6,7 +6,9 @@ Tracker for Brum Brew Fest venues
 
 The easiest way to run the app is with [Docker](https://www.docker.com/) and
 [Docker Compose](https://docs.docker.com/compose/).
-Set up your environment variables as discussed below and run:
+
+Copy the contents of `setup` to the root of the repo, customise with environment
+variables and secrets as discussed below, and then run:
 
 ```sh
 docker compose -f docker-compose.dev.yml up
