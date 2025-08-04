@@ -80,6 +80,7 @@ const partitionByArea = (venues: Venue[]) => {
 const Page = () => {
     const { venues } = useContext(VenuesContext)
     const [groupByArea, setGroupByArea] = useState(true)
+    const [showOnlyBadgeHolders, setShowOnlyBadgeHolders] = useState(true)
     const [filteredVenues, setFilteredVenues] = useState([...venues])
     const [filteredAreas, setFilteredAreas] = useState<Area[]>([])
     const [searchValue, setSearchValue] = useState("")
@@ -92,7 +93,8 @@ const Page = () => {
                         .includes(searchValue.toLowerCase()) ||
                     venue.address
                         .toLowerCase()
-                        .includes(searchValue.toLowerCase())
+                        .includes(searchValue.toLowerCase()) ||
+                    !(showOnlyBadgeHolders && !venue.pinLocation)
             )
         setFilteredVenues(filterVenues(venues))
         const areas = partitionByArea(venues)
@@ -106,6 +108,9 @@ const Page = () => {
     }, [searchValue, venues])
     const onChangeGroupByArea = (e: ChangeEvent<HTMLInputElement>) => {
         setGroupByArea(e.target.checked)
+    }
+    const onChangeShowOnlyBadgeHolders = (e: ChangeEvent<HTMLInputElement>) => {
+        setShowOnlyBadgeHolders(e.target.checked)
     }
     return (
         <div className="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2 mx-auto p-4">
@@ -125,6 +130,15 @@ const Page = () => {
                         onChange={onChangeGroupByArea}
                     />
                     <label htmlFor="group-by-area">Group by area</label>
+                </div>
+                <div className="flex flex-row gap-2">
+                    <input
+                        id="group-by-area"
+                        type="checkbox"
+                        checked={groupByArea}
+                        onChange={onChangeGroupByArea}
+                    />
+                    <label htmlFor="group-by-area">Show only badgeholders</label>
                 </div>
             </div>
             {groupByArea
