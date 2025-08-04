@@ -40,7 +40,7 @@ const getDistanceBetweenCoordinates = (
             Math.cos(lat2Rad)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     const d = R * c
-    return d.toFixed(2)
+    return d
 }
 
 export const getDistanceToVenue = (

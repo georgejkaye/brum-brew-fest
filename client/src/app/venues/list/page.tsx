@@ -24,7 +24,10 @@ const VenueCard = ({ venue, location }: VenueCardProps) => {
                     <div className="text-2xl font-bold">{venue.name}</div>
                     <div>{venue.address}</div>
                     {location && (
-                        <div>{getDistanceToVenue(venue, location)}km away</div>
+                        <div>
+                            {getDistanceToVenue(venue, location).toFixed(2)}km
+                            away
+                        </div>
                     )}
                     <div>{visitCount} visits</div>
                     <Rating
