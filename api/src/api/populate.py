@@ -24,7 +24,7 @@ conn = Connection.connect(
 )
 
 for area in areas_data:
-    area_id = insert_area(conn, AreaInput(area["name"]))
+    area_id = insert_area(conn, AreaInput(area["name"]), True)
     if area_id is None:
         raise RuntimeError(f"Could not insert area {area['name']}")
 

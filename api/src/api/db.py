@@ -8,7 +8,9 @@ from psycopg.rows import TupleRow, class_row
 from psycopg.types.composite import CompositeInfo, register_composite
 
 from api.classes import (
+    Area,
     AreaInput,
+    AreaVenue,
     InsertAreaResult,
     InsertVenueResult,
     InsertVisitResult,
@@ -56,14 +58,30 @@ def insert_venue(
         return result.insert_venue if result is not None else None
 
 
-def insert_area(conn: Connection, area: AreaInput) -> Optional[int]:
+def select_area_by_name(conn: Connection, area_name: str) -> Optional[Area]:
+    register_type(conn, "venue_visit_data", VenueVisit)
+    register_type(conn, "area_venue_data", AreaVenue)
+    with conn.cursor(row_factory=class_row(Area)) as cur:
+        return cur.execute(
+            "SELECT * FROM select_area_by_name(%s)", [area_name]
+        ).fetchone()
+
+
+def insert_area(
+    conn: Connection, area: AreaInput, fetch_if_duplicate: bool
+) -> Optional[int]:
     with conn.cursor(row_factory=class_row(InsertAreaResult)) as cur:
         result = cur.execute(
             "SELECT * FROM insert_area(%s)",
             [area.area_name],
         ).fetchone()
         conn.commit()
-        return result.insert_area if result is not None else None
+        if result is not None and result.insert_area is not None:
+            return result.insert_area
+        if fetch_if_duplicate:
+            area_result = select_area_by_name(conn, area.area_name)
+            return area_result.area_id if area_result is not None else None
+        return None
 
 
 def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:

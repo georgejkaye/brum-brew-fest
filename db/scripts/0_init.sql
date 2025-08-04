@@ -11,7 +11,7 @@ CREATE TABLE app_user (
 
 CREATE TABLE area (
     area_id SERIAL PRIMARY KEY,
-    area_name TEXT NOT NULL
+    area_name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE venue (
@@ -22,6 +22,7 @@ CREATE TABLE venue (
     longitude DECIMAL NOT NULL,
     pin_location BOOLEAN NOT NULL,
     area_id INTEGER NOT NULL,
+    UNIQUE (venue_name, venue_address),
     FOREIGN KEY (area_id) REFERENCES area(area_id)
 );
 

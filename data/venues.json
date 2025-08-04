@@ -51,6 +51,12 @@
                     "longitude": -1.911455
                 },
                 {
+                    "name": "Rock & Roll BrewHouse",
+                    "address": "19 Hall St, Birmingham, B18 6BS",
+                    "latitude": 52.4878625,
+                    "longitude": -1.9088395
+                },
+                {
                     "name": "Burning Soul Brewing",
                     "address": "Unit 1, 51 Mott St, Birmingham, B19 3HE",
                     "latitude": 52.4889908,
@@ -167,14 +173,74 @@
             ]
         },
         {
-            "name": "City Centre",
+            "name": "City Centre/Digbeth",
             "venues": [
+                {
+                    "name": "Head of Steam",
+                    "address": "37 Temple St, Birmingham, B2 5DP",
+                    "latitude": 52.4800150,
+                    "longitude": -1.8990681
+                },
                 {
                     "name": "Cherry Reds",
                     "address": "88-92 John Bright St, Birmingham B1 1BN",
                     "latitude": 52.477033,
                     "longitude": -1.901150,
                     "pins": true
+                },
+                {
+                    "name": "The Colmore",
+                    "address": "Victoria House, 114-116 Colmore Row, Birmingham, B3 3BD",
+                    "latitude": 52.4804766,
+                    "longitude": -1.9015274
+                },
+                {
+                    "name": "The Wellington",
+                    "address": "37 Bennetts Hill, Birmingham, B2 5SN",
+                    "latitude": 52.480630,
+                    "longitude": -1.900509
+                },
+                {
+                    "name": "Purecraft Bar & Kitchen",
+                    "address": "30 Waterloo St, Birmingham, B2 5TJ",
+                    "latitude": "52.4800132",
+                    "longitude": "-1.9017372"
+                },
+                {
+                    "name": "The Good Intent",
+                    "address": "32-33 Great Western Arcade, Birmingham, B2 5HU",
+                    "latitude": 52.4818671,
+                    "longitude": -1.8972599
+                },
+                {
+                    "name": "The Victoria",
+                    "address": "48 John Bright St, Birmingham, B1 1BN",
+                    "latitude": 52.476072,
+                    "longitude": -1.900774
+                },
+                {
+                    "name": "The Flapper",
+                    "address": "Cambrian Wharf, 8 Kingston Row, Birmingham, B1 2NU",
+                    "latitude": 52.480468,
+                    "longitude": -1.912042
+                },
+                {
+                    "name": "KILDER",
+                    "address": "5 Shaw's Passage, Birmingham, B5 5JG",
+                    "latitude": 52.478441,
+                    "longitude": -1.890477
+                },
+                {
+                    "name": "AutoBrew",
+                    "address": "The Custard Factory, 10-11, Greenhouse, Gibb St, Birmingham, B9 4DJ",
+                    "latitude": 52.475213,
+                    "longitude": -1.883573
+                },
+                {
+                    "name": "Chance and Counters",
+                    "address": "Courtyard Studio 8 Scott House, Custard Factory, Deritend, Birmingham, B9 4AA",
+                    "latitude": 52.4754581,
+                    "longitude": -1.8843676
                 }
             ]
         }

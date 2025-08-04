@@ -1,6 +1,8 @@
 DROP TYPE IF EXISTS user_data CASCADE;
 DROP TYPE IF EXISTS venue_input_data CASCADE;
 DROP TYPE IF EXISTS venue_data CASCADE;
+DROP TYPE IF EXISTS area_venue_data CASCADE;
+DROP TYPE IF EXISTS area_data CASCADE;
 DROP TYPE IF EXISTS venue_visit_data CASCADE;
 DROP TYPE IF EXISTS user_summary_data CASCADE;
 DROP TYPE IF EXISTS user_visit_data CASCADE;
@@ -46,6 +48,22 @@ CREATE TYPE venue_data AS (
     pin_location BOOLEAN,
     area_id INTEGER,
     area_name TEXT
+);
+
+CREATE TYPE area_venue_data AS (
+    venue_id INTEGER,
+    venue_name TEXT,
+    venue_address TEXT,
+    latitude DECIMAL,
+    longitude DECIMAL,
+    visits venue_visit_data[],
+    pin_location BOOLEAN
+);
+
+CREATE TYPE area_data AS (
+    area_id INTEGER,
+    area_name TEXT,
+    venues area_venue_data[]
 );
 
 CREATE TYPE user_visit_data AS (
