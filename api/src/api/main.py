@@ -12,6 +12,7 @@ from api.db import (
     select_venue_by_venue_id,
     select_venues,
     select_visits,
+    update_user_display_name,
 )
 from api.users.auth import auth_backend
 from api.users.db import FastApiUser
@@ -125,6 +126,13 @@ async def get_user_details(
         user.is_verified,
         user_details.visits if user_details is not None else [],
     )
+
+@app.post( "users/displayname/{display_name}", tags=["auth"] )
+async def post_update_display_name(
+    display_name: str,
+    user: FastApiUser = Depends(current_user)
+) -> None:
+    update_user_display_name(conn, user.id, display_name)
 
 
 def start() -> None:
