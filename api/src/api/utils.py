@@ -20,6 +20,7 @@ def get_env_variable_with_default(key: str, default: str) -> str:
 
 
 def get_secret_file_contents(file: str) -> str:
+    print(file)
     with open(file, "r") as f:
         return f.readline().rstrip()
 

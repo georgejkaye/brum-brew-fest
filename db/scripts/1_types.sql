@@ -32,6 +32,7 @@ CREATE TYPE venue_visit_data AS (
 CREATE TYPE venue_input_data AS (
     venue_name TEXT,
     venue_address TEXT,
+    venue_website TEXT,
     latitude DECIMAL,
     longitude DECIMAL,
     pin_location BOOLEAN,
@@ -42,6 +43,7 @@ CREATE TYPE venue_data AS (
     venue_id INTEGER,
     venue_name TEXT,
     venue_address TEXT,
+    venue_website TEXT,
     latitude DECIMAL,
     longitude DECIMAL,
     visits venue_visit_data[],

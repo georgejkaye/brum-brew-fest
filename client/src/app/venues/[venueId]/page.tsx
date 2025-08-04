@@ -72,9 +72,13 @@ const VenueDetails = ({ venue }: VenueDetailsProps) => {
         venueVisitCount === 0
             ? 0
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
+
+    const venueText = `${venue.pinLocation ? "🔰 " : ""}${venue.name}`;
+    const venueElem = venue.website === null ? venueText : <a href={venue.website}>{venueText}</a>;
+
     return (
         <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold">{venue.pinLocation ? "🔰 " : ""}{venue.name}</h2>
+            <h2 className="text-2xl font-bold">{venueElem}</h2>
             <div>{venue.address}</div>
             <div className="flex flex-row gap-2">
                 <div>

@@ -18,6 +18,7 @@ CREATE TABLE venue (
     venue_id SERIAL PRIMARY KEY,
     venue_name TEXT NOT NULL,
     venue_address TEXT NOT NULL,
+    venue_website TEXT,
     latitude DECIMAL NOT NULL,
     longitude DECIMAL NOT NULL,
     pin_location BOOLEAN NOT NULL,

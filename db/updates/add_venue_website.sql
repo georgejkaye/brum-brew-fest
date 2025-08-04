@@ -1,0 +1,1 @@
+ALTER TABLE venue ADD venue_website TEXT;

@@ -35,6 +35,7 @@ for area in areas_data:
                 venue["name"],
                 area_id,
                 venue["address"],
+                venue["website"],
                 venue["latitude"],
                 venue["longitude"],
                 pin_location if pin_location is not None else False,

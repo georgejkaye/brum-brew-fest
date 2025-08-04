@@ -67,6 +67,7 @@ $$;
 
 CREATE OR REPLACE FUNCTION insert_venue (
     p_venue_name TEXT,
+    p_venue_website TEXT,
     p_address TEXT,
     p_latitude DECIMAL,
     p_longitude DECIMAL,
@@ -80,6 +81,7 @@ $$
 INSERT INTO venue (
     venue_name,
     venue_address,
+    venue_website,
     latitude,
     longitude,
     pin_location,
@@ -88,15 +90,17 @@ INSERT INTO venue (
 VALUES (
     p_venue_name,
     p_address,
+    p_venue_website,
     p_latitude,
     p_longitude,
     p_pin_location,
     p_area_id
 )
-ON CONFLICT (venue_name, venue_address) DO UPDATE
+ON CONFLICT (venue_name, venue_address, p_venue_website) DO UPDATE
 SET
     venue_name = p_venue_name,
     venue_address = p_address,
+    venue_website = p_venue_website,
     latitude = p_latitude,
     longitude = p_longitude,
     pin_location = p_pin_location,
@@ -114,6 +118,7 @@ $$
 INSERT INTO venue (
     venue_name,
     venue_address,
+    venue_website,
     latitude,
     longitude,
     pin_location,
@@ -122,12 +127,13 @@ INSERT INTO venue (
 SELECT
     v_venue.venue_name,
     v_venue.venue_address,
+    v_venue.venue_website,
     v_venue.latitude,
     v_venue.longitude,
     v_venue.pin_location,
     v_venue.area_id
 FROM UNNEST(p_venues) AS v_venue
-ON CONFLICT (venue_name, venue_address) DO NOTHING
+ON CONFLICT (venue_name, venue_address, venue_website) DO NOTHING
 $$;
 
 CREATE OR REPLACE FUNCTION insert_visit (
