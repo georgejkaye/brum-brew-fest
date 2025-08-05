@@ -69,7 +69,7 @@ const Page = () => {
                             {successString}
                         </div>
                     )}
-                    <form action="#" className="flex flex-col gap-4">
+                    <form action="#" className="flex flex-col gap-4 w-full">
                         <div>
                             <div>Email</div>
                             <div>
