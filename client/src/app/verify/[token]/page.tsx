@@ -26,7 +26,7 @@ const Page = ({ params }: { params: Promise<{ token: string }> }) => {
     }, [])
 
     return (
-        <div className="md:w-1/3 mx-auto flex flex-col items-center p-4">
+        <div className="w-1/2 lg:w-1/3 mx-auto flex flex-col items-center p-4">
             {isLoading ? (
                 <Loader />
             ) : errorString !== "" ? (
