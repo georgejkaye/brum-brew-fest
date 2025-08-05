@@ -19,7 +19,7 @@ const VenueCard = ({ venue }: VenueCardProps) => {
         <Link href={`/venues/${venue.venueId}`}>
             <div className="p-4 flex md:flex-row items-end gap-4 bg-green-100 rounded-lg shadow hover:bg-green-200">
                 <div className="flex flex-col flex-1 gap-2">
-                    <div className="text-2xl font-bold">{venue.pinLocation ? "🔰 " : ""}{venue.name}</div>
+                    <div className="text-2xl font-bold">{venue.name}{venue.pinLocation ? " 🔰" : ""}</div>
                     <div>{venue.address}</div>
                     <div>{visitCount} visits</div>
                     <Rating
