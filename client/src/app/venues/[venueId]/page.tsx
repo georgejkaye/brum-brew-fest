@@ -74,7 +74,7 @@ const VenueDetails = ({ venue }: VenueDetailsProps) => {
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
     return (
         <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold">{venue.pinLocation ? "🔰 " : ""}{venue.name}</h2>
+            <h2 className="text-2xl font-bold">{venue.name}{venue.pinLocation ? " 🔰" : ""}</h2>
             <div>{venue.address}</div>
             <div className="flex flex-row gap-2">
                 <div>
