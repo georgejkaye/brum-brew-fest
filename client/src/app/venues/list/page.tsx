@@ -133,12 +133,12 @@ const Page = () => {
                 </div>
                 <div className="flex flex-row gap-2">
                     <input
-                        id="group-by-area"
+                        id="filter-by-badgeholder"
                         type="checkbox"
-                        checked={groupByArea}
-                        onChange={onChangeGroupByArea}
+                        checked={showOnlyBadgeHolders}
+                        onChange={onChangeShowOnlyBadgeHolders}
                     />
-                    <label htmlFor="group-by-area">Show only badgeholders</label>
+                    <label htmlFor="filter-by-badgeholder">Show only badgeholders</label>
                 </div>
             </div>
             {groupByArea
