@@ -4,8 +4,14 @@ import { useContext, useState } from "react"
 import { UserContext } from "./context/user"
 
 const TopBar = () => {
-    const { user, isLoadingUser } = useContext(UserContext)
+    const linkStyle = "hover:underline cursor-pointer"
+    const { user, isLoadingUser, setUser } = useContext(UserContext)
     const [isMenuOpen, setMenuOpen] = useState(false)
+    const onClickLogout = () => {
+        setUser(undefined)
+        localStorage.removeItem("token")
+        setMenuOpen(false)
+    }
     const onClickLink = () => {
         setMenuOpen(false)
     }
@@ -13,19 +19,35 @@ const TopBar = () => {
         <div>
             <div className="flex flex-row p-4 bg-[#38db98] w-full items-center h-[60px]">
                 <div className="flex-1 text-2xl text-black font-bold">
-                    <Link href="/">Brum Brew Fest Tracker</Link>
+                    <Link className={linkStyle} href="/">
+                        Brum Brew Fest Tracker
+                    </Link>
                 </div>
                 {!isLoadingUser && (
                     <>
                         <div className="hidden md:flex flex-row gap-4">
-                            <Link href="/">Map</Link>
-                            <Link href="/venues/list">Venues</Link>
+                            <Link className={linkStyle} href="/">
+                                Map
+                            </Link>
+                            <Link className={linkStyle} href="/venues/list">
+                                Venues
+                            </Link>
                             {user ? (
-                                <Link href="/users/account">
-                                    {user.displayName}
-                                </Link>
+                                <>
+                                    <div
+                                        className={linkStyle}
+                                        onClick={onClickLogout}
+                                    >
+                                        Logout
+                                    </div>
+                                    <div className="font-bold">
+                                        {user.displayName}
+                                    </div>
+                                </>
                             ) : (
-                                <Link href="/login">Login</Link>
+                                <Link className={linkStyle} href="/login">
+                                    Login
+                                </Link>
                             )}
                         </div>
                         <div
@@ -41,16 +63,26 @@ const TopBar = () => {
             </div>
             {isMenuOpen && (
                 <div className="absolute z-999 top-[60px] left-0 bg-green-300 p-4 flex flex-col gap-3 items-end w-full">
-                    <Link onClick={onClickLink} href="/">
+                    <Link className={linkStyle} onClick={onClickLink} href="/">
                         Map
                     </Link>
-                    <Link onClick={onClickLink} href="/venues/list">
+                    <Link
+                        className={linkStyle}
+                        onClick={onClickLink}
+                        href="/venues/list"
+                    >
                         Venues
                     </Link>
                     {user ? (
-                        <Link onClick={onClickLink} href="/users/account">
-                            {user.displayName}
-                        </Link>
+                        <>
+                            <button
+                                className={linkStyle}
+                                onClick={onClickLogout}
+                            >
+                                Logout
+                            </button>
+                            <div className="font-bold">{user.displayName}</div>
+                        </>
                     ) : (
                         <Link onClick={onClickLink} href="/login">
                             Login

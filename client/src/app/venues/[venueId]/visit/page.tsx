@@ -128,7 +128,7 @@ const Page = () => {
     return !user || !venue ? (
         ""
     ) : (
-        <div className="flex flex-col md:w-1/2 mx-auto items-center p-4">
+        <div className="flex flex-col md:w-1/2 lg:w-1/3 md:mx-auto items-center p-4">
             {isLoading ? (
                 <Loader />
             ) : (
