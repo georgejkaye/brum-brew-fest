@@ -1,6 +1,6 @@
 "use client"
 import { KeyboardEvent, useContext, useState } from "react"
-import { getUserDetails, login } from "../api"
+import { login } from "../api"
 import { Loader } from "../Loader"
 import { UserContext } from "../context/user"
 import Link from "next/link"
@@ -61,7 +61,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
 }
 
 const Page = () => {
-    const { setUser, fetchUser } = useContext(UserContext)
+    const { fetchUser } = useContext(UserContext)
     const router = useRouter()
     const [isLoading, setLoading] = useState(false)
     const [isLoginSuccessful, setLoginSuccessful] = useState(false)
