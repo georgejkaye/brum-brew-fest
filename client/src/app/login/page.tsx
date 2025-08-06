@@ -61,7 +61,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
 }
 
 const Page = () => {
-    const { setUser } = useContext(UserContext)
+    const { setUser, fetchUser } = useContext(UserContext)
     const router = useRouter()
     const [isLoading, setLoading] = useState(false)
     const [isLoginSuccessful, setLoginSuccessful] = useState(false)
@@ -79,11 +79,9 @@ const Page = () => {
             return false
         } else {
             setLoginSuccessful(true)
-            localStorage.setItem("token", loginResult.token)
-            const user = await getUserDetails(loginResult.token)
-            setUser(user)
-            setErrorString("")
             setLoading(false)
+            setErrorString("")
+            fetchUser(loginResult.token)
             setTimeout(() => router.push("/"), 1000)
             return true
         }

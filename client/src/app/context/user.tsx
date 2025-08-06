@@ -16,6 +16,7 @@ export const UserContext = createContext({
     user: undefined as User | undefined,
     refreshUser: () => {},
     setUser: (() => undefined) as Dispatch<SetStateAction<User | undefined>>,
+    fetchUser: (token: string) => {},
     isLoadingUser: false,
 })
 
@@ -24,6 +25,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     const [user, setUser] = useState<User | undefined>(undefined)
     const [isLoadingUser, setLoadingUser] = useState(true)
     const fetchUser = async (token: string) => {
+        setLoadingUser(true)
         const user = await getUserDetails(token)
         if (user) {
             setUser(user)
@@ -50,7 +52,14 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     }, [])
     return (
         <UserContext.Provider
-            value={{ token, user, refreshUser, setUser, isLoadingUser }}
+            value={{
+                token,
+                user,
+                fetchUser,
+                refreshUser,
+                setUser,
+                isLoadingUser,
+            }}
         >
             {children}
         </UserContext.Provider>
