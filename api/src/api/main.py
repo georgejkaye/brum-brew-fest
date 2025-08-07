@@ -5,9 +5,16 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi_users import FastAPIUsers
 from psycopg import Connection
 
-from api.classes import UserPublicDetails, UserSummary, UserVisit, Venue
+from api.classes import (
+    UserFollow,
+    UserPublicDetails,
+    UserSummary,
+    UserVisit,
+    Venue,
+)
 from api.db import (
     insert_visit,
+    select_user_follows,
     select_user_summary,
     select_venue_by_venue_id,
     select_venues,
@@ -43,7 +50,7 @@ current_user = fastapi_users.current_user()
 
 
 @app.get(
-    "/users/{user_id}", summary="Get a user and their visits", tags=["users"]
+    "/users/{user_id}", summary="Get a user and their visits", tags=["user"]
 )
 async def get_user_by_user_id(user_id: int) -> UserSummary:
     summary = select_user_summary(conn, user_id)
@@ -53,14 +60,14 @@ async def get_user_by_user_id(user_id: int) -> UserSummary:
 
 
 @app.get(
-    "/venues", summary="Get a list of venues and their visits", tags=["venues"]
+    "/venues", summary="Get a list of venues and their visits", tags=["venue"]
 )
 async def get_venues() -> list[Venue]:
     return select_venues(conn)
 
 
 @app.get(
-    "/venues/{venue_id}", summary="Get a venue and its visits", tags=["venues"]
+    "/venues/{venue_id}", summary="Get a venue and its visits", tags=["venue"]
 )
 async def get_venue_by_id(venue_id: int) -> Venue:
     venue = select_venue_by_venue_id(conn, venue_id)
@@ -69,12 +76,12 @@ async def get_venue_by_id(venue_id: int) -> Venue:
     return venue
 
 
-@app.get("/visits", summary="Get all the visits", tags=["visits"])
+@app.get("/visits", summary="Get all the visits", tags=["visit"])
 async def get_visits() -> list[UserVisit]:
     return select_visits(conn)
 
 
-@app.post("/visit", summary="Log a visit", tags=["visits"])
+@app.post("/visit", summary="Log a visit", tags=["visit"])
 async def post_visit(
     venue_id: int,
     visit_date: datetime,
@@ -84,6 +91,31 @@ async def post_visit(
     user: FastApiUser = Depends(current_user),
 ) -> None:
     insert_visit(conn, user.id, venue_id, visit_date, notes, rating, drink)
+
+
+@app.get("/auth/me", summary="Get details about the current user", tags=["me"])
+async def get_user_details(
+    user: FastApiUser = Depends(current_user),
+) -> UserPublicDetails:
+    user_details = select_user_summary(conn, user.id)
+    return UserPublicDetails(
+        user.id,
+        user.email,
+        user.display_name,
+        user.is_verified,
+        user_details.visits if user_details is not None else [],
+    )
+
+
+@app.get(
+    "/auth/me/follows",
+    summary="Get list of current user's followers",
+    tags=["me"],
+)
+async def get_user_followers(
+    user: FastApiUser = Depends(current_user),
+) -> list[UserFollow]:
+    return select_user_follows(conn, user.id)
 
 
 app.include_router(
@@ -109,22 +141,6 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
-
-
-@app.get(
-    "/auth/me", summary="Get details about the current user", tags=["auth"]
-)
-async def get_user_details(
-    user: FastApiUser = Depends(current_user),
-) -> UserPublicDetails:
-    user_details = select_user_summary(conn, user.id)
-    return UserPublicDetails(
-        user.id,
-        user.email,
-        user.display_name,
-        user.is_verified,
-        user_details.visits if user_details is not None else [],
-    )
 
 
 def start() -> None:

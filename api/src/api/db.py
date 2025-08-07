@@ -169,11 +169,17 @@ def select_user_summary(
     conn: Connection, user_id: int
 ) -> Optional[UserSummary]:
     register_type(conn, "single_user_visit_data", SingleUserVisit)
-    register_type(conn, "user_follow_data", UserFollow)
     with conn.cursor(row_factory=class_row(UserSummary)) as cur:
         return cur.execute(
             "SELECT * FROM select_user_summary(%s)", [user_id]
         ).fetchone()
+
+
+def select_user_follows(conn: Connection, user_id: int) -> list[UserFollow]:
+    with conn.cursor(row_factory=class_row(UserFollow)) as cur:
+        return cur.execute(
+            "SELECT * FROM select_user_follows(%s)", [user_id]
+        ).fetchmany()
 
 
 def update_user(

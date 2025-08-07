@@ -120,7 +120,6 @@ class UserSummary:
     email: str
     display_name: str
     visits: list[SingleUserVisit]
-    follows: list[UserFollow]
 
 
 @dataclass
