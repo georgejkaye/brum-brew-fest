@@ -40,9 +40,12 @@ const TopBar = () => {
                                     >
                                         Logout
                                     </div>
-                                    <div className="font-bold">
+                                    <Link
+                                        href={`/users/${user.userId}`}
+                                        className="font-bold"
+                                    >
                                         {user.displayName}
-                                    </div>
+                                    </Link>
                                 </>
                             ) : (
                                 <Link className={linkStyle} href="/login">
@@ -81,7 +84,12 @@ const TopBar = () => {
                             >
                                 Logout
                             </button>
-                            <div className="font-bold">{user.displayName}</div>
+                            <Link
+                                href={`/users/${user.userId}`}
+                                className="font-bold"
+                            >
+                                {user.displayName}
+                            </Link>
                         </>
                     ) : (
                         <Link onClick={onClickLink} href="/login">
