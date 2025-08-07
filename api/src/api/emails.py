@@ -8,13 +8,14 @@ from jinja2 import Environment, PackageLoader, Template, select_autoescape
 
 from api.users.db import FastApiUser
 from api.utils import (
+    get_env_variable,
     get_env_variable_force,
     get_env_variable_with_default,
     get_secret_force,
 )
 
 from_email = get_env_variable_force("FROM_EMAIL")
-smtp_server = get_env_variable_force("SMTP_SERVER")
+smtp_server = get_env_variable("SMTP_SERVER")
 smtp_port = int(get_env_variable_force("SMTP_PORT"))
 smtp_user = get_env_variable_force("SMTP_USER")
 smtp_password = get_secret_force("SMTP_PASSWORD")
@@ -52,6 +53,9 @@ def write_email(subject: str, to_email: str, body: str) -> MIMEMultipart:
 
 
 def send_email(message: MIMEMultipart):
+    if (smtp_server is None):
+        print(f"No SMTP server configured, would have sent:\n{message.as_string()}")
+        return
     conn = smtplib.SMTP(smtp_server, smtp_port)
     conn.starttls()
     conn.set_debuglevel(False)
