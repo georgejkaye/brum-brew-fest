@@ -101,5 +101,4 @@ CREATE TYPE user_summary_data AS (
     email TEXT,
     display_name TEXT,
     visits single_user_visit_data[],
-    follows user_follow_data[]
 );

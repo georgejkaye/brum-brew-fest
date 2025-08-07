@@ -10,6 +10,8 @@ DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
+DROP FUNCTION IF EXISTS select_user_follows;
+DROP FUNCTION IF EXISTS update_user;
 DROP FUNCTION IF EXISTS update_user_display_name;
 DROP FUNCTION IF EXISTS delete_user;
 
@@ -488,31 +490,34 @@ LEFT JOIN (
     GROUP BY visit.user_id
 ) visit_table
 ON app_user.user_id = visit_table.user_id
-LEFT JOIN (
-    SELECT
-        follow.follow_source_user_id AS user_id,
-        ARRAY_AGG((
-            follow.follow_target_user_id,
-            follow_target_user.display_name,
-            user_visit_count.visit_count,
-            user_visit_count.unique_visit_count
-        )::user_follow_data) AS follows
-    FROM follow
-    INNER JOIN app_user follow_target_user
-    ON follow.follow_target_user_id = follow_target_user.user_id
-    INNER JOIN (
-        SELECT
-            user_id,
-            COUNT(*) AS visit_count,
-            COUNT(DISTINCT venue_id) AS unique_visit_count
-        FROM visit
-        GROUP BY user_id
-    ) user_visit_count
-    ON follow_target_user.user_id = user_visit_count.user_id
-    GROUP BY follow.follow_source_user_id
-) follow_table
-ON app_user.user_id = follow_table.user_id
 WHERE app_user.user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_user_follows (
+    p_user_id INTEGER
+)
+RETURNS SETOF user_follow_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    follow.follow_target_user_id,
+    follow_target_user.display_name,
+    user_visit_count.visit_count,
+    user_visit_count.unique_visit_count
+FROM follow
+INNER JOIN app_user follow_target_user
+ON follow.follow_target_user_id = follow_target_user.user_id
+INNER JOIN (
+    SELECT
+        user_id,
+        COUNT(*) AS visit_count,
+        COUNT(DISTINCT venue_id) AS unique_visit_count
+    FROM visit
+    GROUP BY user_id
+) user_visit_count
+ON follow_target_user.user_id = user_visit_count.user_id
+WHERE follow.follow_source_user_id = p_user_id;
 $$;
 
 CREATE OR REPLACE FUNCTION update_user (
