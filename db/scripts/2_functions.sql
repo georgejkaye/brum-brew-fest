@@ -163,6 +163,19 @@ VALUES (
 RETURNING visit_id AS new_visit_id;
 $$;
 
+CREATE OR REPLACE FUNCTION insert_follow (
+    p_source_user_id INTEGER,
+    p_target_user_id INTEGER
+)
+RETURNS INTEGER
+LANGUAGE sql
+AS
+$$
+INSERT INTO follow (follow_source_user_id, follow_target_user_id)
+VALUES (p_source_user_id, p_target_user_id)
+RETURNING follow_id;
+$$;
+
 CREATE OR REPLACE FUNCTION select_user_by_user_id (
     p_user_id INTEGER
 )
