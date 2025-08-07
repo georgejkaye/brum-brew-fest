@@ -90,8 +90,8 @@ const VenueMarker = ({
                 colour={pinColour}
                 size={
                     currentVenue && currentVenue.venueId === venue.venueId
-                        ? 40
-                        : 30
+                        ? 50
+                        : 40
                 }
             />
         </Marker>

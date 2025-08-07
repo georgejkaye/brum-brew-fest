@@ -8,7 +8,7 @@ const pinStyle = (colour: string) => ({
     cursor: "pointer",
     fill: colour,
     stroke: "#000000",
-    strokeWidth: 2,
+    strokeWidth: 3,
 })
 
 interface PinProps {
@@ -18,7 +18,7 @@ interface PinProps {
 
 const Pin = ({ size = 20, colour = "#ff0000" }: PinProps) => {
     return (
-        <svg height={size} viewBox="0 0 24 24" style={pinStyle(colour)}>
+        <svg height={size} viewBox="-3 -3 30 30" style={pinStyle(colour)}>
             <path d={ICON} />
         </svg>
     )
