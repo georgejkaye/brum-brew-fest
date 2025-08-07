@@ -3,6 +3,7 @@ DROP FUNCTION IF EXISTS insert_area;
 DROP FUNCTION IF EXISTS insert_venue;
 DROP FUNCTION IF EXISTS insert_venues;
 DROP FUNCTION IF EXISTS insert_visit;
+DROP FUNCTION IF EXISTS insert_follow;
 DROP FUNCTION IF EXISTS select_user_by_user_id;
 DROP FUNCTION IF EXISTS select_user_by_email;
 DROP FUNCTION IF EXISTS select_area_by_name;
@@ -606,6 +607,7 @@ WHERE user_id = p_user_id;
 $$;
 
 CREATE OR REPLACE FUNCTION delete_follow (
+    p_user_id INTEGER,
     p_follow_id INTEGER
 )
 RETURNS VOID
@@ -613,5 +615,6 @@ LANGUAGE sql
 AS
 $$
 DELETE FROM follow
-WHERE follow_id = p_follow_id;
+WHERE follow_source_user_id = p_user_id
+AND follow_id = p_follow_id;
 $$;
