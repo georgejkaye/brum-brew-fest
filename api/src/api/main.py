@@ -13,6 +13,9 @@ from api.classes import (
     Venue,
 )
 from api.db import (
+    delete_follow,
+    delete_user,
+    insert_follow,
     insert_visit,
     select_user_follows,
     select_user_summary,
@@ -116,6 +119,24 @@ async def get_user_followers(
     user: FastApiUser = Depends(current_user),
 ) -> list[UserFollow]:
     return select_user_follows(conn, user.id)
+
+
+@app.post("/auth/me/follow", summary="Add a new follow for a user", tags=["me"])
+async def add_user_follow(
+    target_user_id: int, user: FastApiUser = Depends(current_user)
+):
+    insert_follow(conn, user.id, target_user_id)
+
+
+@app.delete(
+    "/auth/me/follow/{follow_id}",
+    summary="Remove a follow for a user",
+    tags=["me"],
+)
+async def remove_user_follow(
+    follow_id: int, user: FastApiUser = Depends(current_user)
+):
+    delete_follow(conn, user.id, follow_id)
 
 
 app.include_router(

@@ -128,6 +128,11 @@ class InsertVisitResult:
 
 
 @dataclass
+class InsertFollowResult:
+    insert_follow: int
+
+
+@dataclass
 class InsertVenueResult:
     insert_venue: int
 

@@ -12,6 +12,7 @@ from api.classes import (
     AreaInput,
     AreaVenue,
     InsertAreaResult,
+    InsertFollowResult,
     InsertVenueResult,
     InsertVisitResult,
     SingleUserVisit,
@@ -120,6 +121,18 @@ def insert_visit(
         ).fetchone()
         conn.commit()
         return result.insert_visit if result is not None else None
+
+
+def insert_follow(
+    conn: Connection, source_user_id: int, target_user_id: int
+) -> Optional[int]:
+    with conn.cursor(row_factory=class_row(InsertFollowResult)) as cur:
+        result = cur.execute(
+            "SELECT * FROM insert_follow(%s, %s)",
+            [source_user_id, target_user_id],
+        ).fetchone()
+        conn.commit()
+        return result.insert_follow if result is not None else None
 
 
 def select_user_by_user_id(conn: Connection, user_id: int) -> Optional[User]:
@@ -235,6 +248,14 @@ def delete_user(conn: Connection, user_id: int) -> None:
     conn.execute(
         "SELECT * FROM delete_user(%s)",
         [user_id],
+    )
+    conn.commit()
+
+
+def delete_follow(conn: Connection, user_id: int, follow_id: int) -> None:
+    conn.execute(
+        "SELECT * FROM delete_follow(%s, %s)",
+        [user_id, follow_id],
     )
     conn.commit()
 
