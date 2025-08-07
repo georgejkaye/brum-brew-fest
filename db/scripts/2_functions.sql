@@ -14,6 +14,7 @@ DROP FUNCTION IF EXISTS select_user_follows;
 DROP FUNCTION IF EXISTS update_user;
 DROP FUNCTION IF EXISTS update_user_display_name;
 DROP FUNCTION IF EXISTS delete_user;
+DROP FUNCTION IF EXISTS delete_follow;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_email TEXT,
@@ -602,4 +603,15 @@ AS
 $$
 DELETE FROM app_user
 WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION delete_follow (
+    p_follow_id INTEGER
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+DELETE FROM follow
+WHERE follow_id = p_follow_id;
 $$;
