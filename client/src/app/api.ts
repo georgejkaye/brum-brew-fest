@@ -2,6 +2,11 @@
 import axios, { AxiosError } from "axios"
 import { Venue, Visit, UserSummary } from "./interfaces"
 
+const getAuthorizationHeader = (token: string) => ({
+    accept: "application/json",
+    Authorization: `Bearer ${token}`,
+})
+
 const responseToUser = (response: any) => ({
     userId: response["user_id"],
     displayName: response["display_name"],
@@ -15,10 +20,7 @@ const responseToUser = (response: any) => ({
 export const getUserDetails = async (token: string) => {
     const endpoint = "/api/auth/me"
     try {
-        const headers = {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-        }
+        const headers = getAuthorizationHeader(token)
         const response = await axios.get(endpoint, { headers })
         const data = response.data
         const user = responseToUser(data)
@@ -115,6 +117,7 @@ export const verifyUser = async (token: string) => {
 }
 
 export const requestPasswordReset = async (email: string) => {
+    console.log("hello")
     const endpoint = "/api/auth/forgot-password"
     try {
         const body = { email }
@@ -277,5 +280,47 @@ export const postVisit = async (
         } else {
             return { success: false, error: "Unknown error " }
         }
+    }
+}
+
+const responseToUserFollow = (response: any) => ({
+    user_id: response["user_id"],
+    display_name: response["display_name"],
+    visit_count: response["visit_count"],
+    unique_visit_count: response["unique_visit_count"],
+})
+
+export const getFollows = async (token: string) => {
+    const endpoint = "/auth/me/follows"
+    const headers = getAuthorizationHeader(token)
+    try {
+        const response = await axios.get(endpoint, { headers })
+        const data = response.data
+        return data.map(responseToUserFollow)
+    } catch {
+        return undefined
+    }
+}
+
+export const addFollow = async (token: string, targetUserId: number) => {
+    const endpoint = "/auth/me/follow"
+    const body = { target_user_id: targetUserId }
+    const headers = getAuthorizationHeader(token)
+    try {
+        await axios.post(endpoint, body, { headers })
+        return true
+    } catch {
+        return false
+    }
+}
+
+export const removeFollow = async (token: string, followId: number) => {
+    const endpoint = `/auth/me/follow/${followId}`
+    const headers = getAuthorizationHeader(token)
+    try {
+        await axios.delete(endpoint, { headers })
+        return true
+    } catch {
+        return false
     }
 }

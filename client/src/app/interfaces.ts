@@ -66,3 +66,10 @@ export interface Area {
     areaName: string
     venues: Venue[]
 }
+
+export interface UserFollow {
+    user_id: number
+    display_name: string
+    visit_count: number
+    unique_visit_count: number
+}
