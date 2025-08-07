@@ -284,26 +284,27 @@ export const postVisit = async (
 }
 
 const responseToUserFollow = (response: any) => ({
-    user_id: response["user_id"],
-    display_name: response["display_name"],
-    visit_count: response["visit_count"],
-    unique_visit_count: response["unique_visit_count"],
+    userId: response["user_id"],
+    displayName: response["display_name"],
+    visitCount: response["visit_count"],
+    uniqueVisitCount: response["unique_visit_count"],
 })
 
 export const getFollows = async (token: string) => {
-    const endpoint = "/auth/me/follows"
+    const endpoint = "/api/auth/me/follows"
     const headers = getAuthorizationHeader(token)
     try {
         const response = await axios.get(endpoint, { headers })
         const data = response.data
         return data.map(responseToUserFollow)
-    } catch {
+    } catch (e) {
+        console.error(e)
         return undefined
     }
 }
 
 export const addFollow = async (token: string, targetUserId: number) => {
-    const endpoint = "/auth/me/follow"
+    const endpoint = "/api/auth/me/follow"
     const body = { target_user_id: targetUserId }
     const headers = getAuthorizationHeader(token)
     try {
