@@ -100,5 +100,5 @@ CREATE TYPE user_summary_data AS (
     user_id INTEGER,
     email TEXT,
     display_name TEXT,
-    visits single_user_visit_data[],
+    visits single_user_visit_data[]
 );

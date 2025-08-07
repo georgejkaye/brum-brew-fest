@@ -468,8 +468,7 @@ SELECT
     app_user.user_id,
     app_user.email,
     app_user.display_name,
-    COALESCE(visit_table.visits, ARRAY[]::single_user_visit_data[]),
-    COALESCE(follow_table.follows, ARRAY[]::user_follow_data[])
+    COALESCE(visit_table.visits, ARRAY[]::single_user_visit_data[])
 FROM app_user
 LEFT JOIN (
     SELECT
