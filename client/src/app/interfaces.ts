@@ -68,8 +68,8 @@ export interface Area {
 }
 
 export interface UserFollow {
-    user_id: number
-    display_name: string
-    visit_count: number
-    unique_visit_count: number
+    userId: number
+    displayName: string
+    visitCount: number
+    uniqueVisitCount: number
 }
