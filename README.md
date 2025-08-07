@@ -57,7 +57,7 @@ When running with Docker, place these in a `.env` file.
 |`DB_NAME`||||no|yes|
 |`DB_USER`||||no|yes|
 |`FROM_EMAIL`|Address to sends emails from the server|||yes|yes|
-|`SMTP_SERVER`|SMTP server to send emails from the server|||yes|yes|
+|`SMTP_SERVER`|SMTP server to send emails from the server|||no|yes|
 |`SMTP_PORT`|SMTP port to send emails from the server|||yes|yes|
 |`SMTP_USER`|SMTP user to send emails from the server|||yes|yes|
 
