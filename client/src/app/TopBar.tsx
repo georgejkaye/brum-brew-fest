@@ -34,6 +34,9 @@ const TopBar = () => {
                             </Link>
                             {user ? (
                                 <>
+                                    <Link href="/follows" className={linkStyle}>
+                                        Follows
+                                    </Link>
                                     <div
                                         className={linkStyle}
                                         onClick={onClickLogout}
@@ -78,6 +81,7 @@ const TopBar = () => {
                     </Link>
                     {user ? (
                         <>
+                            <Link href="/follows">Follows</Link>
                             <button
                                 className={linkStyle}
                                 onClick={onClickLogout}
