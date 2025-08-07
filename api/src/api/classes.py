@@ -107,11 +107,20 @@ class UserVisit:
 
 
 @dataclass
+class UserFollow:
+    user_id: int
+    display_name: str
+    visit_count: int
+    unique_visit_count: int
+
+
+@dataclass
 class UserSummary:
     user_id: int
     email: str
     display_name: str
     visits: list[SingleUserVisit]
+    follows: list[UserFollow]
 
 
 @dataclass
