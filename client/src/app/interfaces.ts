@@ -68,6 +68,7 @@ export interface Area {
 }
 
 export interface UserFollow {
+    followId: number
     userId: number
     displayName: string
     visitCount: number

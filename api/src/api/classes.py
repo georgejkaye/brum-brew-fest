@@ -108,6 +108,7 @@ class UserVisit:
 
 @dataclass
 class UserFollow:
+    follow_id: int
     user_id: int
     display_name: str
     visit_count: int

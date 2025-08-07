@@ -515,6 +515,7 @@ LANGUAGE sql
 AS
 $$
 SELECT
+    follow.follow_id,
     follow.follow_target_user_id,
     follow_target_user.display_name,
     user_visit_count.visit_count,

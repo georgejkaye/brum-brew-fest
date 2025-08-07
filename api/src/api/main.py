@@ -112,7 +112,7 @@ async def get_user_details(
 
 @app.get(
     "/auth/me/follows",
-    summary="Get list of current user's followers",
+    summary="Get list of current user's follows",
     tags=["me"],
 )
 async def get_user_followers(

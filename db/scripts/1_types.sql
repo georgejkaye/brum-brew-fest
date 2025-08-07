@@ -90,6 +90,7 @@ CREATE TYPE single_user_visit_data AS (
 );
 
 CREATE TYPE user_follow_data AS (
+    follow_id INTEGER,
     user_id INTEGER,
     display_name TEXT,
     visit_count INTEGER,
