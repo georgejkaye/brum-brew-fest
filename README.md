@@ -4,6 +4,8 @@ Tracker for Brum Brew Fest venues
 
 ## Running locally
 
+### Dev environment
+
 The easiest way to run the app is with [Docker](https://www.docker.com/) and
 [Docker Compose](https://docs.docker.com/compose/).
 
@@ -13,6 +15,25 @@ variables and secrets as discussed below, and then run:
 ```sh
 docker compose -f docker-compose.dev.yml up
 ```
+
+The dev compose file spins up a Postgres database initialised with the
+required tables, types, and functions.
+You can interact with this db using `psql`:
+
+```sh
+psql -h localhost -U bbf -d bbf
+Password for user bbf: # bbf
+```
+
+To populate this db with areas and venues, you can run the script in the `data`
+directory:
+
+```sh
+chmod +x data/populate.sh
+./data/populate.sh
+```
+
+### Prod environment
 
 You can also emulate the prod environment by running:
 
