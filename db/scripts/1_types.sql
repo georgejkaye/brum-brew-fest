@@ -7,6 +7,7 @@ DROP TYPE IF EXISTS venue_visit_data CASCADE;
 DROP TYPE IF EXISTS user_summary_data CASCADE;
 DROP TYPE IF EXISTS user_visit_data CASCADE;
 DROP TYPE IF EXISTS single_user_visit_data CASCADE;
+DROP TYPE IF EXISTS user_follow_data CASCADE;
 
 CREATE TYPE user_data AS (
     user_id INTEGER,
@@ -88,9 +89,17 @@ CREATE TYPE single_user_visit_data AS (
     drink TEXT
 );
 
+CREATE TYPE user_follow_data AS (
+    user_id INTEGER,
+    display_name TEXT,
+    visit_count INTEGER,
+    unique_visit_count INTEGER
+);
+
 CREATE TYPE user_summary_data AS (
     user_id INTEGER,
     email TEXT,
     display_name TEXT,
-    visits single_user_visit_data[]
+    visits single_user_visit_data[],
+    follows user_follow_data[]
 );

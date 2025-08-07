@@ -466,7 +466,8 @@ SELECT
     app_user.user_id,
     app_user.email,
     app_user.display_name,
-    COALESCE(visit_table.visits, ARRAY[]::single_user_visit_data[])
+    COALESCE(visit_table.visits, ARRAY[]::single_user_visit_data[]),
+    COALESCE(follow_table.follows, ARRAY[]::user_follow_data[])
 FROM app_user
 LEFT JOIN (
     SELECT
@@ -487,6 +488,30 @@ LEFT JOIN (
     GROUP BY visit.user_id
 ) visit_table
 ON app_user.user_id = visit_table.user_id
+LEFT JOIN (
+    SELECT
+        follow.follow_source_user_id AS user_id,
+        ARRAY_AGG((
+            follow.follow_target_user_id,
+            follow_target_user.display_name,
+            user_visit_count.visit_count,
+            user_visit_count.unique_visit_count
+        )::user_follow_data) AS follows
+    FROM follow
+    INNER JOIN app_user follow_target_user
+    ON follow.follow_target_user_id = follow_target_user.user_id
+    INNER JOIN (
+        SELECT
+            user_id,
+            COUNT(*) AS visit_count,
+            COUNT(DISTINCT venue_id) AS unique_visit_count
+        FROM visit
+        GROUP BY user_id
+    ) user_visit_count
+    ON follow_target_user.user_id = user_visit_count.user_id
+    GROUP BY follow.follow_source_user_id
+) follow_table
+ON app_user.user_id = follow_table.user_id
 WHERE app_user.user_id = p_user_id;
 $$;
 
