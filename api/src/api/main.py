@@ -23,6 +23,7 @@ from api.db import (
     select_venue_by_venue_id,
     select_venues,
     select_visits,
+    update_user_display_name,
 )
 from api.users.auth import auth_backend
 from api.users.db import FastApiUser
@@ -102,20 +103,6 @@ async def post_visit(
     insert_visit(conn, user.id, venue_id, visit_date, notes, rating, drink)
 
 
-@app.get("/auth/me", summary="Get details about the current user", tags=["me"])
-async def get_user_details(
-    user: FastApiUser = Depends(current_user),
-) -> UserPublicDetails:
-    user_details = select_user_summary(conn, user.id)
-    return UserPublicDetails(
-        user.id,
-        user.email,
-        user.display_name,
-        user.is_verified,
-        user_details.visits if user_details is not None else [],
-    )
-
-
 @app.get(
     "/auth/me/follows",
     summary="Get list of current user's follows",
@@ -168,6 +155,31 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+
+@app.get(
+    "/auth/me", summary="Get details about the current user", tags=["auth"]
+)
+async def get_user_details(
+    user: FastApiUser = Depends(current_user),
+) -> UserPublicDetails:
+    user_details = select_user_summary(conn, user.id)
+    return UserPublicDetails(
+        user.id,
+        user.email,
+        user.display_name,
+        user.is_verified,
+        user_details.visits if user_details is not None else [],
+    )
+
+@app.patch(
+    "/auth/me/display-name", tags=["auth"]
+)
+async def post_update_display_name(
+    display_name: str,
+    user: FastApiUser = Depends(current_user)
+) -> None:
+    update_user_display_name(conn, user.id, display_name)
 
 
 def start() -> None:
