@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
 import { useState, KeyboardEvent, MouseEvent } from "react"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 import Link from "next/link"
 import { Loader } from "../Loader"
 import { requestPasswordReset } from "../api"
@@ -46,14 +46,14 @@ const Page = () => {
                             </div>
                         )}
                         <label htmlFor="user">Email address</label>
-                        <LoginTextInput
+                        <TextInput
                             name="user"
                             type="email"
                             value={emailString}
                             setValue={setEmailString}
                             onKeyDown={onKeyDownEmailInput}
                         />
-                        <LoginButton
+                        <SubmitButton
                             label="Request password reset"
                             onClick={onClickRequestPasswordReset}
                             disabled={emailString === ""}

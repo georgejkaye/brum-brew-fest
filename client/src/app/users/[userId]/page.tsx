@@ -3,6 +3,7 @@ import { UserSummaryContext } from "@/app/context/userSummary"
 import { SingleUserVisit } from "@/app/interfaces"
 import { Loader } from "@/app/Loader"
 import { Rating } from "@smastrom/react-rating"
+import Link from "next/link"
 import { useContext } from "react"
 
 interface UserSummaryVisitCardProps {
@@ -12,7 +13,12 @@ interface UserSummaryVisitCardProps {
 const UserSummaryVisitCard = ({ visit }: UserSummaryVisitCardProps) => {
     return (
         <div className="rounded-xl bg-green-200 p-4 flex flex-col gap-2">
-            <div className="font-bold text-xl">{visit.venueName}</div>
+            <Link
+                href={`/venues/${visit.venueId}`}
+                className="font-bold text-xl hover:underline"
+            >
+                {visit.venueName}
+            </Link>
             <div className="">
                 {visit.visitDate.toLocaleDateString()}{" "}
                 {visit.visitDate.toLocaleTimeString("en-UK", {
@@ -48,7 +54,7 @@ const Page = () => {
                         {userSummary.visits.length === 1 ? "venue" : "venues"}{" "}
                         visited
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-4">
                         {userSummary.visits.map((visit) => (
                             <UserSummaryVisitCard
                                 key={visit.visitId}

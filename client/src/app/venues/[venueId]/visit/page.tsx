@@ -13,11 +13,7 @@ import { VenueContext } from "@/app/context/venue"
 import { postVisit } from "@/app/api"
 import { Rating } from "@smastrom/react-rating"
 
-import {
-    LoginButton,
-    LoginTextAreaInput,
-    LoginTextInput,
-} from "@/app/components/login"
+import { SubmitButton, TextAreaInput, TextInput } from "@/app/components/forms"
 import { Loader } from "@/app/Loader"
 
 interface RecordVisitFormProps {
@@ -36,7 +32,7 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
         submitVisit(notesText, ratingValue, drinkText)
     }
     const onKeyDownDrink = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key == "Enter") {
+        if (e.key === "Enter") {
             performSubmitVisit()
         }
     }
@@ -50,7 +46,7 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
                 <div>Notes</div>
-                <LoginTextAreaInput value={notesText} setValue={setNotesText} />
+                <TextAreaInput value={notesText} setValue={setNotesText} />
             </div>
             <div>
                 <div>Rating</div>
@@ -62,14 +58,14 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
             </div>
             <div>
                 <div>Drink</div>
-                <LoginTextInput
+                <TextInput
                     value={drinkText}
                     setValue={setDrinkText}
                     type="text"
                     onKeyDown={onKeyDownDrink}
                 />
             </div>
-            <LoginButton label="Submit" onClick={onClickSubmit} />
+            <SubmitButton label="Submit" onClick={onClickSubmit} />
         </form>
     )
 }
@@ -85,13 +81,13 @@ const Page = () => {
         if (!isLoadingUser && !user) {
             router.push("/")
         }
-    }, [isLoadingUser])
+    }, [isLoadingUser, router, user])
 
     useEffect(() => {
         if (!isLoadingVenue && !venue) {
             router.push("/")
         }
-    }, [isLoadingVenue])
+    }, [isLoadingVenue, router, venue])
 
     const submitVisit = async (
         notes: string,
@@ -101,9 +97,11 @@ const Page = () => {
         setLoading(true)
         if (!token) {
             setErrorText("Could not submit visit: invalid token")
+            setLoading(false)
             return false
         } else if (!venue) {
             setErrorText("Could not submit visit: invalid venue")
+            setLoading(false)
             return false
         } else {
             const visitResult = await postVisit(
@@ -128,7 +126,7 @@ const Page = () => {
     return !user || !venue ? (
         ""
     ) : (
-        <div className="flex flex-col md:w-1/2 mx-auto items-center p-4">
+        <div className="flex flex-col md:w-1/2 lg:w-1/3 md:mx-auto items-center p-4">
             {isLoading ? (
                 <Loader />
             ) : (

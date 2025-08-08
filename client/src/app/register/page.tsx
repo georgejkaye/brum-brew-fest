@@ -1,6 +1,6 @@
 "use client"
 import { KeyboardEvent, useState } from "react"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 import { registerUser, requestVerifyToken } from "../api"
 import { Loader } from "../Loader"
 import Link from "next/link"
@@ -53,11 +53,11 @@ const Page = () => {
         }
     }
     return (
-        <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/3 mx-auto p-4">
+        <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/3 md:mx-auto p-4 items-center">
             {isLoading ? (
                 <Loader />
             ) : (
-                <>
+                <div className="flex flex-col gap-4 w-full">
                     <h2 className="text-2xl font-bold">Register</h2>
                     {errorString && (
                         <div className="p-4 bg-red-300 rounded-lg">
@@ -69,11 +69,11 @@ const Page = () => {
                             {successString}
                         </div>
                     )}
-                    <form action="#" className="flex flex-col gap-4">
+                    <form action="#" className="flex flex-col gap-4 w-full">
                         <div>
                             <div>Email</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="email"
                                     value={emailString}
                                     setValue={setEmailString}
@@ -83,7 +83,7 @@ const Page = () => {
                         <div>
                             <div>Password</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="password"
                                     value={passwordString}
                                     setValue={setPasswordString}
@@ -93,7 +93,7 @@ const Page = () => {
                         <div>
                             <div>Confirm password</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="password"
                                     value={confirmPasswordString}
                                     setValue={setConfirmPasswordString}
@@ -103,7 +103,7 @@ const Page = () => {
                         <div>
                             <div>Display name</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="text"
                                     value={displayNameString}
                                     setValue={setDisplayNameString}
@@ -111,7 +111,7 @@ const Page = () => {
                                 />
                             </div>
                         </div>
-                        <LoginButton
+                        <SubmitButton
                             label="Register"
                             onClick={onClickRegister}
                             disabled={
@@ -131,7 +131,7 @@ const Page = () => {
                             Click here to login.
                         </Link>
                     </div>
-                </>
+                </div>
             )}
         </div>
     )

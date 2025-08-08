@@ -34,7 +34,7 @@ export const UserSummaryProvider = ({
             }
         }
         fetchUser()
-    }, [])
+    }, [router, userId])
     return (
         <UserSummaryContext.Provider
             value={{ userSummary, isLoadingUserSummary }}

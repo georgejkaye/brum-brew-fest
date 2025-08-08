@@ -6,21 +6,23 @@ import {
     MouseEvent,
 } from "react"
 
-interface LoginTextInputProps {
+interface TextInputProps {
     name?: string
     value: string
     setValue: Dispatch<SetStateAction<string>>
     type: string
     onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
+    placeholder?: string
 }
 
-export const LoginTextInput = ({
+export const TextInput = ({
     name,
     value,
     setValue,
     type,
     onKeyDown,
-}: LoginTextInputProps) => {
+    placeholder = "",
+}: TextInputProps) => {
     const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
@@ -33,23 +35,24 @@ export const LoginTextInput = ({
             value={value}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            placeholder={placeholder}
         />
     )
 }
 
-interface LoginTextAreaInputProps {
+interface TextAreaInputProps {
     name?: string
     value: string
     setValue: Dispatch<SetStateAction<string>>
     onKeyDown?: (e: KeyboardEvent<HTMLTextAreaElement>) => void
 }
 
-export const LoginTextAreaInput = ({
+export const TextAreaInput = ({
     name,
     value,
     setValue,
     onKeyDown,
-}: LoginTextAreaInputProps) => {
+}: TextAreaInputProps) => {
     const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(e.target.value)
@@ -65,17 +68,17 @@ export const LoginTextAreaInput = ({
     )
 }
 
-interface LoginButtonProps {
+interface SubmitButtonProps {
     label: string
     onClick: (e: MouseEvent<HTMLButtonElement>) => void
     disabled?: boolean
 }
 
-export const LoginButton = ({
+export const SubmitButton = ({
     label,
     onClick,
     disabled = false,
-}: LoginButtonProps) => {
+}: SubmitButtonProps) => {
     return (
         <button
             type="submit"

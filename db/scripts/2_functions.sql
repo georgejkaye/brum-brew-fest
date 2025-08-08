@@ -3,6 +3,7 @@ DROP FUNCTION IF EXISTS insert_area;
 DROP FUNCTION IF EXISTS insert_venue;
 DROP FUNCTION IF EXISTS insert_venues;
 DROP FUNCTION IF EXISTS insert_visit;
+DROP FUNCTION IF EXISTS insert_follow;
 DROP FUNCTION IF EXISTS select_user_by_user_id;
 DROP FUNCTION IF EXISTS select_user_by_email;
 DROP FUNCTION IF EXISTS select_area_by_name;
@@ -10,8 +11,12 @@ DROP FUNCTION IF EXISTS select_venues;
 DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
+DROP FUNCTION IF EXISTS select_user_follows;
+DROP FUNCTION IF EXISTS select_user_counts;
+DROP FUNCTION IF EXISTS update_user;
 DROP FUNCTION IF EXISTS update_user_display_name;
 DROP FUNCTION IF EXISTS delete_user;
+DROP FUNCTION IF EXISTS delete_follow;
 
 CREATE OR REPLACE FUNCTION insert_user (
     p_email TEXT,
@@ -159,6 +164,19 @@ VALUES (
     p_drink
 )
 RETURNING visit_id AS new_visit_id;
+$$;
+
+CREATE OR REPLACE FUNCTION insert_follow (
+    p_source_user_id INTEGER,
+    p_target_user_id INTEGER
+)
+RETURNS INTEGER
+LANGUAGE sql
+AS
+$$
+INSERT INTO follow (follow_source_user_id, follow_target_user_id)
+VALUES (p_source_user_id, p_target_user_id)
+RETURNING follow_id;
 $$;
 
 CREATE OR REPLACE FUNCTION select_user_by_user_id (
@@ -490,6 +508,56 @@ ON app_user.user_id = visit_table.user_id
 WHERE app_user.user_id = p_user_id;
 $$;
 
+CREATE OR REPLACE FUNCTION select_user_follows (
+    p_user_id INTEGER
+)
+RETURNS SETOF user_follow_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    follow.follow_id,
+    follow.follow_target_user_id,
+    follow_target_user.display_name,
+    user_visit_count.visit_count,
+    user_visit_count.unique_visit_count
+FROM follow
+INNER JOIN app_user follow_target_user
+ON follow.follow_target_user_id = follow_target_user.user_id
+INNER JOIN (
+    SELECT
+        user_id,
+        COUNT(*) AS visit_count,
+        COUNT(DISTINCT venue_id) AS unique_visit_count
+    FROM visit
+    GROUP BY user_id
+) user_visit_count
+ON follow_target_user.user_id = user_visit_count.user_id
+WHERE follow.follow_source_user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_user_counts ()
+RETURNS SETOF user_count_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    app_user.user_id,
+    app_user.display_name,
+    COALESCE(visit_count_table.visit_count, 0),
+    COALESCE(visit_count_table.unique_visit_count, 0)
+FROM app_user
+lEFT JOIN (
+    SELECT
+        visit.user_id,
+        COUNT(visit.*) AS visit_count,
+        COUNT(DISTINCT venue_id) AS unique_visit_count
+    FROM visit
+    GROUP BY user_id
+) visit_count_table
+ON app_user.user_id = visit_count_table.user_id;
+$$;
+
 CREATE OR REPLACE FUNCTION update_user (
     p_user_id INTEGER,
     p_email TEXT,
@@ -560,4 +628,17 @@ AS
 $$
 DELETE FROM app_user
 WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION delete_follow (
+    p_user_id INTEGER,
+    p_follow_id INTEGER
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+DELETE FROM follow
+WHERE follow_source_user_id = p_user_id
+AND follow_id = p_follow_id;
 $$;

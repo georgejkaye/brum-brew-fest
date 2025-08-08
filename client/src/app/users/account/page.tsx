@@ -18,7 +18,7 @@ const Page = () => {
         setTimeout(() => router.push("/"), 1000)
     }
     useEffect(() => {
-        if (user == undefined) {
+        if (user === undefined) {
             router.push("/")
         }
     }, [])
