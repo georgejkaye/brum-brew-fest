@@ -305,13 +305,14 @@ export const getFollows = async (token: string) => {
 }
 
 export const addFollow = async (token: string, targetUserId: number) => {
-    const endpoint = "/api/auth/me/follow"
+    const endpoint = `/api/auth/me/follow?target_user_id=${targetUserId}`
     const body = { target_user_id: targetUserId }
     const headers = getAuthorizationHeader(token)
     try {
         await axios.post(endpoint, body, { headers })
         return true
-    } catch {
+    } catch (e) {
+        console.error(e)
         return false
     }
 }
