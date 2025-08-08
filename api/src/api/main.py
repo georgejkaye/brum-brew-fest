@@ -127,8 +127,8 @@ async def get_user_details(
         user_details.visits if user_details is not None else [],
     )
 
-@app.post(
-    "/auth/me/displayname/{display_name}", tags=["auth"]
+@app.patch(
+    "/auth/me/display-name", tags=["auth"]
 )
 async def post_update_display_name(
     display_name: str,
