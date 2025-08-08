@@ -12,6 +12,7 @@ interface LoginTextInputProps {
     setValue: Dispatch<SetStateAction<string>>
     type: string
     onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
+    placeholder?: string
 }
 
 export const LoginTextInput = ({
@@ -20,6 +21,7 @@ export const LoginTextInput = ({
     setValue,
     type,
     onKeyDown,
+    placeholder = "",
 }: LoginTextInputProps) => {
     const inputStyle = "w-full text-lg p-2 rounded border-2 border-gray-400"
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +35,7 @@ export const LoginTextInput = ({
             value={value}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            placeholder={placeholder}
         />
     )
 }
