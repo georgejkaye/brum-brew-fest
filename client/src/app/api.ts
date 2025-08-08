@@ -284,6 +284,7 @@ export const postVisit = async (
 }
 
 const responseToUserFollow = (response: any) => ({
+    followId: response["follow_id"],
     userId: response["user_id"],
     displayName: response["display_name"],
     visitCount: response["visit_count"],
@@ -316,7 +317,7 @@ export const addFollow = async (token: string, targetUserId: number) => {
 }
 
 export const removeFollow = async (token: string, followId: number) => {
-    const endpoint = `/auth/me/follow/${followId}`
+    const endpoint = `/api/auth/me/follow/${followId}`
     const headers = getAuthorizationHeader(token)
     try {
         await axios.delete(endpoint, { headers })
