@@ -28,9 +28,9 @@ const FollowCard = ({
         await fetchFollows()
     }
     return (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-row items-center w-full">
             {isLoading ? (
-                <Loader />
+                <Loader size={50} />
             ) : (
                 <div className="flex flex-col md:flex-row p-4 rounded bg-green-200 gap-4 w-full">
                     <Link
