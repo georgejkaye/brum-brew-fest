@@ -36,7 +36,7 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
         submitVisit(notesText, ratingValue, drinkText)
     }
     const onKeyDownDrink = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key == "Enter") {
+        if (e.key === "Enter") {
             performSubmitVisit()
         }
     }
