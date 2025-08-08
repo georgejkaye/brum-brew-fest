@@ -13,11 +13,7 @@ import { VenueContext } from "@/app/context/venue"
 import { postVisit } from "@/app/api"
 import { Rating } from "@smastrom/react-rating"
 
-import {
-    LoginButton,
-    LoginTextAreaInput,
-    LoginTextInput,
-} from "@/app/components/login"
+import { SubmitButton, TextAreaInput, TextInput } from "@/app/components/forms"
 import { Loader } from "@/app/Loader"
 
 interface RecordVisitFormProps {
@@ -50,7 +46,7 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
                 <div>Notes</div>
-                <LoginTextAreaInput value={notesText} setValue={setNotesText} />
+                <TextAreaInput value={notesText} setValue={setNotesText} />
             </div>
             <div>
                 <div>Rating</div>
@@ -62,14 +58,14 @@ const RecordVisitForm = ({ submitVisit }: RecordVisitFormProps) => {
             </div>
             <div>
                 <div>Drink</div>
-                <LoginTextInput
+                <TextInput
                     value={drinkText}
                     setValue={setDrinkText}
                     type="text"
                     onKeyDown={onKeyDownDrink}
                 />
             </div>
-            <LoginButton label="Submit" onClick={onClickSubmit} />
+            <SubmitButton label="Submit" onClick={onClickSubmit} />
         </form>
     )
 }

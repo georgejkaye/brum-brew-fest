@@ -1,6 +1,6 @@
 "use client"
 import { KeyboardEvent, useState } from "react"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 import { registerUser, requestVerifyToken } from "../api"
 import { Loader } from "../Loader"
 import Link from "next/link"
@@ -73,7 +73,7 @@ const Page = () => {
                         <div>
                             <div>Email</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="email"
                                     value={emailString}
                                     setValue={setEmailString}
@@ -83,7 +83,7 @@ const Page = () => {
                         <div>
                             <div>Password</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="password"
                                     value={passwordString}
                                     setValue={setPasswordString}
@@ -93,7 +93,7 @@ const Page = () => {
                         <div>
                             <div>Confirm password</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="password"
                                     value={confirmPasswordString}
                                     setValue={setConfirmPasswordString}
@@ -103,7 +103,7 @@ const Page = () => {
                         <div>
                             <div>Display name</div>
                             <div>
-                                <LoginTextInput
+                                <TextInput
                                     type="text"
                                     value={displayNameString}
                                     setValue={setDisplayNameString}
@@ -111,7 +111,7 @@ const Page = () => {
                                 />
                             </div>
                         </div>
-                        <LoginButton
+                        <SubmitButton
                             label="Register"
                             onClick={onClickRegister}
                             disabled={

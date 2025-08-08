@@ -13,7 +13,7 @@ import { UserContext } from "../context/user"
 import { useRouter } from "next/navigation"
 import { Loader } from "../Loader"
 import Link from "next/link"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 
 interface FollowCardProps {
     token: string
@@ -216,7 +216,7 @@ const Page = () => {
                 <div className="flex flex-col gap-4 w-full">
                     <h2 className="font-bold text-2xl">Follows</h2>
                     <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-                        <LoginButton
+                        <SubmitButton
                             label={
                                 isAddingFollower
                                     ? "Stop adding followers"
@@ -253,7 +253,7 @@ const Page = () => {
                     </div>
                     {isAddingFollower ? (
                         <div className="flex flex-col gap-4">
-                            <LoginTextInput
+                            <TextInput
                                 name="user"
                                 value={userSearchText}
                                 setValue={setUserSearchText}
