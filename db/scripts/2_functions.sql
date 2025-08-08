@@ -67,8 +67,8 @@ $$;
 
 CREATE OR REPLACE FUNCTION insert_venue (
     p_venue_name TEXT,
-    p_venue_website TEXT,
     p_address TEXT,
+    p_venue_website TEXT,
     p_latitude DECIMAL,
     p_longitude DECIMAL,
     p_pin_location BOOLEAN,
@@ -285,6 +285,7 @@ SELECT
     venue.venue_id,
     venue.venue_name,
     venue.venue_address,
+    venue.venue_website,
     venue.latitude,
     venue.longitude,
     COALESCE(visit_data_table.visits, ARRAY[]::venue_visit_data[]) AS visits,

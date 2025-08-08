@@ -6,7 +6,7 @@ API_DIR=$SCRIPT_DIR/../api
 VENUES_JSON="$SCRIPT_DIR/venues.json"
 DB_NAME=bbf
 DB_USER=bbf
-DB_HOST=localhost
+DB_HOST=db
 DB_PASSWORD_FILE="temp.secret"
 
 echo "bbf" > $DB_PASSWORD_FILE

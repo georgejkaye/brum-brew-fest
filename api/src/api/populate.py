@@ -30,15 +30,16 @@ for area in areas_data:
 
     for venue in area["venues"]:
         pin_location = venue.get("pins")
+        print(venue)
         venues.append(
             VenueInput(
                 venue["name"],
                 area_id,
                 venue["address"],
-                venue["website"],
                 venue["latitude"],
                 venue["longitude"],
                 pin_location if pin_location is not None else False,
+                venue.get("website"),
             )
         )
 

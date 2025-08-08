@@ -70,6 +70,7 @@ def select_area_by_name(conn: Connection, area_name: str) -> Optional[Area]:
 def insert_area(
     conn: Connection, area: AreaInput, fetch_if_duplicate: bool
 ) -> Optional[int]:
+    print(f"Inserting {area.area_name}")
     with conn.cursor(row_factory=class_row(InsertAreaResult)) as cur:
         result = cur.execute(
             "SELECT * FROM insert_area(%s)",
@@ -85,10 +86,13 @@ def insert_area(
 
 
 def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
+    for venue in venues:
+        print(f"Inserting {venue.venue_name}")
     venue_tuples = [
         (
             venue.venue_name,
             venue.venue_address,
+            venue.venue_website,
             venue.latitude,
             venue.longitude,
             venue.pin_location,
@@ -96,6 +100,7 @@ def insert_venues(conn: Connection, venues: list[VenueInput]) -> None:
         )
         for venue in venues
     ]
+    print(venue_tuples)
     conn.execute(
         "SELECT * FROM insert_venues(%s)",
         [venue_tuples],

@@ -157,6 +157,7 @@ const responseToVenue = (response: any) => ({
     venueId: response["venue_id"],
     name: response["venue_name"],
     address: response["venue_address"],
+    website: response["venue_website"],
     latitude: parseFloat(response["latitude"]),
     longitude: parseFloat(response["longitude"]),
     visits: response["visits"].map(responseToVenueVisit),
@@ -183,6 +184,7 @@ export const getVenue = async (venueId: number): Promise<Venue | undefined> => {
     try {
         const response = await axios.get(endpoint)
         const data = response.data
+        console.log(data)
         const venue = responseToVenue(data)
         return venue
     } catch (e) {

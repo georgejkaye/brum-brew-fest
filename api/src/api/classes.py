@@ -57,11 +57,11 @@ class AreaVenue:
     venue_id: int
     venue_name: str
     venue_address: str
-    venue_website: Optional[str]
     latitude: Decimal
     longitude: Decimal
     visits: list[VenueVisit]
     pin_location: bool
+    venue_website: Optional[str] = None
 
 
 @dataclass
@@ -76,10 +76,10 @@ class VenueInput:
     venue_name: str
     area_id: int
     venue_address: str
-    venue_website: Optional[str]
     latitude: Decimal
     longitude: Decimal
     pin_location: bool
+    venue_website: Optional[str] = None
 
 
 @dataclass
@@ -87,13 +87,13 @@ class Venue:
     venue_id: int
     venue_name: str
     venue_address: str
-    venue_website: Optional[str]
     latitude: Decimal
     longitude: Decimal
     visits: list[VenueVisit]
     pin_location: bool
     area_id: int
     area_name: str
+    venue_website: Optional[str] = None
 
 
 @dataclass

@@ -74,6 +74,7 @@ const VenueDetails = ({ venue }: VenueDetailsProps) => {
             : venue.visits.reduce((a, b) => a + b.rating, 0) / venueVisitCount
 
     const venueText = `${venue.name}${venue.pinLocation ? " 🔰" : ""}`;
+    console.log(venue.website, venue.website === null, venue.website === undefined);
     const venueElem = venue.website === null ? venueText : <a href={venue.website}>{venueText}</a>;
 
     return (
