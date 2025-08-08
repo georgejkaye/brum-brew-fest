@@ -24,11 +24,11 @@ const FollowCard = ({
     const [isLoading, setLoading] = useState(false)
     const onClickRemoveButton = async (e: MouseEvent<HTMLButtonElement>) => {
         setLoading(true)
-        await removeFollow(token, follow.userId)
+        await removeFollow(token, follow.followId)
         await fetchFollows()
     }
     return (
-        <div className="flex items-center w-full">
+        <div className="flex flex-col items-center w-full">
             {isLoading ? (
                 <Loader />
             ) : (
@@ -60,7 +60,7 @@ const FollowCard = ({
 
 const Page = () => {
     const router = useRouter()
-    const { token } = useContext(UserContext)
+    const { isLoadingUser, token } = useContext(UserContext)
 
     const [follows, setFollows] = useState<UserFollow[]>([])
     const [users, setUsers] = useState<UserFollow[]>([])
@@ -83,12 +83,14 @@ const Page = () => {
             setLoadingUsers(false)
         }
         if (!token) {
-            router.push("/")
+            if (!isLoadingUser) {
+                router.push("/")
+            }
         } else {
             fetchFollows(token)
             fetchUsers()
         }
-    }, [router, token, fetchFollows])
+    }, [router, token, fetchFollows, isLoadingUser])
 
     const onClickAddFollowerButton = (e: MouseEvent<HTMLButtonElement>) => {}
     const onClickEditFollowersButton = (e: MouseEvent<HTMLButtonElement>) => {
