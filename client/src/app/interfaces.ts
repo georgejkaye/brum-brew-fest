@@ -35,7 +35,7 @@ export interface Venue {
     venueId: number
     name: string
     address: string
-    website: string | null
+    website: string | undefined
     latitude: number
     longitude: number
     visits: VenueVisit[]
