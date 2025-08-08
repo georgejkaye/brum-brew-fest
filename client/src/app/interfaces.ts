@@ -74,3 +74,10 @@ export interface UserFollow {
     visitCount: number
     uniqueVisitCount: number
 }
+
+export interface UserCount {
+    userId: number
+    displayName: string
+    visitCount: number
+    uniqueVisitCount: number
+}

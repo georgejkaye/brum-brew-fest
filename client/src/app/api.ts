@@ -327,3 +327,20 @@ export const removeFollow = async (token: string, followId: number) => {
         return false
     }
 }
+
+const responseToUserCount = (data: any) => ({
+    userId: data["user_id"],
+    displayName: data["display_name"],
+    visitCount: data["visit_count"],
+    uniqueVisitCount: data["unique_visit_count"],
+})
+
+export const getUserCounts = async () => {
+    const endpoint = `/api/users`
+    try {
+        const result = await axios.get(endpoint)
+        return result.data.map(responseToUserCount)
+    } catch {
+        return []
+    }
+}
