@@ -4,6 +4,7 @@ from decimal import Decimal
 from typing import Any, Optional
 
 from psycopg import Connection
+from psycopg.errors import UniqueViolation
 from psycopg.rows import TupleRow, class_row
 from psycopg.types.composite import CompositeInfo, register_composite
 
@@ -128,12 +129,17 @@ def insert_follow(
     conn: Connection, source_user_id: int, target_user_id: int
 ) -> Optional[int]:
     with conn.cursor(row_factory=class_row(InsertFollowResult)) as cur:
-        result = cur.execute(
-            "SELECT * FROM insert_follow(%s, %s)",
-            [source_user_id, target_user_id],
-        ).fetchone()
-        conn.commit()
-        return result.insert_follow if result is not None else None
+        try:
+            result = cur.execute(
+                "SELECT * FROM insert_follow(%s, %s)",
+                [source_user_id, target_user_id],
+            ).fetchone()
+            conn.commit()
+            return result.insert_follow if result is not None else None
+        except UniqueViolation:
+            print("Duplicate follow")
+            conn.rollback()
+            return None
 
 
 def select_user_by_user_id(conn: Connection, user_id: int) -> Optional[User]:
