@@ -12,6 +12,7 @@ DROP FUNCTION IF EXISTS select_venues_by_user;
 DROP FUNCTION IF EXISTS select_visits;
 DROP FUNCTION IF EXISTS select_user_summary;
 DROP FUNCTION IF EXISTS select_user_follows;
+DROP FUNCTION IF EXISTS select_user_counts;
 DROP FUNCTION IF EXISTS update_user;
 DROP FUNCTION IF EXISTS update_user_display_name;
 DROP FUNCTION IF EXISTS delete_user;
@@ -533,6 +534,28 @@ INNER JOIN (
 ) user_visit_count
 ON follow_target_user.user_id = user_visit_count.user_id
 WHERE follow.follow_source_user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION select_user_counts ()
+RETURNS SETOF user_count_data
+LANGUAGE sql
+AS
+$$
+SELECT
+    app_user.user_id,
+    app_user.display_name,
+    COALESCE(visit_count_table.visit_count, 0),
+    COALESCE(visit_count_table.unique_visit_count, 0)
+FROM app_user
+lEFT JOIN (
+    SELECT
+        visit.user_id,
+        COUNT(visit.*) AS visit_count,
+        COUNT(DISTINCT venue_id) AS unique_visit_count
+    FROM visit
+    GROUP BY user_id
+) visit_count_table
+ON app_user.user_id = visit_count_table.user_id;
 $$;
 
 CREATE OR REPLACE FUNCTION update_user (
