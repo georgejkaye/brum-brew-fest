@@ -27,7 +27,7 @@ import {
 } from "react"
 import { UserContext } from "./context/user"
 import Pin from "./Pin"
-import { LoginButton } from "./components/login"
+import { SubmitButton } from "./components/forms"
 import { useRouter } from "next/navigation"
 import { Rating } from "@smastrom/react-rating"
 import Link from "next/link"
@@ -90,8 +90,8 @@ const VenueMarker = ({
                 colour={pinColour}
                 size={
                     currentVenue && currentVenue.venueId === venue.venueId
-                        ? 40
-                        : 30
+                        ? 50
+                        : 40
                 }
             />
         </Marker>
@@ -161,12 +161,12 @@ const CurrentVenueBox = ({
                     </div>
                 )}
                 <div className="flex flex-col gap-2">
-                    <LoginButton
+                    <SubmitButton
                         label="More details"
                         onClick={onClickDetails}
                     />
                     {user && (
-                        <LoginButton
+                        <SubmitButton
                             label="Record visit"
                             onClick={onClickRecord}
                         />

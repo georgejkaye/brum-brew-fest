@@ -4,6 +4,7 @@ from decimal import Decimal
 from typing import Any, Optional
 
 from psycopg import Connection
+from psycopg.errors import UniqueViolation
 from psycopg.rows import TupleRow, class_row
 from psycopg.types.composite import CompositeInfo, register_composite
 
@@ -12,10 +13,13 @@ from api.classes import (
     AreaInput,
     AreaVenue,
     InsertAreaResult,
+    InsertFollowResult,
     InsertVenueResult,
     InsertVisitResult,
     SingleUserVisit,
     User,
+    UserCount,
+    UserFollow,
     UserSummary,
     UserVisit,
     Venue,
@@ -121,6 +125,23 @@ def insert_visit(
         return result.insert_visit if result is not None else None
 
 
+def insert_follow(
+    conn: Connection, source_user_id: int, target_user_id: int
+) -> Optional[int]:
+    with conn.cursor(row_factory=class_row(InsertFollowResult)) as cur:
+        try:
+            result = cur.execute(
+                "SELECT * FROM insert_follow(%s, %s)",
+                [source_user_id, target_user_id],
+            ).fetchone()
+            conn.commit()
+            return result.insert_follow if result is not None else None
+        except UniqueViolation:
+            print("Duplicate follow")
+            conn.rollback()
+            return None
+
+
 def select_user_by_user_id(conn: Connection, user_id: int) -> Optional[User]:
     with conn.cursor(row_factory=class_row(User)) as cur:
         return cur.execute(
@@ -172,6 +193,18 @@ def select_user_summary(
         return cur.execute(
             "SELECT * FROM select_user_summary(%s)", [user_id]
         ).fetchone()
+
+
+def select_user_follows(conn: Connection, user_id: int) -> list[UserFollow]:
+    with conn.cursor(row_factory=class_row(UserFollow)) as cur:
+        return cur.execute(
+            "SELECT * FROM select_user_follows(%s)", [user_id]
+        ).fetchmany()
+
+
+def select_user_counts(conn: Connection) -> list[UserCount]:
+    with conn.cursor(row_factory=class_row(UserCount)) as cur:
+        return cur.execute("SELECT * FROM select_user_counts()").fetchall()
 
 
 def update_user(
@@ -227,6 +260,14 @@ def delete_user(conn: Connection, user_id: int) -> None:
     conn.execute(
         "SELECT * FROM delete_user(%s)",
         [user_id],
+    )
+    conn.commit()
+
+
+def delete_follow(conn: Connection, user_id: int, follow_id: int) -> None:
+    conn.execute(
+        "SELECT * FROM delete_follow(%s, %s)",
+        [user_id, follow_id],
     )
     conn.commit()
 

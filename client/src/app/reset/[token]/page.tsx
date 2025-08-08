@@ -1,6 +1,6 @@
 "use client"
 import { resetPassword } from "@/app/api"
-import { LoginButton, LoginTextInput } from "@/app/components/login"
+import { SubmitButton, TextInput } from "@/app/components/forms"
 import { Loader } from "@/app/Loader"
 import { use, useState, MouseEvent, KeyboardEvent } from "react"
 
@@ -77,7 +77,7 @@ const Page = ({ params }: { params: Promise<{ token: string }> }) => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <label htmlFor="password">New password</label>
-                                <LoginTextInput
+                                <TextInput
                                     name="password"
                                     type="password"
                                     value={newPasswordString}
@@ -88,7 +88,7 @@ const Page = ({ params }: { params: Promise<{ token: string }> }) => {
                                 <label htmlFor="confirm-password">
                                     Confirm new password
                                 </label>
-                                <LoginTextInput
+                                <TextInput
                                     name="confirm-password"
                                     type="password"
                                     value={confirmNewPasswordString}
@@ -96,7 +96,7 @@ const Page = ({ params }: { params: Promise<{ token: string }> }) => {
                                     onKeyDown={onKeyDownConfirmPasswordInput}
                                 />
                             </div>
-                            <LoginButton
+                            <SubmitButton
                                 onClick={onClickResetPasswordButton}
                                 label="Reset password"
                             />

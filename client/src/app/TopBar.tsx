@@ -19,33 +19,56 @@ const TopBar = () => {
         <div>
             <div className="flex flex-row p-4 bg-[#38db98] w-full items-center h-[60px]">
                 <div className="flex-1 text-2xl text-black font-bold">
-                    <Link className={linkStyle} href="/">
+                    <Link className={linkStyle} onClick={onClickLink} href="/">
                         Brum Brew Fest Tracker
                     </Link>
                 </div>
                 {!isLoadingUser && (
                     <>
                         <div className="hidden md:flex flex-row gap-4">
-                            <Link className={linkStyle} href="/">
+                            <Link
+                                className={linkStyle}
+                                onClick={onClickLink}
+                                href="/"
+                            >
                                 Map
                             </Link>
-                            <Link className={linkStyle} href="/venues/list">
+                            <Link
+                                className={linkStyle}
+                                onClick={onClickLink}
+                                href="/venues/list"
+                            >
                                 Venues
                             </Link>
                             {user ? (
                                 <>
+                                    <Link
+                                        href="/follows"
+                                        onClick={onClickLink}
+                                        className={linkStyle}
+                                    >
+                                        Follows
+                                    </Link>
                                     <div
                                         className={linkStyle}
                                         onClick={onClickLogout}
                                     >
                                         Logout
                                     </div>
-                                    <div className="font-bold">
+                                    <Link
+                                        href={`/users/${user.userId}`}
+                                        onClick={onClickLink}
+                                        className="font-bold"
+                                    >
                                         {user.displayName}
-                                    </div>
+                                    </Link>
                                 </>
                             ) : (
-                                <Link className={linkStyle} href="/login">
+                                <Link
+                                    className={linkStyle}
+                                    onClick={onClickLink}
+                                    href="/login"
+                                >
                                     Login
                                 </Link>
                             )}
@@ -75,13 +98,22 @@ const TopBar = () => {
                     </Link>
                     {user ? (
                         <>
+                            <Link href="/follows" onClick={onClickLink}>
+                                Follows
+                            </Link>
                             <button
                                 className={linkStyle}
                                 onClick={onClickLogout}
                             >
                                 Logout
                             </button>
-                            <div className="font-bold">{user.displayName}</div>
+                            <Link
+                                href={`/users/${user.userId}`}
+                                className="font-bold"
+                                onClick={onClickLink}
+                            >
+                                {user.displayName}
+                            </Link>
                         </>
                     ) : (
                         <Link onClick={onClickLink} href="/login">

@@ -1,10 +1,10 @@
 "use client"
 import { KeyboardEvent, useContext, useState } from "react"
-import { getUserDetails, login } from "../api"
+import { login } from "../api"
 import { Loader } from "../Loader"
 import { UserContext } from "../context/user"
 import Link from "next/link"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 import { useRouter } from "next/navigation"
 
 interface LoginBoxProps {
@@ -31,7 +31,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
             <div>
                 <div>Email</div>
                 <div>
-                    <LoginTextInput
+                    <TextInput
                         name="user"
                         type="email"
                         value={emailString}
@@ -42,7 +42,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
             <div>
                 <div>Password</div>
                 <div>
-                    <LoginTextInput
+                    <TextInput
                         name="password"
                         type="password"
                         value={passwordString}
@@ -51,7 +51,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
                     />
                 </div>
             </div>
-            <LoginButton
+            <SubmitButton
                 label="Login"
                 onClick={onClickLogin}
                 disabled={emailString === "" || passwordString === ""}
@@ -61,7 +61,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
 }
 
 const Page = () => {
-    const { setUser } = useContext(UserContext)
+    const { fetchUser } = useContext(UserContext)
     const router = useRouter()
     const [isLoading, setLoading] = useState(false)
     const [isLoginSuccessful, setLoginSuccessful] = useState(false)
@@ -79,11 +79,9 @@ const Page = () => {
             return false
         } else {
             setLoginSuccessful(true)
-            localStorage.setItem("token", loginResult.token)
-            const user = await getUserDetails(loginResult.token)
-            setUser(user)
-            setErrorString("")
             setLoading(false)
+            setErrorString("")
+            fetchUser(loginResult.token)
             setTimeout(() => router.push("/"), 1000)
             return true
         }

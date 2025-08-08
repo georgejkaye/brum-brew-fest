@@ -107,6 +107,23 @@ class UserVisit:
 
 
 @dataclass
+class UserFollow:
+    follow_id: int
+    user_id: int
+    display_name: str
+    visit_count: int
+    unique_visit_count: int
+
+
+@dataclass
+class UserCount:
+    user_id: int
+    display_name: str
+    visit_count: int
+    unique_visit_count: int
+
+
+@dataclass
 class UserSummary:
     user_id: int
     email: str
@@ -117,6 +134,11 @@ class UserSummary:
 @dataclass
 class InsertVisitResult:
     insert_visit: int
+
+
+@dataclass
+class InsertFollowResult:
+    insert_follow: int
 
 
 @dataclass
