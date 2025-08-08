@@ -29,7 +29,7 @@ for area in areas_data:
         raise RuntimeError(f"Could not insert area {area['name']}")
 
     for venue in area["venues"]:
-        pin_location = venue.get("pin_location")
+        pin_location = venue.get("pins")
         venues.append(
             VenueInput(
                 venue["name"],

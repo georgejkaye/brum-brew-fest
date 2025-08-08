@@ -53,11 +53,11 @@ const Page = () => {
         }
     }
     return (
-        <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/3 mx-auto p-4">
+        <div className="flex flex-col gap-4 md:w-1/2 lg:w-1/3 md:mx-auto p-4 items-center">
             {isLoading ? (
                 <Loader />
             ) : (
-                <>
+                <div className="flex flex-col gap-4 w-full">
                     <h2 className="text-2xl font-bold">Register</h2>
                     {errorString && (
                         <div className="p-4 bg-red-300 rounded-lg">
@@ -69,7 +69,7 @@ const Page = () => {
                             {successString}
                         </div>
                     )}
-                    <form action="#" className="flex flex-col gap-4">
+                    <form action="#" className="flex flex-col gap-4 w-full">
                         <div>
                             <div>Email</div>
                             <div>
@@ -131,7 +131,7 @@ const Page = () => {
                             Click here to login.
                         </Link>
                     </div>
-                </>
+                </div>
             )}
         </div>
     )

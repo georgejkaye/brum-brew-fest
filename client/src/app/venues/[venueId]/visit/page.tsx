@@ -85,13 +85,13 @@ const Page = () => {
         if (!isLoadingUser && !user) {
             router.push("/")
         }
-    }, [isLoadingUser])
+    }, [isLoadingUser, router, user])
 
     useEffect(() => {
         if (!isLoadingVenue && !venue) {
             router.push("/")
         }
-    }, [isLoadingVenue])
+    }, [isLoadingVenue, router, venue])
 
     const submitVisit = async (
         notes: string,
@@ -101,9 +101,11 @@ const Page = () => {
         setLoading(true)
         if (!token) {
             setErrorText("Could not submit visit: invalid token")
+            setLoading(false)
             return false
         } else if (!venue) {
             setErrorText("Could not submit visit: invalid venue")
+            setLoading(false)
             return false
         } else {
             const visitResult = await postVisit(
@@ -128,7 +130,7 @@ const Page = () => {
     return !user || !venue ? (
         ""
     ) : (
-        <div className="flex flex-col md:w-1/2 mx-auto items-center p-4">
+        <div className="flex flex-col md:w-1/2 lg:w-1/3 md:mx-auto items-center p-4">
             {isLoading ? (
                 <Loader />
             ) : (

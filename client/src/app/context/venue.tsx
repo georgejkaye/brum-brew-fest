@@ -32,7 +32,7 @@ export const VenueProvider = ({
             }
         }
         fetchVenue()
-    }, [])
+    }, [router, venueId])
     return (
         <VenueContext.Provider value={{ venue, isLoadingVenue }}>
             {children}
