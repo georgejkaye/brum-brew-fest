@@ -6,6 +6,7 @@ from fastapi_users import FastAPIUsers
 from psycopg import Connection
 
 from api.classes import (
+    UserCount,
     UserFollow,
     UserPublicDetails,
     UserSummary,
@@ -14,9 +15,9 @@ from api.classes import (
 )
 from api.db import (
     delete_follow,
-    delete_user,
     insert_follow,
     insert_visit,
+    select_user_counts,
     select_user_follows,
     select_user_summary,
     select_venue_by_venue_id,
@@ -50,6 +51,11 @@ async def hello() -> str:
 
 fastapi_users = FastAPIUsers[FastApiUser, int](get_user_manager, [auth_backend])
 current_user = fastapi_users.current_user()
+
+
+@app.get("/users", summary="Get all users and their counts", tags=["user"])
+async def get_users() -> list[UserCount]:
+    return select_user_counts(conn)
 
 
 @app.get(

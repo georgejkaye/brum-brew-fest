@@ -116,6 +116,14 @@ class UserFollow:
 
 
 @dataclass
+class UserCount:
+    user_id: int
+    display_name: str
+    visit_count: int
+    unique_visit_count: int
+
+
+@dataclass
 class UserSummary:
     user_id: int
     email: str

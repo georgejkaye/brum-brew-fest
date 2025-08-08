@@ -17,6 +17,7 @@ from api.classes import (
     InsertVisitResult,
     SingleUserVisit,
     User,
+    UserCount,
     UserFollow,
     UserSummary,
     UserVisit,
@@ -193,6 +194,11 @@ def select_user_follows(conn: Connection, user_id: int) -> list[UserFollow]:
         return cur.execute(
             "SELECT * FROM select_user_follows(%s)", [user_id]
         ).fetchmany()
+
+
+def select_user_counts(conn: Connection) -> list[UserCount]:
+    with conn.cursor(row_factory=class_row(UserCount)) as cur:
+        return cur.execute("SELECT * FROM select_user_counts()").fetchall()
 
 
 def update_user(
