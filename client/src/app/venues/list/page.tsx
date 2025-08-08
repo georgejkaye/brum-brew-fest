@@ -1,5 +1,11 @@
 "use client"
-import { ChangeEvent, useContext, useEffect, useState } from "react"
+import {
+    ChangeEvent,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react"
 import { Area, Venue } from "../../interfaces"
 import { VenuesContext } from "@/app/context/venues"
 import { Rating } from "@smastrom/react-rating"
@@ -21,7 +27,10 @@ const VenueCard = ({ venue, location }: VenueCardProps) => {
         <Link href={`/venues/${venue.venueId}`}>
             <div className="p-4 flex md:flex-row items-end gap-4 bg-green-100 rounded-lg shadow hover:bg-green-200">
                 <div className="flex flex-col flex-1 gap-2">
-                    <div className="text-2xl font-bold">{venue.name}{venue.pinLocation ? " 🔰" : ""}</div>
+                    <div className="text-2xl font-bold">
+                        {venue.name}
+                        {venue.pinLocation ? " 🔰" : ""}
+                    </div>
                     <div>{venue.address}</div>
                     {location && (
                         <div>
@@ -91,6 +100,16 @@ const partitionByArea = (venues: Venue[]) => {
 }
 
 const Page = () => {
+    const { venues } = useContext(VenuesContext)
+    const [location, setLocation] = useState<GeolocationPosition | undefined>(
+        undefined
+    )
+    const [groupByArea, setGroupByArea] = useState(true)
+    const [filteredVenues, setFilteredVenues] = useState([...venues])
+    const [filteredAreas, setFilteredAreas] = useState<Area[]>([])
+    const [searchValue, setSearchValue] = useState("")
+    const [sortByValue, setSortByValue] = useState("name-asc")
+
     const nameAscendingSort = (a: Venue, b: Venue) =>
         a.name.localeCompare(b.name)
     const nameDescendingSort = (a: Venue, b: Venue) =>
@@ -103,35 +122,33 @@ const Page = () => {
         getAverageRating(a) - getAverageRating(b)
     const ratingDescendingSort = (a: Venue, b: Venue) =>
         getAverageRating(b) - getAverageRating(a)
-    const distanceAscendingSort = (a: Venue, b: Venue) => {
-        if (!location) {
-            return 0
-        } else {
-            return (
-                getDistanceToVenue(a, location) -
-                getDistanceToVenue(b, location)
-            )
-        }
-    }
-    const distanceDescendingSort = (a: Venue, b: Venue) => {
-        if (!location) {
-            return 0
-        } else {
-            return (
-                getDistanceToVenue(a, location) -
-                getDistanceToVenue(b, location)
-            )
-        }
-    }
-    const { venues } = useContext(VenuesContext)
-    const [location, setLocation] = useState<GeolocationPosition | undefined>(
-        undefined
+    const distanceAscendingSort = useCallback(
+        (a: Venue, b: Venue) => {
+            if (!location) {
+                return 0
+            } else {
+                return (
+                    getDistanceToVenue(a, location) -
+                    getDistanceToVenue(b, location)
+                )
+            }
+        },
+        [location]
     )
-    const [groupByArea, setGroupByArea] = useState(true)
-    const [filteredVenues, setFilteredVenues] = useState([...venues])
-    const [filteredAreas, setFilteredAreas] = useState<Area[]>([])
-    const [searchValue, setSearchValue] = useState("")
-    const [sortByValue, setSortByValue] = useState("name-asc")
+    const distanceDescendingSort = useCallback(
+        (a: Venue, b: Venue) => {
+            if (!location) {
+                return 0
+            } else {
+                return (
+                    getDistanceToVenue(a, location) -
+                    getDistanceToVenue(b, location)
+                )
+            }
+        },
+        [location]
+    )
+
     useEffect(() => {
         const getLocation = async () => {
             navigator.geolocation.getCurrentPosition(
@@ -179,7 +196,13 @@ const Page = () => {
                 venues: filterAndSortVenues(area.venues),
             }))
         )
-    }, [searchValue, venues, sortByValue])
+    }, [
+        searchValue,
+        venues,
+        sortByValue,
+        distanceAscendingSort,
+        distanceDescendingSort,
+    ])
     const onChangeGroupByArea = (e: ChangeEvent<HTMLInputElement>) => {
         setGroupByArea(e.target.checked)
     }

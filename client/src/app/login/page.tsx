@@ -4,7 +4,7 @@ import { login } from "../api"
 import { Loader } from "../Loader"
 import { UserContext } from "../context/user"
 import Link from "next/link"
-import { LoginButton, LoginTextInput } from "../components/login"
+import { SubmitButton, TextInput } from "../components/forms"
 import { useRouter } from "next/navigation"
 
 interface LoginBoxProps {
@@ -31,7 +31,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
             <div>
                 <div>Email</div>
                 <div>
-                    <LoginTextInput
+                    <TextInput
                         name="user"
                         type="email"
                         value={emailString}
@@ -42,7 +42,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
             <div>
                 <div>Password</div>
                 <div>
-                    <LoginTextInput
+                    <TextInput
                         name="password"
                         type="password"
                         value={passwordString}
@@ -51,7 +51,7 @@ const LoginBox = ({ performLogin }: LoginBoxProps) => {
                     />
                 </div>
             </div>
-            <LoginButton
+            <SubmitButton
                 label="Login"
                 onClick={onClickLogin}
                 disabled={emailString === "" || passwordString === ""}
