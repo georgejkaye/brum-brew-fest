@@ -117,7 +117,6 @@ export const verifyUser = async (token: string) => {
 }
 
 export const requestPasswordReset = async (email: string) => {
-    console.log("hello")
     const endpoint = "/api/auth/forgot-password"
     try {
         const body = { email }

@@ -70,7 +70,6 @@ const AddFollowCard = ({
     fetchFollows,
 }: AddFollowCardProps) => {
     const following = follows.some((follow) => follow.userId === user.userId)
-    console.log(following)
     const [isLoading, setLoading] = useState(false)
     const performAddFollow = async () => {
         setLoading(true)
@@ -162,7 +161,6 @@ const Page = () => {
                 users.filter((userCount) => userCount.userId != user?.userId)
             )
             setLoadingUsers(false)
-            console.log(users)
         }
         if (!token) {
             if (!isLoadingUser) {
