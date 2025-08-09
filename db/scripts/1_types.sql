@@ -8,7 +8,7 @@ DROP TYPE IF EXISTS user_summary_data CASCADE;
 DROP TYPE IF EXISTS user_visit_data CASCADE;
 DROP TYPE IF EXISTS single_user_visit_data CASCADE;
 DROP TYPE IF EXISTS user_follow_data CASCADE;
-DROP TYPE IF EXISTS user_high_level_summary_data CASCADE;
+DROP TYPE IF EXISTS user_count_data CASCADE;
 
 CREATE TYPE user_data AS (
     user_id INTEGER,
