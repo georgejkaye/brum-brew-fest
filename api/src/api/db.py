@@ -199,7 +199,7 @@ def select_user_follows(conn: Connection, user_id: int) -> list[UserFollow]:
     with conn.cursor(row_factory=class_row(UserFollow)) as cur:
         return cur.execute(
             "SELECT * FROM select_user_follows(%s)", [user_id]
-        ).fetchmany()
+        ).fetchall()
 
 
 def select_user_counts(conn: Connection) -> list[UserCount]:
