@@ -104,6 +104,7 @@ const Page = () => {
         undefined
     )
     const [groupByArea, setGroupByArea] = useState(true)
+    const [showOnlyBadgeHolders, setShowOnlyBadgeHolders] = useState(true)
     const [filteredVenues, setFilteredVenues] = useState([...venues])
     const [filteredAreas, setFilteredAreas] = useState<Area[]>([])
     const [searchValue, setSearchValue] = useState("")
@@ -183,7 +184,8 @@ const Page = () => {
                             .includes(searchValue.toLowerCase()) ||
                         venue.address
                             .toLowerCase()
-                            .includes(searchValue.toLowerCase())
+                            .includes(searchValue.toLowerCase()) &&
+                    !(showOnlyBadgeHolders && !venue.pinLocation)
                 )
                 .sort(getSortByFunction())
         setFilteredVenues(filterAndSortVenues(venues))
@@ -204,6 +206,9 @@ const Page = () => {
     ])
     const onChangeGroupByArea = (e: ChangeEvent<HTMLInputElement>) => {
         setGroupByArea(e.target.checked)
+    }
+    const onChangeShowOnlyBadgeHolders = (e: ChangeEvent<HTMLInputElement>) => {
+        setShowOnlyBadgeHolders(e.target.checked)
     }
     const onChangeSortBy = (e: ChangeEvent<HTMLSelectElement>) => {
         setSortByValue(e.target.value)
@@ -252,6 +257,15 @@ const Page = () => {
                             </>
                         )}
                     </select>
+                </div>
+                <div className="flex flex-row gap-2">
+                    <input
+                        id="filter-by-badgeholder"
+                        type="checkbox"
+                        checked={showOnlyBadgeHolders}
+                        onChange={onChangeShowOnlyBadgeHolders}
+                    />
+                    <label htmlFor="filter-by-badgeholder">Show only badgeholders</label>
                 </div>
             </div>
             {groupByArea
