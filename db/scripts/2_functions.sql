@@ -505,7 +505,9 @@ LEFT JOIN (
     GROUP BY visit.user_id
 ) visit_table
 ON app_user.user_id = visit_table.user_id
-WHERE app_user.user_id = p_user_id;
+WHERE app_user.user_id = p_user_id
+AND app_user.is_active = 't'
+AND app_user.is_verified = 't';
 $$;
 
 CREATE OR REPLACE FUNCTION select_user_follows (
@@ -533,7 +535,9 @@ INNER JOIN (
     GROUP BY user_id
 ) user_visit_count
 ON follow_target_user.user_id = user_visit_count.user_id
-WHERE follow.follow_source_user_id = p_user_id;
+WHERE follow.follow_source_user_id = p_user_id
+AND follow_target_user.is_active = 't'
+AND follow_target_user.is_verified = 't';
 $$;
 
 CREATE OR REPLACE FUNCTION select_user_counts ()
@@ -555,7 +559,9 @@ lEFT JOIN (
     FROM visit
     GROUP BY user_id
 ) visit_count_table
-ON app_user.user_id = visit_count_table.user_id;
+ON app_user.user_id = visit_count_table.user_id
+WHERE app_user.is_verified = 't'
+AND app_user.is_active = 't';
 $$;
 
 CREATE OR REPLACE FUNCTION update_user (
