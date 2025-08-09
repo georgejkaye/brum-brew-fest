@@ -27,7 +27,7 @@ const VenueCard = ({ venue, location }: VenueCardProps) => {
         <Link href={`/venues/${venue.venueId}`}>
             <div className="p-4 flex md:flex-row items-end gap-4 bg-green-100 rounded-lg shadow hover:bg-green-200">
                 <div className="flex flex-col flex-1 gap-2">
-                    <div className="text-2xl font-bold">
+                    <div className="text-xl font-bold">
                         {venue.name}
                         {venue.pinLocation ? " 🔰" : ""}
                     </div>
@@ -58,7 +58,7 @@ interface AreaGroupProps {
 const AreaGroup = ({ area, location }: AreaGroupProps) => {
     return (
         <div>
-            <h3 className="font-bold text-xl mb-4">{area.areaName}</h3>
+            <h3 className="font-bold text-2xl mb-4 mt-4">{area.areaName}</h3>
             <div className="flex flex-col gap-4">
                 {area.venues.map((venue) => (
                     <VenueCard
@@ -210,6 +210,7 @@ const Page = () => {
     }
     return (
         <div className="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2 mx-auto p-4">
+            <h2 className="font-bold text-3xl">Venues</h2>
             <input
                 type="text"
                 placeholder="Type to filter..."
@@ -217,7 +218,7 @@ const Page = () => {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
             />
-            <div className="flex flex-row gap-8">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div className="flex flex-row gap-2 items-center">
                     <label htmlFor="group-by-area">Group by area</label>
                     <input
