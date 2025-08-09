@@ -256,6 +256,21 @@ def update_user_last_verify_request(
     conn.commit()
 
 
+def update_visit(
+    conn: Connection,
+    user_id: int,
+    visit_id: int,
+    new_notes: Optional[str],
+    new_rating: Optional[int],
+    new_drink: Optional[str],
+) -> None:
+    conn.execute(
+        "SELECT * FROM update_visit(%s, %s, %s, %s, %s)",
+        [user_id, visit_id, new_notes, new_rating, new_drink],
+    )
+    conn.commit()
+
+
 def delete_user(conn: Connection, user_id: int) -> None:
     conn.execute(
         "SELECT * FROM delete_user(%s)",

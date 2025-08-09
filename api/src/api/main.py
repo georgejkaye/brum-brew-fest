@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
@@ -24,6 +25,7 @@ from api.db import (
     select_venues,
     select_visits,
     update_user_display_name,
+    update_visit,
 )
 from api.users.auth import auth_backend
 from api.users.db import FastApiUser
@@ -103,6 +105,19 @@ async def post_visit(
     insert_visit(conn, user.id, venue_id, visit_date, notes, rating, drink)
 
 
+@app.patch(
+    "/visit/{visit_id}", summary="Update details for a visit", tags=["visit"]
+)
+async def patch_visit(
+    visit_id: int,
+    notes: Optional[str],
+    rating: Optional[int],
+    drink: Optional[str],
+    user: FastApiUser = Depends(current_user),
+) -> None:
+    update_visit(conn, user.id, visit_id, notes, rating, drink)
+
+
 @app.get(
     "/auth/me/follows",
     summary="Get list of current user's follows",
@@ -172,12 +187,10 @@ async def get_user_details(
         user_details.visits if user_details is not None else [],
     )
 
-@app.patch(
-    "/auth/me/display-name", tags=["auth"]
-)
-async def post_update_display_name(
-    display_name: str,
-    user: FastApiUser = Depends(current_user)
+
+@app.patch("/auth/me/display-name", tags=["auth"])
+async def patch_update_display_name(
+    display_name: str, user: FastApiUser = Depends(current_user)
 ) -> None:
     update_user_display_name(conn, user.id, display_name)
 
