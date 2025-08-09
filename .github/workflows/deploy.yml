@@ -23,12 +23,12 @@ jobs:
             psql \
               -h {{ vars.DB_HOST }} \
               -d {{ vars.DB_NAME }} \
-              -U {{ vars.DB_USER }}
+              -U {{ vars.DB_USER }} \
               -a \
               -f db/scripts/1_types.sql
             psql \
               -h {{ vars.DB_HOST }} \
               -d {{ vars.DB_NAME }} \
-              -U {{ vars.DB_USER }}
+              -U {{ vars.DB_USER }} \
               -a \
               -f db/scripts/2_functions.sql
