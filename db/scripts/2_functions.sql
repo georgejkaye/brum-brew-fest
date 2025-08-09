@@ -15,6 +15,7 @@ DROP FUNCTION IF EXISTS select_user_follows;
 DROP FUNCTION IF EXISTS select_user_counts;
 DROP FUNCTION IF EXISTS update_user;
 DROP FUNCTION IF EXISTS update_user_display_name;
+DROP FUNCTION IF EXISTS update_visit;
 DROP FUNCTION IF EXISTS delete_user;
 DROP FUNCTION IF EXISTS delete_follow;
 
@@ -623,6 +624,26 @@ $$
 UPDATE app_user
 SET last_verify_request = p_new_last_verify_request
 WHERE user_id = p_user_id;
+$$;
+
+CREATE OR REPLACE FUNCTION update_visit (
+    p_user_id INTEGER,
+    p_visit_id INTEGER,
+    p_new_notes TEXT,
+    p_new_rating INTEGER,
+    p_new_drink TEXT
+)
+RETURNS VOID
+LANGUAGE sql
+AS
+$$
+UPDATE visit
+SET
+    notes = COALESCE(p_new_notes, notes),
+    rating = COALESCE(p_new_rating, rating),
+    drink = COALESCE(p_new_drink, drink)
+WHERE user_id = p_user_id
+AND visit_id = p_visit_id;
 $$;
 
 CREATE OR REPLACE FUNCTION delete_user (
