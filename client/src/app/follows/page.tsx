@@ -75,7 +75,7 @@ const AddFollowCard = ({
     const [isLoading, setLoading] = useState(false)
     const performAddFollow = async () => {
         setLoading(true)
-        if (!follows.some((follow) => follow.userId === user.userId)) {
+        if (!isFollowing) {
             await addFollow(token, user.userId)
             await fetchFollows()
         }
@@ -88,7 +88,6 @@ const AddFollowCard = ({
         performAddFollow()
     }
     useEffect(() => {
-        console.log(follows)
         setIsFollowing(follows.some((follow) => follow.userId === user.userId))
     }, [follows, user])
     const cardStyle =
@@ -110,9 +109,7 @@ const AddFollowCard = ({
                     <div className="flex flex-row gap-4">
                         <div>{user.visitCount} visits</div>
                         <div>{user.uniqueVisitCount} venues</div>
-                        {follows.some(
-                            (follow) => (follow.userId = user.userId)
-                        ) ? (
+                        {isFollowing ? (
                             <div className="font-bold">Followed</div>
                         ) : (
                             <button
