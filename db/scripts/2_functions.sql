@@ -521,12 +521,12 @@ SELECT
     follow.follow_id,
     follow.follow_target_user_id,
     follow_target_user.display_name,
-    user_visit_count.visit_count,
-    user_visit_count.unique_visit_count
+    COALESCE(user_visit_count.visit_count, 0),
+    COALESCE(user_visit_count.unique_visit_count, 0)
 FROM follow
 INNER JOIN app_user follow_target_user
 ON follow.follow_target_user_id = follow_target_user.user_id
-INNER JOIN (
+LEFT JOIN (
     SELECT
         user_id,
         COUNT(*) AS visit_count,
