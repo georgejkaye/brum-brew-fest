@@ -69,7 +69,9 @@ const AddFollowCard = ({
     follows,
     fetchFollows,
 }: AddFollowCardProps) => {
-    const following = follows.some((follow) => follow.userId === user.userId)
+    const [isFollowing, setIsFollowing] = useState(
+        follows.some((follow) => follow.userId === user.userId)
+    )
     const [isLoading, setLoading] = useState(false)
     const performAddFollow = async () => {
         setLoading(true)
@@ -85,6 +87,10 @@ const AddFollowCard = ({
     const onClickCard = (e: MouseEvent<HTMLDivElement>) => {
         performAddFollow()
     }
+    useEffect(() => {
+        console.log(follows)
+        setIsFollowing(follows.some((follow) => follow.userId === user.userId))
+    }, [follows, user])
     const cardStyle =
         "flex flex-col md:flex-row p-4 rounded bg-green-200 gap-4 w-full"
     const hoverStyle = "hover:bg-green-100 cursor-pointer"
@@ -94,10 +100,13 @@ const AddFollowCard = ({
                 <Loader size={50} />
             ) : (
                 <div
-                    className={`${cardStyle} ${following ? "" : hoverStyle}`}
+                    className={`${cardStyle} ${isFollowing ? "" : hoverStyle}`}
                     onClick={onClickCard}
                 >
-                    <div className="font-bold mr-auto">{user.displayName}</div>
+                    <div className="font-bold mr-auto">
+                        {user.userId}
+                        {user.displayName}
+                    </div>
                     <div className="flex flex-row gap-4">
                         <div>{user.visitCount} visits</div>
                         <div>{user.uniqueVisitCount} venues</div>
