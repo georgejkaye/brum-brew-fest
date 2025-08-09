@@ -12,8 +12,9 @@ RUN poetry install --no-root
 COPY src ./src
 RUN poetry install
 
+COPY data/venues.json .
+
 RUN mkdir /run/secrets
 RUN echo "bbf" > /run/secrets/db_secret
-RUN echo "eqoithqweighdeoihgeph" > /run/secrets/user_secret
 
-ENTRYPOINT ["poetry", "run", "python", "src/api/main.py"]
+ENTRYPOINT ["poetry", "run", "python", "src/api/populate.py", "venues.json", "db", "bbf", "bbf", "/run/secrets/db_secret"]
