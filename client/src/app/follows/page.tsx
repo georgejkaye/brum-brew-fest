@@ -102,10 +102,7 @@ const AddFollowCard = ({
                     className={`${cardStyle} ${isFollowing ? "" : hoverStyle}`}
                     onClick={onClickCard}
                 >
-                    <div className="font-bold mr-auto">
-                        {user.userId}
-                        {user.displayName}
-                    </div>
+                    <div className="font-bold mr-auto">{user.displayName}</div>
                     <div className="flex flex-row gap-4">
                         <div>{user.visitCount} visits</div>
                         <div>{user.uniqueVisitCount} venues</div>
