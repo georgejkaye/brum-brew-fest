@@ -93,7 +93,6 @@ const partitionByArea = (venues: Venue[]) => {
         },
         {}
     )
-    console.log(partitionedVenues)
     return Object.keys(partitionedVenues)
         .map((key) => partitionedVenues[key])
         .sort((area1, area2) => area1.areaName.localeCompare(area2.areaName))

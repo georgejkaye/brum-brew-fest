@@ -22,7 +22,6 @@ const Page = ({ params }: { params: Promise<{ token: string }> }) => {
                 token,
                 newPasswordString
             )
-            console.log(resetPasswordResult)
             if (resetPasswordResult.error) {
                 if (resetPasswordResult.error === "RESET_PASSWORD_BAD_TOKEN") {
                     setErrorString("Password reset failed: invalid token")

@@ -37,7 +37,6 @@ const UserSummaryVisitCard = ({ visit }: UserSummaryVisitCardProps) => {
 
 const Page = () => {
     const { userSummary, isLoadingUserSummary } = useContext(UserSummaryContext)
-    console.log(userSummary)
     return (
         <div className="md:w-1/3 flex flex-col items-center md:mx-auto p-4">
             {isLoadingUserSummary ? (
