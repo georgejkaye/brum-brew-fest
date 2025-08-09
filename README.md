@@ -17,20 +17,11 @@ docker compose -f docker-compose.dev.yml up
 ```
 
 The dev compose file spins up a Postgres database initialised with the
-required tables, types, and functions.
-You can interact with this db using `psql`:
+tables, types, functions, and venue data.
+You can interact with this db using `psql` in the db container:
 
 ```sh
-psql -h localhost -U bbf -d bbf
-Password for user bbf: # bbf
-```
-
-To populate this db with areas and venues, you can run the script in the `data`
-directory:
-
-```sh
-chmod +x data/populate.sh
-./data/populate.sh
+docker exec -it brum-brew-fest-db-1 psql -U bbf -d bbf
 ```
 
 ### Prod environment
@@ -40,6 +31,9 @@ You can also emulate the prod environment by running:
 ```sh
 docker compose -f docker-compose.prod.yml up
 ```
+
+When using the prod compose file you will need to provide your own Postgres db,
+set up using the scripts in `db/scripts`.
 
 ## Environment variables
 
@@ -71,18 +65,3 @@ where you run `docker compose`.
 |`db.secret`|Password for the user `$DB_USER` on the database `$DB_NAME@$DBHOST`|no|yes|
 |`smtp.secret`|Password for the user `$SMTP_USER` on the SMTP server `$SMTP_SERVER`|yes|yes|
 |`user.secret`|Key used for user password hashing|no|yes|
-
-
-## Using the db
-
-When running using the dev docker compose file, a Postgres db will be spun up for you.
-You can interact with it via the `psql` interface:
-
-```sh
-docker exec -it brum-brew-fest-db-1 psql -U bbf -d bbf
-```
-
-When using the prod docker compose file, we assume you have the
-db set up already somewhere else.
-You can use the scripts in `db/scripts` to set up the various
-tables, types, and functions.
